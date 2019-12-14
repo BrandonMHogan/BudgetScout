@@ -39,13 +39,14 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
-    dynamicFeatures = [":feature_about", ":feature_budget"]
+    dynamicFeatures = [":feature_about"]
 
 
 }
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${versions.kotlin}"
+    implementation project(':feature_budget')
     implementation project(':library_actions')
 
     api 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.1.0'

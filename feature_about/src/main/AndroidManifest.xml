@@ -13,7 +13,9 @@
         <dist:fusing dist:include="true" />
     </dist:module>
 
-    <application>
+    <application
+        android:icon="@mipmap/ic_launcher"
+        android:allowBackup="false">
         <activity
             android:name="com.brandonhogan.budgetscout.about.AboutActivity">
             <intent-filter>
