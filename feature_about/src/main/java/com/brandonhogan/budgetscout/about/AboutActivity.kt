@@ -1,9 +1,8 @@
-package com.brandonhogan.budgetscout.about.ui
+package com.brandonhogan.budgetscout.about
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.brandonhogan.budgetscout.about.R
-import com.brandonhogan.budgetscout.about.ui.about.AboutFragment
+import com.brandonhogan.budgetscout.about.ui.AboutFragment
 
 class AboutActivity : AppCompatActivity() {
 
@@ -12,7 +11,9 @@ class AboutActivity : AppCompatActivity() {
         setContentView(R.layout.about_activity)
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()
-                .replace(R.id.container, AboutFragment.newInstance())
+                .replace(R.id.container,
+                    AboutFragment.newInstance()
+                )
                 .commitNow()
         }
     }

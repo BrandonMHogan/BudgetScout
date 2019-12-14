@@ -1,4 +1,4 @@
-package com.brandonhogan.budgetscout.about.ui.about
+package com.brandonhogan.budgetscout.about.ui
 
 import androidx.lifecycle.ViewModel
 

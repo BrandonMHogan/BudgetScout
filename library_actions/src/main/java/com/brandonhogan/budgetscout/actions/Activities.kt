@@ -36,7 +36,14 @@ object Activities {
      * AboutActivity
      */
     object About : AddressableActivity {
-        override val className = "$PACKAGE_NAME.about.ui.AboutActivity"
+        override val className = "$PACKAGE_NAME.about.AboutActivity"
+    }
+
+    /**
+     * BudgetActivity
+     */
+    object Budget : AddressableActivity {
+        override val className = "$PACKAGE_NAME.budget.BudgetActivity"
     }
 
 }

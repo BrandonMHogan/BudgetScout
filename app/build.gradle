@@ -39,7 +39,7 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
-    dynamicFeatures = [":features_about"]
+    dynamicFeatures = [":feature_about", ":feature_budget"]
 
 
 }

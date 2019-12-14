@@ -1,0 +1,7 @@
+apply from: "$rootProject.projectDir/shared-dynamic-library.gradle"
+
+dependencies {
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${versions.kotlin}"
+    implementation project(':app')
+    implementation project(':library_actions')
+}

@@ -19,7 +19,8 @@ class ActivityClassNamesUnitTests {
     private val testPackageName = "com.brandonhogan.budgetscout"
 
     // activity class names
-    private val testAboutActivityClassName = "$PACKAGE_NAME.about.ui.AboutActivity"
+    private val testAboutActivityClassName = "$PACKAGE_NAME.about.AboutActivity"
+    private val testBudgetActivityClassName = "$PACKAGE_NAME.budget.BudgetActivity"
 
 
     @Test
@@ -29,6 +30,11 @@ class ActivityClassNamesUnitTests {
 
     @Test
     fun action_About_ClassName() {
+        assertEquals(testAboutActivityClassName, Activities.About.className)
+    }
+
+    @Test
+    fun action_Budget_ClassName() {
         assertEquals(testAboutActivityClassName, Activities.About.className)
     }
 }
