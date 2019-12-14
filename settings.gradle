@@ -1,0 +1,2 @@
+include ':app', ':features_about', ':library_actions'
+rootProject.name='Budget Scout'
