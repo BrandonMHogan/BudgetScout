@@ -11,6 +11,8 @@ import android.widget.Button
 import com.brandonhogan.budgetscout.actions.Activities
 import com.brandonhogan.budgetscout.actions.intentTo
 import com.brandonhogan.budgetscout.budget.R
+import kotlinx.android.synthetic.main.budget_fragment.*
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class BudgetFragment : Fragment() {
 
@@ -18,7 +20,9 @@ class BudgetFragment : Fragment() {
         fun newInstance() = BudgetFragment()
     }
 
-    private lateinit var viewModel: BudgetViewModel
+    val model: BudgetViewModel by viewModel()
+
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -41,8 +45,10 @@ class BudgetFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(BudgetViewModel::class.java)
+        //viewModel = ViewModelProviders.of(this).get(BudgetViewModel::class.java)
         // TODO: Use the ViewModel
+
+        message.text = model.sayHello()
     }
 
 }

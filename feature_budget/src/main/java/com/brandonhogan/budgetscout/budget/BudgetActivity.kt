@@ -14,6 +14,12 @@ class BudgetActivity : AppCompatActivity() {
                 .replace(R.id.container, BudgetFragment.newInstance())
                 .commitNow()
         }
+
+        setKoin()
+    }
+
+    private fun setKoin() {
+
     }
 
 }
