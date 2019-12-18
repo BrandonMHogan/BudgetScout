@@ -20,11 +20,17 @@ dependencies {
     implementation dependency.navigationUI
     implementation dependency.navigationUIKtx
 
+    // koin
+    implementation dependency.koin
+    implementation dependency.koinViewModel
+
     // jdk 8
     implementation dependency.jdk8
 
     // unit testing
     testImplementation dependency.junit
+    testImplementation dependency.koinTest
+
     // ui testing
     androidTestImplementation dependency.androidJunit
     androidTestImplementation dependency.espresso

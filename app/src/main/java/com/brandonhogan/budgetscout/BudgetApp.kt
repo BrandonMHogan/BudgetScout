@@ -15,7 +15,6 @@ open class BudgetApp : Application() {
         startKoin {
             androidLogger()
             androidContext(this@BudgetApp)
-            modules(budgetModule)
         }
     }
 
