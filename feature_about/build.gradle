@@ -1,7 +1,31 @@
 apply from: "$rootProject.projectDir/shared-dynamic-library.gradle"
 
 dependencies {
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${versions.kotlin}"
     implementation project(':app')
     implementation project(':library_actions')
+
+    // androidx core
+    implementation dependency.appcompat
+    implementation dependency.core
+    implementation dependency.material
+    implementation dependency.constraintLayout
+
+    // androidx lifecycle
+    implementation dependency.lifecycleExt
+    implementation dependency.lifecycleViewModelKt
+
+    // androidx navigation
+    implementation dependency.navigationFragment
+    implementation dependency.navigationFragmentKtx
+    implementation dependency.navigationUI
+    implementation dependency.navigationUIKtx
+
+    // jdk 8
+    implementation dependency.jdk8
+
+    // unit testing
+    testImplementation dependency.junit
+    // ui testing
+    androidTestImplementation dependency.androidJunit
+    androidTestImplementation dependency.espresso
 }

@@ -35,6 +35,6 @@ class ActivityClassNamesUnitTests {
 
     @Test
     fun action_Budget_ClassName() {
-        assertEquals(testAboutActivityClassName, Activities.About.className)
+        assertEquals(testBudgetActivityClassName, Activities.Budget.className)
     }
 }

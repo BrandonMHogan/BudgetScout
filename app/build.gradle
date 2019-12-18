@@ -50,25 +50,27 @@ dependencies {
     implementation project(':library_actions')
 
     // androidx core
-    api dependency.appcompat
-    api dependency.core
-    api dependency.material
-    api dependency.constraintLayout
+    implementation dependency.appcompat
+    implementation dependency.core
+    implementation dependency.material
+    implementation dependency.constraintLayout
 
     // androidx lifecycle
-    api dependency.lifecycleExt
-    api dependency.lifecycleViewModelKt
+    implementation dependency.lifecycleExt
+    implementation dependency.lifecycleViewModelKt
 
     // androidx navigation
-    api dependency.navigationFragment
-    api dependency.navigationFragmentKtx
-    api dependency.navigationUI
-    api dependency.navigationUIKtx
+    implementation dependency.navigationFragment
+    implementation dependency.navigationFragmentKtx
+    implementation dependency.navigationUI
+    implementation dependency.navigationUIKtx
 
     // jdk 8
     implementation dependency.jdk8
 
-    testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+    // unit testing
+    testImplementation dependency.junit
+    // ui testing
+    androidTestImplementation dependency.androidJunit
+    androidTestImplementation dependency.espresso
 }

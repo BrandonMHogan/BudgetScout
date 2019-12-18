@@ -1,15 +1,8 @@
 apply from: "$rootProject.projectDir/shared-library.gradle"
 
 dependencies {
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${versions.kotlin}"
-    implementation 'androidx.appcompat:appcompat:1.1.0'
-    implementation 'androidx.core:core-ktx:1.1.0'
-
-    // Required -- JUnit 4 framework
-    testImplementation 'junit:junit:4.12'
-    // Optional -- Robolectric environment
-    testImplementation 'androidx.test:core:1.2.0'
-    // Optional -- Mockito framework
-    testImplementation 'org.mockito:mockito-core:2.27.0'
-
+    // jdk 8
+    implementation dependency.jdk8
+    // unit testing
+    testImplementation dependency.junit
 }
