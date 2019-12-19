@@ -5,6 +5,7 @@ import android.os.Bundle
 import com.brandonhogan.budgetscout.budget.modules.budgetModule
 import com.brandonhogan.budgetscout.budget.ui.BudgetFragment
 import org.koin.core.context.loadKoinModules
+import org.koin.core.context.unloadKoinModules
 
 class BudgetActivity : AppCompatActivity() {
 
@@ -18,6 +19,12 @@ class BudgetActivity : AppCompatActivity() {
                 .replace(R.id.container, BudgetFragment.newInstance())
                 .commitNow()
         }
+    }
+
+    /// Unloads the feature modules
+    override fun onStop() {
+        super.onStop()
+        unloadKoinModules(budgetModule)
     }
 
     /// Loads the modules for the about feature
