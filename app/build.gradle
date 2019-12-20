@@ -46,7 +46,6 @@ android {
 
 dependencies {
     // required modules
-    implementation project(':feature_budget')
     implementation project(':library_actions')
 
     // androidx core

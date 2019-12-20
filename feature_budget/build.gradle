@@ -2,6 +2,7 @@ apply from: "$rootProject.projectDir/shared-library.gradle"
 
 dependencies {
     implementation project(':library_actions')
+    implementation project(':library_repository')
 
     // androidx core
     implementation dependency.appcompat

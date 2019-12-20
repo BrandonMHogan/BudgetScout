@@ -12,6 +12,7 @@
             <option value="$PROJECT_DIR$/feature_about" />
             <option value="$PROJECT_DIR$/feature_budget" />
             <option value="$PROJECT_DIR$/library_actions" />
+            <option value="$PROJECT_DIR$/library_repository" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

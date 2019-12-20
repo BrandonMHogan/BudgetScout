@@ -1,0 +1,16 @@
+apply from: "$rootProject.projectDir/shared-library.gradle"
+
+dependencies {
+
+    // room
+    implementation dependency.room
+    kapt dependency.roomCompiler
+    implementation dependency.roomKtx
+    implementation dependency.roomRx
+
+    // jdk 8
+    implementation dependency.jdk8
+    // unit testing
+    testImplementation dependency.junit
+    testImplementation dependency.roomTest
+}
