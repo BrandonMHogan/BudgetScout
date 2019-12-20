@@ -20,9 +20,7 @@ class BudgetFragment : Fragment() {
         fun newInstance() = BudgetFragment()
     }
 
-    val model: BudgetViewModel by viewModel()
-
-
+    private val model: BudgetViewModel by viewModel()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

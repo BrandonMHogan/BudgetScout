@@ -20,7 +20,7 @@ class AboutFragment : Fragment() {
         fun newInstance() = AboutFragment()
     }
 
-    val model: AboutViewModel by viewModel()
+    private val model: AboutViewModel by viewModel()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
