@@ -1,6 +1,7 @@
 apply from: "$rootProject.projectDir/shared-library.gradle"
 
 dependencies {
+    implementation project(':library_core')
     implementation project(':library_actions')
     implementation project(':library_repository')
 
@@ -9,10 +10,12 @@ dependencies {
     implementation dependency.core
     implementation dependency.material
     implementation dependency.constraintLayout
+    implementation dependency.coroutines
 
     // androidx lifecycle
     implementation dependency.lifecycleExt
     implementation dependency.lifecycleViewModelKt
+    implementation dependency.lifecycleLiveDataKtx
 
     // androidx navigation
     implementation dependency.navigationFragment

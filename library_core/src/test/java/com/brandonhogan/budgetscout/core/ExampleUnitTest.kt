@@ -1,4 +1,4 @@
-package com.brandonhogan.budgetscout.repository
+package com.brandonhogan.budgetscout.core
 
 import org.junit.Test
 

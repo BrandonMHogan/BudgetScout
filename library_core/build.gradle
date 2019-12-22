@@ -8,9 +8,8 @@ dependencies {
     implementation dependency.roomKtx
     implementation dependency.roomRx
 
-    // koin
-    implementation dependency.koin
-    implementation dependency.koinViewModel
+    // logging
+    api dependency.timber
 
     // jdk 8
     implementation dependency.jdk8

@@ -8,10 +8,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import androidx.lifecycle.Observer
 import com.brandonhogan.budgetscout.actions.Activities
 import com.brandonhogan.budgetscout.actions.intentTo
 import com.brandonhogan.budgetscout.budget.R
+import com.brandonhogan.budgetscout.repository.entity.Budget
+import com.brandonhogan.budgetscout.repository.repo.BudgetRepo
 import kotlinx.android.synthetic.main.budget_fragment.*
+import kotlinx.coroutines.*
+import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class BudgetFragment : Fragment() {
@@ -43,10 +48,19 @@ class BudgetFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        //viewModel = ViewModelProviders.of(this).get(BudgetViewModel::class.java)
-        // TODO: Use the ViewModel
 
-        message.text = model.sayHello()
+        model.budget.observe(this, Observer {
+            if (it == null) {
+                message.text = "No Budget Found"
+            }
+            else {
+                message.text = it.name
+            }
+        })
+
+        model.getBudget()
+
+
     }
 
 }

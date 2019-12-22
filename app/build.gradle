@@ -46,6 +46,9 @@ android {
 
 dependencies {
     // required modules
+    implementation project(':feature_budget')
+    implementation project(':library_core')
+    implementation project(':library_repository')
     implementation project(':library_actions')
 
     // androidx core
@@ -72,6 +75,7 @@ dependencies {
     implementation dependency.jdk8
 
     // unit testing
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     testImplementation dependency.junit
     testImplementation dependency.koinTest
 

@@ -1,4 +1,4 @@
-include ':app', ':library_repository'
+include ':app', ':library_repository', ':library_core'
 include ':feature_budget', ':feature_about'
 include ':library_actions'
 rootProject.name='Budget Scout'

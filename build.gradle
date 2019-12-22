@@ -16,6 +16,8 @@ buildscript {
             'lifecycle': '2.1.0',
             'koin': '2.0.1',
             'room': '2.2.3',
+            'coroutines': '1.3.2',
+            'timber': '4.7.1',
 
             "junit": '4.12',
             "androidJunit": '1.1.1',
@@ -32,6 +34,8 @@ buildscript {
             "material": "com.google.android.material:material:${versions.material}",
             "constraintLayout": "androidx.constraintlayout:constraintlayout:${versions.constraintLayout}",
 
+            "coroutines": "org.jetbrains.kotlinx:kotlinx-coroutines-core:${versions.coroutines}",
+
             "navigationFragment": "androidx.navigation:navigation-fragment:${versions.navigation}",
             "navigationFragmentKtx": "androidx.navigation:navigation-fragment-ktx:${versions.navigation}",
             "navigationUI": "androidx.navigation:navigation-ui:${versions.navigation}",
@@ -39,6 +43,7 @@ buildscript {
 
             "lifecycleExt": "androidx.lifecycle:lifecycle-extensions:${versions.lifecycle}",
             "lifecycleViewModelKt": "androidx.lifecycle:lifecycle-viewmodel-ktx:${versions.lifecycle}",
+            "lifecycleLiveDataKtx": "androidx.lifecycle:lifecycle-livedata-ktx:${versions.lifecycle}",
 
             'koin': "org.koin:koin-core:${versions.koin}",
             'koinViewModel': "org.koin:koin-androidx-viewmodel:${versions.koin}",
@@ -49,6 +54,8 @@ buildscript {
             'roomKtx': "androidx.room:room-ktx:${versions.room}",
             'roomRx': "androidx.room:room-rxjava2:${versions.room}",
             'roomTest': "androidx.room:room-testing:${versions.room}",
+
+            'timber': "com.jakewharton.timber:timber:${versions.timber}",
 
             "junit": "junit:junit:${versions.junit}",
             "androidJunit": "androidx.test.ext:junit:${versions.androidJunit}",

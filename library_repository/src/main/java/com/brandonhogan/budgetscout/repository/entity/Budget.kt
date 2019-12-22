@@ -14,8 +14,13 @@ import androidx.room.PrimaryKey
 @Entity
 
 data class Budget (
-
-    @PrimaryKey(autoGenerate = true) var id: Int,
-    @ColumnInfo(name = "name") var name: String
-
+    @PrimaryKey(autoGenerate = true) @ColumnInfo(name = PROPERTY_ID) var id: Int,
+    @ColumnInfo(name = PROPERTY_NAME) var name: String
 )
+{
+    companion object {
+        const val NAME = "Budget"
+        const val PROPERTY_NAME = "name"
+        const val PROPERTY_ID = "id"
+    }
+}

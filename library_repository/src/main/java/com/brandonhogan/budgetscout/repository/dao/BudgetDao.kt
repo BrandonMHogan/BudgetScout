@@ -8,27 +8,15 @@ import com.brandonhogan.budgetscout.repository.entity.Budget
  * @Creator         Brandon Hogan
  * @Date            2019-12-19
  * @File            BudgetDao
- * @Description     {{ foo }}
+ * @Description     Data Access Object for the budget table
  */
 
 @Dao
-interface BudgetDao {
+interface BudgetDao: BaseDao<Budget> {
 
-    @Query("SELECT * FROM budget")
-    fun getAll(): List<Budget>
+    @Query("SELECT * FROM ${Budget.NAME}")
+    fun getAll(): LiveData<List<Budget>>
 
-    @Query("SELECT * FROM budget WHERE id IS :id")
-    fun findById(id: Int): LiveData<List<Budget>>
-
-    @Insert
-    fun insert(budget: Budget)
-
-    @Insert
-    fun insert(vararg budgets: Budget)
-
-    @Delete
-    fun delete(todo: Budget)
-
-    @Update
-    fun updateTodo(vararg budgets: Budget)
+    @Query("SELECT * FROM ${Budget.NAME} WHERE ${Budget.PROPERTY_ID} IS :id")
+    fun findById(id: Int): LiveData<Budget>
 }
