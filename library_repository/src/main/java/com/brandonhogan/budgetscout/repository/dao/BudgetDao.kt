@@ -1,7 +1,7 @@
 package com.brandonhogan.budgetscout.repository.dao
 
-import androidx.lifecycle.LiveData
 import androidx.room.*
+import com.brandonhogan.budgetscout.repository.dao.base.BaseDao
 import com.brandonhogan.budgetscout.repository.entity.Budget
 
 /**

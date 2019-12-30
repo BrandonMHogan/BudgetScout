@@ -1,7 +1,6 @@
 package com.brandonhogan.budgetscout.budget.ui
 
 import android.app.ActivityOptions
-import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -13,12 +12,7 @@ import com.brandonhogan.budgetscout.actions.Activities
 import com.brandonhogan.budgetscout.actions.intentTo
 import com.brandonhogan.budgetscout.budget.R
 import com.brandonhogan.budgetscout.core.services.Log
-import com.brandonhogan.budgetscout.repository.database.AppDatabase
 import com.brandonhogan.budgetscout.repository.entity.Budget
-import com.brandonhogan.budgetscout.repository.repo.BudgetRepo
-import kotlinx.android.synthetic.main.budget_fragment.*
-import kotlinx.coroutines.*
-import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class BudgetFragment : Fragment() {

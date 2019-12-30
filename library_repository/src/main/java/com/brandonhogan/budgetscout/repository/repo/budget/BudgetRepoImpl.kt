@@ -1,17 +1,18 @@
-package com.brandonhogan.budgetscout.repository.repo
+package com.brandonhogan.budgetscout.repository.repo.budget
 
 import com.brandonhogan.budgetscout.repository.dao.BudgetDao
 import com.brandonhogan.budgetscout.repository.entity.Budget
+import com.brandonhogan.budgetscout.repository.repo.budget.BudgetRepo
 import org.koin.core.KoinComponent
 
 
 class BudgetRepoImpl(private val budgetDao: BudgetDao): BudgetRepo, KoinComponent {
 
-    override fun getAll(): List<Budget> {
+    override suspend fun getAll(): List<Budget> {
         return budgetDao.getAll()
     }
 
-    override fun get(id: Long): Budget {
+    override suspend fun get(id: Long): Budget {
         return budgetDao.findById(id)
     }
 

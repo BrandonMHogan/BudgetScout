@@ -1,4 +1,4 @@
-package com.brandonhogan.budgetscout.repository.dao
+package com.brandonhogan.budgetscout.repository.dao.base
 
 import androidx.room.Delete
 import androidx.room.Insert
