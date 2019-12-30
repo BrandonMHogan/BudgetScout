@@ -12,6 +12,8 @@ import androidx.lifecycle.Observer
 import com.brandonhogan.budgetscout.actions.Activities
 import com.brandonhogan.budgetscout.actions.intentTo
 import com.brandonhogan.budgetscout.budget.R
+import com.brandonhogan.budgetscout.core.services.Log
+import com.brandonhogan.budgetscout.repository.database.AppDatabase
 import com.brandonhogan.budgetscout.repository.entity.Budget
 import com.brandonhogan.budgetscout.repository.repo.BudgetRepo
 import kotlinx.android.synthetic.main.budget_fragment.*
@@ -49,18 +51,15 @@ class BudgetFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        model.budget.observe(this, Observer {
-            if (it == null) {
-                message.text = "No Budget Found"
-            }
-            else {
-                message.text = it.name
-            }
-        })
 
-        model.getBudget()
+        val budgetObserver = Observer<List<Budget>> { budgets ->
 
+            for (budget in budgets) {
+                Log.debug("Got Budget!!! ${budget.name}")
+            }
+        }
+
+        model.budget.observe(this, budgetObserver)
 
     }
-
 }

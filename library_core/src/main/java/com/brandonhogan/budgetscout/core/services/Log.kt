@@ -33,6 +33,13 @@ class Log {
         }
 
         /**
+         * Error Logging with throwable
+         */
+        fun error(throwable: Throwable, @NonNls message: String, vararg args: Any) {
+            Timber.e(throwable, message, args)
+        }
+
+        /**
          * Info Logging call
          */
         fun info(@NonNls message: String, vararg args: Any) {

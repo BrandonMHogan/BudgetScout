@@ -14,7 +14,7 @@ import androidx.room.PrimaryKey
 @Entity
 
 data class Budget (
-    @PrimaryKey(autoGenerate = true) @ColumnInfo(name = PROPERTY_ID) var id: Int,
+    @PrimaryKey(autoGenerate = true) @ColumnInfo(name = PROPERTY_ID) var id: Long = 0,
     @ColumnInfo(name = PROPERTY_NAME) var name: String
 )
 {

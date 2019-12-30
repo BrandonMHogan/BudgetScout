@@ -1,9 +1,11 @@
 package com.brandonhogan.budgetscout.repository.repo
 
-import androidx.lifecycle.LiveData
+import androidx.annotation.WorkerThread
 import com.brandonhogan.budgetscout.repository.entity.Budget
 
+@WorkerThread
 interface BudgetRepo {
-    suspend fun get(id: Int): LiveData<Budget>
-    suspend fun insert(budget: Budget)
+    fun getAll(): List<Budget>
+    fun get(id: Long): Budget
+    suspend fun insert(budget: Budget): List<Long>
 }

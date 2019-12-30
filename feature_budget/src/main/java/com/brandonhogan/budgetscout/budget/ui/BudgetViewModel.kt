@@ -1,31 +1,35 @@
 package com.brandonhogan.budgetscout.budget.ui
 
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.*
 import com.brandonhogan.budgetscout.core.bases.BaseViewModel
-import com.brandonhogan.budgetscout.core.services.Log
 import com.brandonhogan.budgetscout.repository.entity.Budget
 import com.brandonhogan.budgetscout.repository.repo.BudgetRepo
 import kotlinx.coroutines.*
 
-class BudgetViewModel(val budgetRepo: BudgetRepo) : BaseViewModel() {
+class BudgetViewModel(private val budgetRepo: BudgetRepo) : BaseViewModel() {
 
-    var budget = MutableLiveData<Budget>()
+    /**
+     * Observable by its view
+     */
+    val budget: MutableLiveData<List<Budget>> by lazy {
+        MutableLiveData<List<Budget>>()
+    }
 
-    fun getBudget() {
-        uiScope.launch {
-            val response = loadBudget()
-            Log.debug(response.value?.name ?: "None Found")
-            budget.value = response.value
+    /**
+     * On init, will load the active budget and post it
+     */
+    init {
+
+        viewModelScope.launch(exceptionHandler) {
+            budget.postValue(loadActiveBudget())
         }
     }
 
-    suspend fun loadBudget(): LiveData<Budget> = withContext(Dispatchers.Default) {
-        val newBudget = Budget(0, "First Item")
-        budgetRepo.insert(newBudget)
-        budgetRepo.get(newBudget.id)
+    /**
+     * Loads the budget from the repository, in the background thread
+     */
+    private suspend fun loadActiveBudget(): List<Budget> = withContext(Dispatchers.IO) {
+        budgetRepo.getAll()
     }
-
-
 }

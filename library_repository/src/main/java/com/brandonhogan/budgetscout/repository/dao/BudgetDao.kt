@@ -15,8 +15,8 @@ import com.brandonhogan.budgetscout.repository.entity.Budget
 interface BudgetDao: BaseDao<Budget> {
 
     @Query("SELECT * FROM ${Budget.NAME}")
-    fun getAll(): LiveData<List<Budget>>
+    fun getAll(): List<Budget>
 
     @Query("SELECT * FROM ${Budget.NAME} WHERE ${Budget.PROPERTY_ID} IS :id")
-    fun findById(id: Int): LiveData<Budget>
+    fun findById(id: Long): Budget
 }
