@@ -29,6 +29,7 @@ buildscript {
             "jdk8": "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${versions.kotlin}",
 
             "appcompat": "androidx.appcompat:appcompat:${versions.androidx}",
+            "recyclerview": "androidx.recyclerview:recyclerview:${versions.androidx}",
             "core": "androidx.core:core-ktx:${versions.androidx}",
 
             "material": "com.google.android.material:material:${versions.material}",

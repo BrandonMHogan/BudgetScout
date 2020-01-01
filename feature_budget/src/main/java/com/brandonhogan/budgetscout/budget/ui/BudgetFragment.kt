@@ -31,15 +31,6 @@ class BudgetFragment : Fragment() {
     ): View {
         val view = inflater.inflate(R.layout.budget_fragment, container, false)
 
-        val button: Button = view.findViewById(R.id.budget_button)
-
-        button.setOnClickListener {
-            startActivity(
-                intentTo(Activities.About),
-                ActivityOptions.makeSceneTransitionAnimation(requireActivity()).toBundle()
-            )
-        }
-
         return view
     }
 
