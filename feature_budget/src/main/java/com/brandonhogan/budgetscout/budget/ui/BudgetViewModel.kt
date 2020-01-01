@@ -5,6 +5,7 @@ import androidx.lifecycle.*
 import com.brandonhogan.budgetscout.core.bases.BaseViewModel
 import com.brandonhogan.budgetscout.core.services.Log
 import com.brandonhogan.budgetscout.repository.entity.Budget
+import com.brandonhogan.budgetscout.repository.entity.relations.BudgetWithGroupsAndEnvelopes
 import com.brandonhogan.budgetscout.repository.repo.budget.BudgetRepo
 import kotlinx.coroutines.*
 
@@ -13,8 +14,8 @@ class BudgetViewModel(private val budgetRepo: BudgetRepo) : BaseViewModel() {
     /**
      * Observable by its view
      */
-    val budget: MutableLiveData<List<Budget>> by lazy {
-        MutableLiveData<List<Budget>>()
+    val budget: MutableLiveData<BudgetWithGroupsAndEnvelopes> by lazy {
+        MutableLiveData<BudgetWithGroupsAndEnvelopes>()
     }
 
     /**
@@ -23,7 +24,7 @@ class BudgetViewModel(private val budgetRepo: BudgetRepo) : BaseViewModel() {
     init {
         viewModelScope.launch(exceptionHandler) {
             // will add a new budget first
-            setBudget(Budget(name = "Second Budget"))
+           // setBudget(Budget(name = "Second Budget"))
             // then load the active budget
             budget.postValue(loadActiveBudget())
         }
@@ -32,16 +33,14 @@ class BudgetViewModel(private val budgetRepo: BudgetRepo) : BaseViewModel() {
     /**
      * Loads the budget from the repository, in the background thread
      */
-    private suspend fun loadActiveBudget(): List<Budget> = withContext(Dispatchers.IO) {
-        Log.debug("Inside loadActiveBudget")
-        budgetRepo.getAll()
+    private suspend fun loadActiveBudget(): BudgetWithGroupsAndEnvelopes = withContext(Dispatchers.IO) {
+        budgetRepo.getWithGroupsAndEnvelopes(1)
     }
 
     /**
      * Loads the budget from the repository, in the background thread
      */
     private suspend fun setBudget(budget: Budget): List<Long> = withContext(Dispatchers.IO) {
-        Log.debug("Inside setBudget")
         budgetRepo.insert(budget)
     }
 }

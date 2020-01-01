@@ -13,6 +13,8 @@ import com.brandonhogan.budgetscout.actions.intentTo
 import com.brandonhogan.budgetscout.budget.R
 import com.brandonhogan.budgetscout.core.services.Log
 import com.brandonhogan.budgetscout.repository.entity.Budget
+import com.brandonhogan.budgetscout.repository.entity.relations.BudgetWithGroupsAndEnvelopes
+import com.brandonhogan.budgetscout.repository.showDBLoggerToast
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class BudgetFragment : Fragment() {
@@ -32,7 +34,6 @@ class BudgetFragment : Fragment() {
         val button: Button = view.findViewById(R.id.budget_button)
 
         button.setOnClickListener {
-
             startActivity(
                 intentTo(Activities.About),
                 ActivityOptions.makeSceneTransitionAnimation(requireActivity()).toBundle()
@@ -46,11 +47,8 @@ class BudgetFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
 
 
-        val budgetObserver = Observer<List<Budget>> { budgets ->
-
-            for (budget in budgets) {
-                Log.debug("Got Budget!!! ${budget.name}")
-            }
+        val budgetObserver = Observer<BudgetWithGroupsAndEnvelopes> { budget ->
+            Log.debug("Got Budget!!! ${budget.budget.name}")
         }
 
         model.budget.observe(this, budgetObserver)

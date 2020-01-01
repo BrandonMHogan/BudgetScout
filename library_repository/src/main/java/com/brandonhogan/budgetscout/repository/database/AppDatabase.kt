@@ -4,11 +4,12 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
 import com.brandonhogan.budgetscout.repository.BuildConfig
+import com.brandonhogan.budgetscout.repository.converter.Converters
 import com.brandonhogan.budgetscout.repository.dao.BudgetDao
 import com.brandonhogan.budgetscout.repository.dao.UserDao
-import com.brandonhogan.budgetscout.repository.entity.Budget
-import com.brandonhogan.budgetscout.repository.entity.User
+import com.brandonhogan.budgetscout.repository.entity.*
 
 /**
  * @Creator         Brandon Hogan
@@ -21,7 +22,8 @@ import com.brandonhogan.budgetscout.repository.entity.User
 const val version = 1
 
 // TODO: export schema should not be false when going to production. Need to do proper migrations
-@Database(entities = [Budget::class, User::class], version = version, exportSchema = false)
+@Database(entities = [Budget::class, Envelope::class, Group::class, Transaction::class, User::class], version = version, exportSchema = false)
+@TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {
 
     /**

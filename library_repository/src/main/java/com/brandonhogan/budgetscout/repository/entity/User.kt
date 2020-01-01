@@ -7,12 +7,11 @@ import androidx.room.PrimaryKey
 /**
  * @Creator         Brandon Hogan
  * @Date            2019-12-19
- * @File            Budget
- * @Description     {{ foo }}
+ * @File            User
+ * @Description     User object used to track the logged in user and their preferences
  */
 
 @Entity
-
 data class User (
     @PrimaryKey(autoGenerate = true) @ColumnInfo(name = PROPERTY_ID) var id: Long = 0,
     @ColumnInfo(name = PROPERTY_NAME) var name: String

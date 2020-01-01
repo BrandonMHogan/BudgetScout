@@ -12,6 +12,10 @@ dependencies {
     implementation dependency.koin
     implementation dependency.koinViewModel
 
+    // database debugger
+    debugImplementation 'com.amitshekhar.android:debug-db:1.0.6'
+    debugImplementation 'com.amitshekhar.android:debug-db-encrypt:1.0.6'
+
     // jdk 8
     implementation dependency.jdk8
     // unit testing
