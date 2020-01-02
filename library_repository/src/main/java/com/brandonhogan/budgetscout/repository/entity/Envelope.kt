@@ -26,7 +26,9 @@ data class Envelope (
     // Carryforward allows the budget remainder to carry to the next month
     @ColumnInfo(name = PROPERTY_IS_CARRYFORWARD) var isCarryforward: Boolean = false,
     // Foreign key reference to its group
-    @ColumnInfo(name = PROPERTY_GROUP_ID) var groupId: Long
+    @ColumnInfo(name = PROPERTY_GROUP_ID) var groupId: Long,
+    // Note for the given envelope
+    @ColumnInfo(name = PROPERTY_NOTE) var note: String
 )
 {
     companion object {
@@ -38,5 +40,6 @@ data class Envelope (
         const val PROPERTY_IS_CARRYFORWARD = "isCarryforward"
         const val PROPERTY_ID = "id"
         const val PROPERTY_GROUP_ID = "groupId"
+        const val PROPERTY_NOTE = "note"
     }
 }

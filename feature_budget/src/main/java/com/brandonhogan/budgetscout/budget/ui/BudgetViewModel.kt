@@ -24,7 +24,7 @@ class BudgetViewModel(private val budgetRepo: BudgetRepo) : BaseViewModel() {
     init {
         viewModelScope.launch(exceptionHandler) {
             // will add a new budget first
-           // setBudget(Budget(name = "Second Budget"))
+            //setBudget(Budget(name = "Second Budget"))
             // then load the active budget
             budget.postValue(loadActiveBudget())
         }
