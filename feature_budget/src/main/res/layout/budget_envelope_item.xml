@@ -50,21 +50,11 @@
         android:id="@+id/envelope_bar"
         style="@android:style/Widget.ProgressBar.Horizontal"
         android:layout_width="0dp"
-        android:layout_height="2dp"
+        android:layout_height="5dp"
         android:layout_marginTop="5dp"
         android:progress="25"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/envelope_note" />
-
-    <View
-        android:id="@+id/divider"
-        android:layout_width="0dp"
-        android:layout_height="1dp"
-        android:layout_marginTop="5dp"
-        android:background="@color/cardview_dark_background"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/envelope_bar" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

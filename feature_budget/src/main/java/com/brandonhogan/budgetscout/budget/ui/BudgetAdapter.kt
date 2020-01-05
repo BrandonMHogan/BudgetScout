@@ -2,7 +2,7 @@ package com.brandonhogan.budgetscout.budget.ui
 
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
+
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -46,6 +46,7 @@ class BudgetAdapter(private val groups: List<GroupWithEnvelopes>) : RecyclerView
                 layoutManager = childLayoutManager
                 adapter = EnvelopeAdapter(group.envelopes)
                 setRecycledViewPool(viewPool)
+                isNestedScrollingEnabled = false
             }
 
         }
