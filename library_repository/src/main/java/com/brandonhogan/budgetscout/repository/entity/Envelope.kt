@@ -12,7 +12,7 @@ import androidx.room.PrimaryKey
  * specify the amount each envelope has, which can be adjusted as you go
  */
 
-@Entity
+@Entity(tableName = Envelope.NAME)
 data class Envelope (
     @PrimaryKey(autoGenerate = true) @ColumnInfo(name = PROPERTY_ID) var id: Long = 0,
     // Category name

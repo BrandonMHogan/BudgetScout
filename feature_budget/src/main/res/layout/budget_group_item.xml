@@ -2,24 +2,29 @@
 <com.google.android.material.card.MaterialCardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:padding="8dp"
     style="@style/Widget.MaterialComponents.CardView"
+    android:layout_margin="@dimen/budget_list_group_margin"
+    app:cardCornerRadius="8dp"
+    android:elevation="5dp"
+    app:strokeColor="@color/dividerColor"
+    app:strokeWidth="1dp"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:padding="@dimen/budget_list_group_padding">
 
         <TextView
             android:id="@+id/group_title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="TextView"
+            android:textSize="@dimen/budget_list_group_font"
+            android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
-
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/group_recyclerView"
@@ -29,13 +34,5 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/group_title"/>
 
-        <View
-            android:id="@+id/divider"
-            android:layout_width="0dp"
-            android:layout_height="1dp"
-            android:background="@color/cardview_dark_background"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/group_recyclerView"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </com.google.android.material.card.MaterialCardView>

@@ -13,7 +13,7 @@ import com.brandonhogan.budgetscout.repository.TransactionType
  * transfer between two envelopes happens. This is mostly used for self auditing
  */
 
-@Entity
+@Entity(tableName = Transaction.NAME)
 data class Transaction (
     @PrimaryKey(autoGenerate = true) @ColumnInfo(name = PROPERTY_ID) var id: Long = 0,
     // Main envelope id affected
@@ -27,7 +27,7 @@ data class Transaction (
 )
 {
     companion object {
-        const val NAME = "Group"
+        const val NAME = "Transaction"
         const val PROPERTY_ENVELOPE_ID = "envelopeId"
         const val PROPERTY_FROM_ENVELOPE_ID = "fromEnvelopeId"
         const val PROPERTY_TYPE = "type"

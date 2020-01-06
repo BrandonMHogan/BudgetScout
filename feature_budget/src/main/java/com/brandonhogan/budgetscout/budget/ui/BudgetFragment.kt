@@ -16,6 +16,7 @@ import com.brandonhogan.budgetscout.core.services.Log
 import com.brandonhogan.budgetscout.repository.entity.relations.BudgetWithGroupsAndEnvelopes
 import kotlinx.android.synthetic.main.budget_fragment.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import kotlin.system.exitProcess
 
 class BudgetFragment : Fragment() {
 
@@ -54,9 +55,12 @@ class BudgetFragment : Fragment() {
 
 
         val budgetObserver = Observer<BudgetWithGroupsAndEnvelopes> { budget ->
-            Log.debug("Got Budget!!! ${budget.budget.name}")
-            adapter = BudgetAdapter(budget.groups)
-            recyclerView.adapter = adapter
+
+            if (budget != null) {
+                Log.debug("Got Budget!!! ${budget.budget.name}")
+                adapter = BudgetAdapter(budget.groups)
+                recyclerView.adapter = adapter
+            }
         }
 
         model.budget.observe(this, budgetObserver)

@@ -39,7 +39,6 @@ interface EnvelopeDao: BaseDao<Envelope> {
      * Transfers the passed in total from one envelope to another.
      * This is useful so that the user doesn't need to rebalance, its just moving totals
      */
-    @Throws(Exception::class)
     @Transaction
     fun transferTotal(from: Envelope, to: Envelope, total: Double) {
 

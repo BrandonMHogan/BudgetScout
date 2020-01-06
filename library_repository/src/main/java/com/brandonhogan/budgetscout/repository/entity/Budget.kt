@@ -15,7 +15,7 @@ import java.util.*
  * Budget contains a name, a created date
  */
 
-@Entity
+@Entity(tableName = Budget.NAME)
 data class Budget (
     @PrimaryKey(autoGenerate = true) @ColumnInfo(name = PROPERTY_ID) var id: Long = 0,
     // name of the budget

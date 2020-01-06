@@ -13,7 +13,7 @@ import androidx.room.PrimaryKey
  * Example: House, Transportation, Food, etc.
  */
 
-@Entity
+@Entity(tableName = Group.NAME)
 data class Group (
     @PrimaryKey(autoGenerate = true) @ColumnInfo(name = PROPERTY_ID) var id: Long = 0,
     // Category name

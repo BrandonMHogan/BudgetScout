@@ -2,6 +2,8 @@ package com.brandonhogan.budgetscout.repository.repo.budget
 
 import androidx.annotation.WorkerThread
 import com.brandonhogan.budgetscout.repository.entity.Budget
+import com.brandonhogan.budgetscout.repository.entity.Envelope
+import com.brandonhogan.budgetscout.repository.entity.Group
 import com.brandonhogan.budgetscout.repository.entity.relations.BudgetWithGroupsAndEnvelopes
 
 @WorkerThread
@@ -10,4 +12,7 @@ interface BudgetRepo {
     suspend fun get(id: Long): Budget
     suspend fun insert(budget: Budget): List<Long>
     suspend fun getWithGroupsAndEnvelopes(id: Long): BudgetWithGroupsAndEnvelopes
+
+    suspend fun insertGroup(groups: Group) : List<Long>
+    suspend fun insertEnvelope(envelopes: Envelope) : List<Long>
 }

@@ -9,10 +9,12 @@ import org.koin.dsl.module
 
 val repositoryModule = module {
 
+    single { AppDatabase.groupDao(get()) }
+    single { AppDatabase.envelopeDao(get()) }
     single { AppDatabase.budgetDao(get()) }
     single { AppDatabase.userDao(get()) }
 
-    single<BudgetRepo> { BudgetRepoImpl(get()) }
+    single<BudgetRepo> { BudgetRepoImpl(get(), get(), get()) }
 
     single<UserRepo> { UserRepoImpl(get()) }
 }

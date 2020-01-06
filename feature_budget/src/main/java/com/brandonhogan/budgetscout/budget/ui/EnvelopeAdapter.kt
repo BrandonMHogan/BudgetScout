@@ -1,7 +1,5 @@
 package com.brandonhogan.budgetscout.budget.ui
 
-import android.content.res.ColorStateList
-import android.graphics.Color
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
@@ -32,7 +30,7 @@ class EnvelopeAdapter(private val envelopes: List<Envelope>) : RecyclerView.Adap
         val title: TextView = v.findViewById(R.id.envelope_title)
         val current: TextView = v.findViewById(R.id.envelope_current)
         val total: TextView = v.findViewById(R.id.envelope_total)
-        val note: TextView = v.findViewById(R.id.envelope_note)
+        //val note: TextView = v.findViewById(R.id.envelope_note)
         val bar: ProgressBar = v.findViewById(R.id.envelope_bar)
 
         init {
@@ -45,12 +43,10 @@ class EnvelopeAdapter(private val envelopes: List<Envelope>) : RecyclerView.Adap
             title.text = envelope.name
             current.text = envelope.current.toString()
             total.text = envelope.total.toString()
-            note.text = envelope.note
+            //note.text = envelope.note
 
             bar.max = envelope.total.toInt()
             bar.progress = envelope.current.toInt()
-            bar.progressTintList = ColorStateList.valueOf(Color.BLUE)
-
         }
 
         override fun onClick(v: View?) {

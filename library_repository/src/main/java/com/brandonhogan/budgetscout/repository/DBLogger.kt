@@ -10,7 +10,7 @@ fun showDBLoggerToast(context: Context?) {
         try {
             val debugDB = Class.forName("com.amitshekhar.DebugDB")
             val getAddressLog: Method = debugDB.getMethod("getAddressLog")
-            val value: Any = getAddressLog.invoke(null)
+            val value: Any? = getAddressLog.invoke(null)
             Toast.makeText(context, value as String, Toast.LENGTH_LONG).show()
         } catch (ignore: Exception) {
         }

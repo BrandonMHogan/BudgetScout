@@ -11,7 +11,7 @@ import androidx.room.PrimaryKey
  * @Description     User object used to track the logged in user and their preferences
  */
 
-@Entity
+@Entity(tableName = User.NAME)
 data class User (
     @PrimaryKey(autoGenerate = true) @ColumnInfo(name = PROPERTY_ID) var id: Long = 0,
     @ColumnInfo(name = PROPERTY_NAME) var name: String

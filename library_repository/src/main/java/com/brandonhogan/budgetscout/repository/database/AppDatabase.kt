@@ -8,8 +8,13 @@ import androidx.room.TypeConverters
 import com.brandonhogan.budgetscout.repository.BuildConfig
 import com.brandonhogan.budgetscout.repository.converter.Converters
 import com.brandonhogan.budgetscout.repository.dao.BudgetDao
+import com.brandonhogan.budgetscout.repository.dao.EnvelopeDao
+import com.brandonhogan.budgetscout.repository.dao.GroupDao
 import com.brandonhogan.budgetscout.repository.dao.UserDao
 import com.brandonhogan.budgetscout.repository.entity.*
+import com.brandonhogan.budgetscout.repository.entity.relations.BudgetWithGroups
+import com.brandonhogan.budgetscout.repository.entity.relations.BudgetWithGroupsAndEnvelopes
+import com.brandonhogan.budgetscout.repository.entity.relations.GroupWithEnvelopes
 
 /**
  * @Creator         Brandon Hogan
@@ -30,6 +35,8 @@ abstract class AppDatabase : RoomDatabase() {
      * The abstracts for the dao interfaces
      */
     abstract fun budgetDao(): BudgetDao
+    abstract fun groupDao(): GroupDao
+    abstract fun envelopeDao(): EnvelopeDao
     abstract fun userDao(): UserDao
 
     companion object {
@@ -71,6 +78,28 @@ abstract class AppDatabase : RoomDatabase() {
             setInstance(context)
             // return dao
             return instance!!.budgetDao()
+        }
+
+        fun groupDao(context: Context): GroupDao {
+            // if instance set, grab the dao
+            if (instance != null) {
+                return instance!!.groupDao()
+            }
+            // set instance
+            setInstance(context)
+            // return dao
+            return instance!!.groupDao()
+        }
+
+        fun envelopeDao(context: Context): EnvelopeDao {
+            // if instance set, grab the dao
+            if (instance != null) {
+                return instance!!.envelopeDao()
+            }
+            // set instance
+            setInstance(context)
+            // return dao
+            return instance!!.envelopeDao()
         }
 
         fun userDao(context: Context): UserDao {
