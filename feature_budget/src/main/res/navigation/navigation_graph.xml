@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation_graph"
+    app:startDestination="@+id/budgetFragment">
+
+    <fragment
+        android:id="@+id/budgetFragment"
+        android:name="com.brandonhogan.budgetscout.budget.ui.list.BudgetFragment"
+        android:label="BudgetFragment"
+        tools:layout="@layout/budget_fragment" >
+        <action
+            android:id="@+id/action_budgetFragment_to_budgetDetailFragment"
+            app:destination="@id/budgetDetailFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/budgetDetailFragment"
+        android:name="com.brandonhogan.budgetscout.budget.ui.detail.BudgetDetailFragment"
+        android:label="BudgetDetailFragment"
+        tools:layout="@layout/budget_detail_fragment" />
+</navigation>

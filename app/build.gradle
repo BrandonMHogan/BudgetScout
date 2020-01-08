@@ -6,6 +6,8 @@ apply plugin: 'kotlin-android-extensions'
 
 apply plugin: 'kotlin-kapt'
 
+apply plugin: 'com.google.gms.google-services'
+
 android {
     compileSdkVersion versions.sdk
     buildToolsVersion versions.buildTools
@@ -21,9 +23,10 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            resValue("bool", "FIREBASE_ANALYTICS_DEACTIVATED", "false")
         }
         debug {
-
+            resValue("bool", "FIREBASE_ANALYTICS_DEACTIVATED", "true")
         }
     }
 
@@ -62,9 +65,7 @@ dependencies {
     implementation dependency.lifecycleViewModelKt
 
     // androidx navigation
-    implementation dependency.navigationFragment
     implementation dependency.navigationFragmentKtx
-    implementation dependency.navigationUI
     implementation dependency.navigationUIKtx
 
     // koin
@@ -73,6 +74,9 @@ dependencies {
 
     // jdk 8
     implementation dependency.jdk8
+
+    // firebase
+    implementation dependency.firebase
 
     // unit testing
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'

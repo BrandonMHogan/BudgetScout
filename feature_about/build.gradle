@@ -15,9 +15,7 @@ dependencies {
     implementation dependency.lifecycleViewModelKt
 
     // androidx navigation
-    implementation dependency.navigationFragment
     implementation dependency.navigationFragmentKtx
-    implementation dependency.navigationUI
     implementation dependency.navigationUIKtx
 
     // koin

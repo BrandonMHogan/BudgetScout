@@ -11,6 +11,9 @@ dependencies {
     // logging
     api dependency.timber
 
+    // firebase
+    implementation dependency.firebase
+
     // jdk 8
     implementation dependency.jdk8
     // unit testing

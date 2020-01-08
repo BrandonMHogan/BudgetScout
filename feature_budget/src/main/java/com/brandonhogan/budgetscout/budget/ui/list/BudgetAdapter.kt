@@ -1,4 +1,4 @@
-package com.brandonhogan.budgetscout.budget.ui
+package com.brandonhogan.budgetscout.budget.ui.list
 
 import android.view.View
 import android.view.ViewGroup
@@ -9,9 +9,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.brandonhogan.budgetscout.budget.R
 import com.brandonhogan.budgetscout.core.extensions.inflate
 import com.brandonhogan.budgetscout.core.services.Log
+import com.brandonhogan.budgetscout.repository.entity.Group
 import com.brandonhogan.budgetscout.repository.entity.relations.GroupWithEnvelopes
 
-class BudgetAdapter(private val groups: List<GroupWithEnvelopes>) : RecyclerView.Adapter<BudgetAdapter.GroupHolder>()  {
+class BudgetAdapter(private val groups: List<GroupWithEnvelopes>, private val onClickListener: (View, Group) -> Unit) : RecyclerView.Adapter<BudgetAdapter.GroupHolder>()  {
 
     override fun getItemCount(): Int = groups.size
 
@@ -21,10 +22,13 @@ class BudgetAdapter(private val groups: List<GroupWithEnvelopes>) : RecyclerView
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GroupHolder {
         val inflatedView = parent.inflate(R.layout.budget_group_item, false)
-        return GroupHolder(inflatedView)
+        return GroupHolder(
+            inflatedView,
+            onClickListener
+        )
     }
 
-    class GroupHolder(v: View): RecyclerView.ViewHolder(v), View.OnClickListener {
+    class GroupHolder(private val v: View, private val onClickListener: (View, Group) -> Unit): RecyclerView.ViewHolder(v), View.OnClickListener {
 
         private val viewPool = RecyclerView.RecycledViewPool()
         private var view: View = v
@@ -44,7 +48,10 @@ class BudgetAdapter(private val groups: List<GroupWithEnvelopes>) : RecyclerView
 
             this.recyclerView.apply {
                 layoutManager = childLayoutManager
-                adapter = EnvelopeAdapter(group.envelopes)
+                adapter =
+                    EnvelopeAdapter(
+                        group.envelopes
+                    )
                 setRecycledViewPool(viewPool)
                 isNestedScrollingEnabled = false
             }
@@ -53,6 +60,8 @@ class BudgetAdapter(private val groups: List<GroupWithEnvelopes>) : RecyclerView
 
         override fun onClick(v: View?) {
             Log.debug("Item Clicked")
+            onClickListener(v!!, this.group!!.group)
+
         }
     }
 }

@@ -1,4 +1,4 @@
-package com.brandonhogan.budgetscout.budget.ui
+package com.brandonhogan.budgetscout.budget.ui.list
 
 import android.view.View
 import android.view.ViewGroup
@@ -20,7 +20,9 @@ class EnvelopeAdapter(private val envelopes: List<Envelope>) : RecyclerView.Adap
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EnvelopeHolder {
         val inflatedView = parent.inflate(R.layout.budget_envelope_item, false)
-        return EnvelopeHolder(inflatedView)
+        return EnvelopeHolder(
+            inflatedView
+        )
     }
 
     class EnvelopeHolder(v: View): RecyclerView.ViewHolder(v), View.OnClickListener {

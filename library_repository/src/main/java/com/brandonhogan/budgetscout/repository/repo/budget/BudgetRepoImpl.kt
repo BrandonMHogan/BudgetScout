@@ -13,6 +13,10 @@ import org.koin.core.KoinComponent
 
 class BudgetRepoImpl(private val budgetDao: BudgetDao, private val groupDao: GroupDao, private val envelopeDao: EnvelopeDao): BudgetRepo, KoinComponent {
 
+    override suspend fun deleteAll() {
+        return budgetDao.deleteAll()
+    }
+
     override suspend fun getAll(): List<Budget> {
         return budgetDao.getAll()
     }
@@ -29,11 +33,11 @@ class BudgetRepoImpl(private val budgetDao: BudgetDao, private val groupDao: Gro
         return budgetDao.getWithGroupsAndEnvelopes(id)
     }
 
-    override suspend fun insertEnvelope(envelope: Envelope): List<Long> {
-        return envelopeDao.insert(envelope)
+    override suspend fun insertEnvelope(envelopes: Envelope): List<Long> {
+        return envelopeDao.insert(envelopes)
     }
 
-    override suspend fun insertGroup(group: Group): List<Long> {
-        return groupDao.insert(group)
+    override suspend fun insertGroup(groups: Group): List<Long> {
+        return groupDao.insert(groups)
     }
 }

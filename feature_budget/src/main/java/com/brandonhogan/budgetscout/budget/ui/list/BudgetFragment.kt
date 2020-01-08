@@ -1,4 +1,4 @@
-package com.brandonhogan.budgetscout.budget.ui
+package com.brandonhogan.budgetscout.budget.ui.list
 
 
 import android.os.Bundle
@@ -9,19 +9,20 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.Observer
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.brandonhogan.budgetscout.budget.R
 import com.brandonhogan.budgetscout.core.services.Log
+import com.brandonhogan.budgetscout.repository.entity.Group
 import com.brandonhogan.budgetscout.repository.entity.relations.BudgetWithGroupsAndEnvelopes
-import kotlinx.android.synthetic.main.budget_fragment.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import kotlin.system.exitProcess
 
 class BudgetFragment : Fragment() {
 
     companion object {
-        fun newInstance() = BudgetFragment()
+        fun newInstance() =
+            BudgetFragment()
     }
 
     private val model: BudgetViewModel by viewModel()
@@ -58,12 +59,19 @@ class BudgetFragment : Fragment() {
 
             if (budget != null) {
                 Log.debug("Got Budget!!! ${budget.budget.name}")
-                adapter = BudgetAdapter(budget.groups)
+                adapter =
+                    BudgetAdapter(
+                        budget.groups,
+                        onClickListener = { view, group -> onClick(view, group) }
+                    )
                 recyclerView.adapter = adapter
             }
         }
 
         model.budget.observe(this, budgetObserver)
+    }
 
+    private fun onClick(view: View, group: Group) {
+        val action = Budget
     }
 }

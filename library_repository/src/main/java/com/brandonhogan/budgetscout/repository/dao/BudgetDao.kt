@@ -16,6 +16,9 @@ import com.brandonhogan.budgetscout.repository.entity.relations.BudgetWithGroups
 @Dao
 interface BudgetDao: BaseDao<Budget> {
 
+    @Query("DELETE FROM ${Budget.NAME}")
+    fun deleteAll()
+
     /**
      * Returns all budgets
      */

@@ -1,4 +1,6 @@
 apply from: "$rootProject.projectDir/shared-library.gradle"
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
 
 dependencies {
     implementation project(':library_core')
@@ -19,9 +21,7 @@ dependencies {
     implementation dependency.lifecycleLiveDataKtx
 
     // androidx navigation
-    implementation dependency.navigationFragment
     implementation dependency.navigationFragmentKtx
-    implementation dependency.navigationUI
     implementation dependency.navigationUIKtx
 
     // koin
@@ -32,6 +32,9 @@ dependencies {
     implementation dependency.jdk8
 
     // unit testing
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation 'androidx.lifecycle:lifecycle-extensions:2.0.0'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.0.0'
     testImplementation dependency.junit
     testImplementation dependency.koinTest
 

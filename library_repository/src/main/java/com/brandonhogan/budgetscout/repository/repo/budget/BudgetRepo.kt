@@ -8,6 +8,10 @@ import com.brandonhogan.budgetscout.repository.entity.relations.BudgetWithGroups
 
 @WorkerThread
 interface BudgetRepo {
+
+    // should only be used for debugging
+    suspend fun deleteAll()
+
     suspend fun getAll(): List<Budget>
     suspend fun get(id: Long): Budget
     suspend fun insert(budget: Budget): List<Long>

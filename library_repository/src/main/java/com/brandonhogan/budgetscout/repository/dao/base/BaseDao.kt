@@ -5,6 +5,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy.REPLACE
 import androidx.room.Update
 
+
 interface BaseDao<T> {
 
     @Insert(onConflict = REPLACE)

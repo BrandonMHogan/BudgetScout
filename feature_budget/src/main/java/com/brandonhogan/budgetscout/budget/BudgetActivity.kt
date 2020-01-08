@@ -3,7 +3,7 @@ package com.brandonhogan.budgetscout.budget
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.brandonhogan.budgetscout.budget.modules.budgetModule
-import com.brandonhogan.budgetscout.budget.ui.BudgetFragment
+import com.brandonhogan.budgetscout.budget.ui.list.BudgetFragment
 import org.koin.core.context.loadKoinModules
 import org.koin.core.context.unloadKoinModules
 
