@@ -2,10 +2,8 @@ package com.brandonhogan.budgetscout.budget.ui.list
 
 
 import android.os.Bundle
+import android.view.*
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.Observer
@@ -36,6 +34,8 @@ class BudgetFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        super.onCreateView(inflater, container, savedInstanceState)
+
         val view = inflater.inflate(R.layout.budget_fragment, container, false)
 
         // finds the views from the fragment
@@ -72,6 +72,8 @@ class BudgetFragment : Fragment() {
 
         model.budget.observe(this, budgetObserver)
     }
+
+
 
     private fun onGroupClick(view: View, group: Group) {
         Log.debug("WOOOO, Group clicked! ${group.name}")

@@ -1,4 +1,4 @@
-package com.brandonhogan.budgetscout.budget.ui.detail
+package com.brandonhogan.budgetscout.budget.ui.group
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -9,13 +9,13 @@ import android.view.ViewGroup
 import com.brandonhogan.budgetscout.budget.R
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class BudgetDetailFragment : Fragment() {
+class GroupDetailFragment : Fragment() {
 
     companion object {
-        fun newInstance() = BudgetDetailFragment()
+        fun newInstance() = GroupDetailFragment()
     }
 
-    private val model: BudgetDetailViewModel by viewModel()
+    private val model: GroupDetailViewModel by viewModel()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

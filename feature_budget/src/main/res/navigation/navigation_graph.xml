@@ -17,7 +17,7 @@
 
     <fragment
         android:id="@+id/budgetDetailFragment"
-        android:name="com.brandonhogan.budgetscout.budget.ui.detail.BudgetDetailFragment"
+        android:name="com.brandonhogan.budgetscout.budget.ui.group.GroupDetailFragment"
         android:label="BudgetDetailFragment"
         tools:layout="@layout/budget_detail_fragment" />
 </navigation>
