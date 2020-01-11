@@ -9,25 +9,28 @@ import com.brandonhogan.budgetscout.budget.R
 import com.brandonhogan.budgetscout.core.extensions.inflate
 import com.brandonhogan.budgetscout.core.services.Log
 import com.brandonhogan.budgetscout.repository.entity.Envelope
+import com.brandonhogan.budgetscout.repository.entity.Group
 
-class EnvelopeAdapter(private val envelopes: List<Envelope>) : RecyclerView.Adapter<EnvelopeAdapter.EnvelopeHolder>()  {
+class EnvelopeAdapter(private val group: Group, private val envelopes: List<Envelope>, private val onClickListener: (View, Group, Envelope) -> Unit) : RecyclerView.Adapter<EnvelopeAdapter.EnvelopeHolder>()  {
 
     override fun getItemCount(): Int = envelopes.size
 
     override fun onBindViewHolder(holder: EnvelopeHolder, position: Int) {
-        holder.bind(envelopes[position])
+        holder.bind(group, envelopes[position])
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EnvelopeHolder {
         val inflatedView = parent.inflate(R.layout.budget_envelope_item, false)
         return EnvelopeHolder(
-            inflatedView
+            inflatedView,
+            onClickListener
         )
     }
 
-    class EnvelopeHolder(v: View): RecyclerView.ViewHolder(v), View.OnClickListener {
+    class EnvelopeHolder(v: View, private val onClickListener: (View, Group, Envelope) -> Unit): RecyclerView.ViewHolder(v), View.OnClickListener {
 
         private var view: View = v
+        private var group: Group? = null
         private var envelope: Envelope? = null
         val title: TextView = v.findViewById(R.id.envelope_title)
         val current: TextView = v.findViewById(R.id.envelope_current)
@@ -39,8 +42,9 @@ class EnvelopeAdapter(private val envelopes: List<Envelope>) : RecyclerView.Adap
             v.setOnClickListener(this)
         }
 
-        fun bind(envelope: Envelope) {
+        fun bind(group: Group, envelope: Envelope) {
             this.envelope = envelope
+            this.group = group
 
             title.text = envelope.name
             current.text = envelope.current.toString()
@@ -52,7 +56,13 @@ class EnvelopeAdapter(private val envelopes: List<Envelope>) : RecyclerView.Adap
         }
 
         override fun onClick(v: View?) {
-            Log.debug("Item Clicked")
+            v?.let { view ->
+                envelope?.let { envelope ->
+                    group?.let { group ->
+                        onClickListener(view, group, envelope)
+                    }
+                }
+            }
         }
     }
 }

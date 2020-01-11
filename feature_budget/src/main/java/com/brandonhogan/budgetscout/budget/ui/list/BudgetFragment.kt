@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.brandonhogan.budgetscout.budget.R
 import com.brandonhogan.budgetscout.core.services.Log
+import com.brandonhogan.budgetscout.repository.entity.Envelope
 import com.brandonhogan.budgetscout.repository.entity.Group
 import com.brandonhogan.budgetscout.repository.entity.relations.BudgetWithGroupsAndEnvelopes
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -62,7 +63,8 @@ class BudgetFragment : Fragment() {
                 adapter =
                     BudgetAdapter(
                         budget.groups,
-                        onClickListener = { view, group -> onClick(view, group) }
+                        onGroupClickListener = { view, group -> onGroupClick(view, group) },
+                        onEnvelopeClickListener = { view, group, envelope -> onEnvelopeClick(view, group, envelope)}
                     )
                 recyclerView.adapter = adapter
             }
@@ -71,7 +73,11 @@ class BudgetFragment : Fragment() {
         model.budget.observe(this, budgetObserver)
     }
 
-    private fun onClick(view: View, group: Group) {
-        val action = Budget
+    private fun onGroupClick(view: View, group: Group) {
+        Log.debug("WOOOO, Group clicked! ${group.name}")
+    }
+
+    private fun onEnvelopeClick(view: View, group: Group, envelope: Envelope) {
+        Log.debug("WOOOO, Envelope clicked! ${group.name} : ${envelope.name}")
     }
 }

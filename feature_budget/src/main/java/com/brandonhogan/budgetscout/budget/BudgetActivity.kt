@@ -14,11 +14,11 @@ class BudgetActivity : AppCompatActivity() {
         loadModules()
 
         setContentView(R.layout.budget_activity)
-        if (savedInstanceState == null) {
-            supportFragmentManager.beginTransaction()
-                .replace(R.id.container, BudgetFragment.newInstance())
-                .commitNow()
-        }
+//        if (savedInstanceState == null) {
+//            supportFragmentManager.beginTransaction()
+//                .replace(R.id.container, BudgetFragment.newInstance())
+//                .commitNow()
+//        }
     }
 
     /// Unloads the feature modules
