@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.Observer
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.brandonhogan.budgetscout.budget.R
@@ -79,5 +80,9 @@ class BudgetFragment : Fragment() {
 
     private fun onEnvelopeClick(view: View, group: Group, envelope: Envelope) {
         Log.debug("WOOOO, Envelope clicked! ${group.name} : ${envelope.name}")
+
+        val action = BudgetFragmentDirections.actionBudgetFragmentToEnvelopeDetailFragment(envelope.id)
+        view.findNavController().navigate(action)
+
     }
 }

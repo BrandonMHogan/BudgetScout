@@ -1,6 +1,4 @@
 apply from: "$rootProject.projectDir/shared-library.gradle"
-apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
 
 dependencies {
     implementation project(':library_core')

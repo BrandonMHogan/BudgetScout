@@ -33,11 +33,33 @@ class BudgetRepoImpl(private val budgetDao: BudgetDao, private val groupDao: Gro
         return budgetDao.getWithGroupsAndEnvelopes(id)
     }
 
+    /**
+     * Groups
+     ***********************************************************************/
+
+    /**
+     * Inserts groups
+     */
+    override suspend fun insertGroup(groups: Group): List<Long> {
+        return groupDao.insert(groups)
+    }
+
+
+    /**
+     * Envelopes
+     ***********************************************************************/
+
+    /**
+     * Insert envelopes
+     */
     override suspend fun insertEnvelope(envelopes: Envelope): List<Long> {
         return envelopeDao.insert(envelopes)
     }
 
-    override suspend fun insertGroup(groups: Group): List<Long> {
-        return groupDao.insert(groups)
+    /**
+     * Gets the envelope based on the id
+     */
+    override suspend fun getEnvelope(id: Long): Envelope {
+        return envelopeDao.get(id)
     }
 }

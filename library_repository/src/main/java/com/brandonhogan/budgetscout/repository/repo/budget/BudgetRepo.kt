@@ -19,4 +19,6 @@ interface BudgetRepo {
 
     suspend fun insertGroup(groups: Group) : List<Long>
     suspend fun insertEnvelope(envelopes: Envelope) : List<Long>
+
+    suspend fun getEnvelope(id: Long): Envelope
 }

@@ -11,13 +11,27 @@
         android:label="BudgetFragment"
         tools:layout="@layout/budget_fragment" >
         <action
-            android:id="@+id/action_budgetFragment_to_budgetDetailFragment"
-            app:destination="@id/budgetDetailFragment" />
+            android:id="@+id/action_budgetFragment_to_envelopeDetailFragment"
+            app:destination="@+id/envelopeDetailFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim">
+            <argument
+                android:name="envelopeId"
+                app:argType="long"
+                android:defaultValue="0L" />
+        </action>
     </fragment>
 
     <fragment
-        android:id="@+id/budgetDetailFragment"
-        android:name="com.brandonhogan.budgetscout.budget.ui.group.GroupDetailFragment"
-        android:label="BudgetDetailFragment"
-        tools:layout="@layout/budget_detail_fragment" />
+        android:id="@+id/envelopeDetailFragment"
+        android:name="com.brandonhogan.budgetscout.budget.ui.envelope.EnvelopeDetailFragment"
+        android:label="EnvelopeDetailFragment"
+        tools:layout="@layout/envelope_detail_fragment">
+        <argument
+            android:name="envelopeId"
+            app:argType="long"
+            android:defaultValue="0L" />
+    </fragment>
 </navigation>
