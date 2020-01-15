@@ -29,7 +29,7 @@ class BudgetViewModel(private val budgetRepo: BudgetRepo, private val budgetCrea
             //val budgetId = budgetCreator.createBasicBudget(true)
 
             // then load the active budget
-            budget.postValue(loadActiveBudget(20))
+            budget.postValue(loadActiveBudget(5))
         }
     }
 

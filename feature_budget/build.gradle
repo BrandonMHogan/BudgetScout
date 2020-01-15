@@ -29,6 +29,9 @@ dependencies {
     implementation dependency.groupie
     implementation dependency.groupieKtx
 
+    // graph
+    implementation dependency.MPAndroidChart
+
     // jdk 8
     implementation dependency.jdk8
 
