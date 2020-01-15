@@ -20,6 +20,7 @@ buildscript {
             'coroutines': '1.3.2',
             'timber': '4.7.1',
             'firebase': '17.2.1',
+            'groupie': '2.7.0',
 
             "junit": '4.12',
             "androidJunit": '1.1.1',
@@ -59,6 +60,9 @@ buildscript {
             'timber': "com.jakewharton.timber:timber:${versions.timber}",
 
             'firebase': "com.google.firebase:firebase-analytics:${versions.firebase}",
+
+            'groupie': "com.xwray:groupie:${versions.groupie}",
+            'groupieKtx': "com.xwray:groupie-kotlin-android-extensions:${versions.groupie}",
 
             "junit": "junit:junit:${versions.junit}",
             "androidJunit": "androidx.test.ext:junit:${versions.androidJunit}",

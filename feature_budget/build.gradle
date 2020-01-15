@@ -26,6 +26,9 @@ dependencies {
     implementation dependency.koin
     implementation dependency.koinViewModel
 
+    implementation dependency.groupie
+    implementation dependency.groupieKtx
+
     // jdk 8
     implementation dependency.jdk8
 

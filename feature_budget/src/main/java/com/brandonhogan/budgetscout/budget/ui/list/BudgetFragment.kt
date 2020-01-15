@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.Observer
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.brandonhogan.budgetscout.budget.R
@@ -14,6 +15,10 @@ import com.brandonhogan.budgetscout.core.services.Log
 import com.brandonhogan.budgetscout.repository.entity.Envelope
 import com.brandonhogan.budgetscout.repository.entity.Group
 import com.brandonhogan.budgetscout.repository.entity.relations.BudgetWithGroupsAndEnvelopes
+import com.xwray.groupie.ExpandableGroup
+import com.xwray.groupie.GroupAdapter
+import com.xwray.groupie.Section
+import com.xwray.groupie.kotlinandroidextensions.GroupieViewHolder
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class BudgetFragment : Fragment() {
@@ -27,7 +32,7 @@ class BudgetFragment : Fragment() {
     private lateinit var toolbar: Toolbar
     private lateinit var recyclerView: RecyclerView
     private lateinit var linearLayoutManager: LinearLayoutManager
-    private lateinit var adapter: BudgetAdapter
+//    private lateinit var adapter: BudgetAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -54,17 +59,33 @@ class BudgetFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-
         val budgetObserver = Observer<BudgetWithGroupsAndEnvelopes> { budget ->
 
             if (budget != null) {
-                Log.debug("Got Budget!!! ${budget.budget.name}")
-                adapter =
-                    BudgetAdapter(
-                        budget.groups,
-                        onGroupClickListener = { view, group -> onGroupClick(view, group) },
-                        onEnvelopeClickListener = { view, group, envelope -> onEnvelopeClick(view, group, envelope)}
-                    )
+                val adapter = GroupAdapter<GroupieViewHolder>()
+
+                // for each group, will add a new expandable group.
+                // each expandable group is a GroupItem.
+                // It then adds a section to the Group item, and populates it with
+                // EnvelopeItems
+                budget.groups.forEach { group ->
+
+                    adapter.add(ExpandableGroup(GroupItem(
+                        group.group,
+                        onLongClickListener = {onGroupLongClick(group.group)}
+                    ), true).apply {
+
+                        add(Section(
+                            group.envelopes.map { envelope ->
+                                EnvelopeItem(
+                                    envelope,
+                                    onClickListener = {onEnvelopeClick(group.group, envelope)},
+                                    onLongClickListener = {onEnvelopeLongClick(group.group, envelope)})
+                            }
+                        ))
+                    })
+                }
+
                 recyclerView.adapter = adapter
             }
         }
@@ -74,15 +95,18 @@ class BudgetFragment : Fragment() {
 
 
 
-    private fun onGroupClick(view: View, group: Group) {
-        Log.debug("WOOOO, Group clicked! ${group.name}")
+    private fun onGroupLongClick(group: Group) {
+        Log.debug("WOOOO, Group long clicked! ${group.name}")
     }
 
-    private fun onEnvelopeClick(view: View, group: Group, envelope: Envelope) {
+    private fun onEnvelopeClick(group: Group, envelope: Envelope) {
         Log.debug("WOOOO, Envelope clicked! ${group.name} : ${envelope.name}")
 
         val action = BudgetFragmentDirections.actionBudgetFragmentToEnvelopeDetailFragment(envelope.id)
-        view.findNavController().navigate(action)
+        findNavController(this).navigate(action)
+    }
 
+    private fun onEnvelopeLongClick(group: Group, envelope: Envelope) {
+        Log.debug("WOOOO, Envelope long clicked! ${group.name} : ${envelope.name}")
     }
 }

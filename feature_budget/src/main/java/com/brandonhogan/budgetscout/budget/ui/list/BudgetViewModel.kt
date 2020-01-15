@@ -26,10 +26,10 @@ class BudgetViewModel(private val budgetRepo: BudgetRepo, private val budgetCrea
     init {
         viewModelScope.launch(exceptionHandler) {
             // will add a new budget first
-            val budgetId = budgetCreator.createBasicBudget(true)
+            //val budgetId = budgetCreator.createBasicBudget(true)
 
             // then load the active budget
-            budget.postValue(loadActiveBudget(budgetId))
+            budget.postValue(loadActiveBudget(20))
         }
     }
 

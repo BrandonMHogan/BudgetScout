@@ -2,9 +2,12 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:padding="@dimen/budget_list_envelope_margin"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:layout_marginStart="@dimen/budget_list_envelope_margin_start"
+    android:layout_marginEnd="@dimen/budget_list_envelope_margin"
+    android:layout_marginTop="@dimen/budget_list_envelope_margin"
+    android:layout_marginBottom="@dimen/budget_list_envelope_margin">
 
     <TextView
         android:id="@+id/envelope_title"

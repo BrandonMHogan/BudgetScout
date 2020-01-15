@@ -32,39 +32,39 @@ class BudgetAdapter(private val groups: List<GroupWithEnvelopes>, private val on
 
     class GroupHolder(private val v: View, private val onGroupClickListener: (View, Group) -> Unit, private val onEnvelopeClickListener: (View, Group, Envelope) -> Unit): RecyclerView.ViewHolder(v), View.OnClickListener {
 
-        private val viewPool = RecyclerView.RecycledViewPool()
-        private var view: View = v
-        private var group: GroupWithEnvelopes? = null
-        val title: TextView = v.findViewById(R.id.group_title)
-        val recyclerView: RecyclerView = v.findViewById(R.id.group_recyclerView)
+//        private val viewPool = RecyclerView.RecycledViewPool()
+//        private var view: View = v
+//        private var group: GroupWithEnvelopes? = null
+//        val title: TextView = v.findViewById(R.id.group_title)
+//        val recyclerView: RecyclerView = v.findViewById(R.id.group_recyclerView)
 
         init {
             v.setOnClickListener(this)
         }
 
         fun bind(group: GroupWithEnvelopes) {
-            this.group = group
-            title.text = this.group?.group?.name
-
-            val childLayoutManager = LinearLayoutManager(this.recyclerView.context, RecyclerView.VERTICAL, false)
-
-            this.recyclerView.apply {
-                layoutManager = childLayoutManager
-                adapter =
-                    EnvelopeAdapter(
-                        group.group,
-                        group.envelopes,
-                        onEnvelopeClickListener
-                    )
-                setRecycledViewPool(viewPool)
-                isNestedScrollingEnabled = false
-            }
+//            this.group = group
+//            title.text = this.group?.group?.name
+//
+//            val childLayoutManager = LinearLayoutManager(this.recyclerView.context, RecyclerView.VERTICAL, false)
+//
+//            this.recyclerView.apply {
+//                layoutManager = childLayoutManager
+//                adapter =
+//                    EnvelopeAdapter(
+//                        group.group,
+//                        group.envelopes,
+//                        onEnvelopeClickListener
+//                    )
+//                setRecycledViewPool(viewPool)
+//                isNestedScrollingEnabled = false
+//            }
 
         }
 
         override fun onClick(v: View?) {
-            Log.debug("Item Clicked")
-            group?.group?.let { group -> onGroupClickListener(v!!, group) }
+//            Log.debug("Item Clicked")
+//            group?.group?.let { group -> onGroupClickListener(v!!, group) }
         }
     }
 }

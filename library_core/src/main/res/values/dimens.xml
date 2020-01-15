@@ -5,8 +5,9 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
 
     <dimen name="budget_list_group_padding">12dp</dimen>
-    <dimen name="budget_list_group_margin">8dp</dimen>
-    <dimen name="budget_list_envelope_margin">11dp</dimen>
+    <dimen name="budget_list_group_margin">6dp</dimen>
+    <dimen name="budget_list_envelope_margin">6dp</dimen>
+    <dimen name="budget_list_envelope_margin_start">22dp</dimen>
 
 
     <dimen name="budget_list_group_font">25sp</dimen>
