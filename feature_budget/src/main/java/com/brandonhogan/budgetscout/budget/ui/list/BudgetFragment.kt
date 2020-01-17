@@ -58,7 +58,7 @@ class BudgetFragment : Fragment() {
         toolbar.title = " "
         recyclerView = view.findViewById(R.id.recyclerView)
 
-        pieChart = view.findViewById(R.id.header_chart)
+       // pieChart = view.findViewById(R.id.header_chart)
 
         // sets the toolbar
         (activity as AppCompatActivity).setSupportActionBar(toolbar)
@@ -101,7 +101,7 @@ class BudgetFragment : Fragment() {
                 }
 
                 recyclerView.adapter = adapter
-                initChart()
+               // initChart()
             }
         }
 

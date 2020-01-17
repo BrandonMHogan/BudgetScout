@@ -1,4 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--<androidx.constraintlayout.widget.ConstraintLayout-->
+<!--    xmlns:android="http://schemas.android.com/apk/res/android"-->
+<!--    xmlns:app="http://schemas.android.com/apk/res-auto"-->
+<!--    xmlns:tools="http://schemas.android.com/tools"-->
+<!--    android:layout_width="match_parent"-->
+<!--    android:layout_height="match_parent"-->
+<!--    android:fitsSystemWindows="true"-->
+<!--    tools:showPaths="true"-->
+<!--    tools:context=".ui.list.BudgetFragment">-->
+
 <androidx.constraintlayout.motion.widget.MotionLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -10,14 +20,29 @@
     tools:showPaths="true"
     tools:context=".ui.list.BudgetFragment">
 
-    <View
-        android:id="@+id/header_background"
-        android:layout_width="0dp"
-        android:layout_height="200dp"
-        android:background="@color/colorAccent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+<!--    <View-->
+<!--        android:id="@+id/header_background"-->
+<!--        android:layout_width="0dp"-->
+<!--        android:layout_height="200dp"-->
+<!--        android:background="@color/colorAccent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent" />-->
+
+
+<!--    <com.google.android.material.card.MaterialCardView-->
+<!--        android:id="@+id/header_bubble_start_outline"-->
+<!--        android:layout_width="556dp"-->
+<!--        android:layout_height="556dp"-->
+<!--        android:translationX="-203dp"-->
+<!--        android:translationY="-303dp"-->
+<!--        app:cardBackgroundColor="@color/colorPrimary"-->
+<!--        app:cardCornerRadius="278dp"-->
+<!--        app:cardElevation="5dp"-->
+<!--        app:cardUseCompatPadding="false"-->
+<!--        app:cardPreventCornerOverlap="false"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent" />-->
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
@@ -26,7 +51,58 @@
         app:layout_constraintTop_toTopOf="parent"
         app:titleTextColor="@android:color/black"/>
 
-    <com.github.mikephil.charting.charts.PieChart
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/header_bubble_start"
+        android:layout_width="550dp"
+        android:layout_height="550dp"
+        android:translationX="-200dp"
+        android:translationY="-300dp"
+        app:cardBackgroundColor="@color/colorPrimaryDark"
+        app:cardCornerRadius="275dp"
+        app:cardElevation="5dp"
+        app:cardUseCompatPadding="false"
+        app:cardPreventCornerOverlap="false"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/header_bubble_start_outline"
+        android:layout_width="550dp"
+        android:layout_height="550dp"
+        android:translationX="-200dp"
+        android:translationY="-300dp"
+        app:cardBackgroundColor="@color/colorPrimary"
+        app:cardCornerRadius="275dp"
+        app:cardElevation="5dp"
+        app:cardUseCompatPadding="false"
+        app:cardPreventCornerOverlap="false"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/header_bubble_end"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:translationX="100dp"
+        android:translationY="-160dp"
+        app:strokeColor="@color/colorPrimary"
+        app:strokeWidth="5dp"
+        app:cardBackgroundColor="@color/colorPrimaryDark"
+        app:cardCornerRadius="150dp"
+        app:cardElevation="5dp"
+        app:cardUseCompatPadding="false"
+        app:cardPreventCornerOverlap="false"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+    
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/header_guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintGuide_begin="250dp"
+        android:orientation="horizontal"/>
+
+<!--    <com.github.mikephil.charting.charts.PieChart
         android:id="@+id/header_chart"
         android:layout_width="match_parent"
         android:layout_height="200dp"
@@ -37,7 +113,7 @@
         app:layout_constraintBottom_toBottomOf="@id/header_background"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/header_background"/>
+        app:layout_constraintTop_toTopOf="@id/header_background"/>-->
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
@@ -46,6 +122,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/header_background"/>
+        app:layout_constraintTop_toBottomOf="@+id/header_guideline"/>
 
+<!--</androidx.constraintlayout.widget.ConstraintLayout>-->
 </androidx.constraintlayout.motion.widget.MotionLayout>
