@@ -13,7 +13,7 @@
 
     <ConstraintSet android:id="@+id/expanded">
         <Constraint
-            android:id="@id/header_bubble_start"
+            android:id="@id/header_bubble_start_outline"
             android:layout_width="550dp"
             android:layout_height="550dp"
             android:translationX="-200dp"
@@ -27,7 +27,7 @@
             app:layout_constraintTop_toTopOf="parent"/>
 
         <Constraint
-            android:id="@id/header_bubble_start_outline"
+            android:id="@id/header_bubble_start"
             android:layout_width="550dp"
             android:layout_height="550dp"
             android:translationX="-200dp"
@@ -62,7 +62,52 @@
             android:layout_height="wrap_content"
             app:layout_constraintGuide_begin="250dp"
             android:orientation="horizontal"/>
+
+        <Constraint
+            android:id="@id/header_month"
+            android:layout_width="200dp"
+            android:layout_height="100dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="50dp"
+            app:autoSizeTextType="uniform"
+            app:autoSizeMinTextSize="15sp"
+            app:autoSizeMaxTextSize="30sp">
+            <CustomAttribute
+                app:attributeName="android:textSize"
+                app:customDimension="22sp"/>
+        </Constraint>
+
+        <Constraint
+            android:id="@id/header_income"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="@id/header_month"
+            app:layout_constraintTop_toBottomOf="@id/header_month"
+            android:layout_marginTop="5dp">
+            <CustomAttribute
+                app:attributeName="android:textSize"
+                app:customDimension="22sp"/>
+        </Constraint>
+
+        <Constraint
+            android:id="@id/header_expense"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="@id/header_income"
+            app:layout_constraintTop_toBottomOf="@id/header_income"
+            android:layout_marginTop="5dp">
+            <CustomAttribute
+                app:attributeName="android:textSize"
+                app:customDimension="22sp"/>
+        </Constraint>
+
     </ConstraintSet>
+
+
+
+
 
     <ConstraintSet android:id="@+id/collapsed">
         <Constraint
@@ -108,9 +153,10 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:translationX="0dp"
-            android:translationY="-10dp"
-            android:layout_marginStart="-30dp"
-            android:layout_marginEnd="-30dp"
+            android:translationY="-4dp"
+            android:layout_marginStart="-200dp"
+            android:layout_marginEnd="-20dp"
+            android:scaleY="1.2"
             app:strokeColor="@color/colorPrimary"
             app:strokeWidth="5dp"
             app:cardBackgroundColor="@color/colorPrimaryDark"
@@ -125,6 +171,26 @@
                 app:attributeName="app:cardCornerRadius"
                 app:customDimension="0dp"/>
         </Constraint>
+
+        <Constraint
+            android:id="@id/header_month"
+            android:layout_width="100dp"
+            android:layout_height="?attr/actionBarSize"
+            android:layout_marginStart="20dp"
+            android:translationY="10dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/header_bubble_end"
+            app:layout_constraintBottom_toBottomOf="@id/header_bubble_end" />
+
+        <Constraint
+            android:id="@id/header_income"
+            android:translationX="-400dp"
+            android:alpha="0"/>
+
+        <Constraint
+            android:id="@id/header_expense"
+            android:translationX="-400dp"
+            android:alpha="0"/>
 
         <Constraint
             android:id="@id/header_guideline"

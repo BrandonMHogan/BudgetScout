@@ -44,15 +44,8 @@
 <!--        app:layout_constraintStart_toStartOf="parent"-->
 <!--        app:layout_constraintTop_toTopOf="parent" />-->
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        app:layout_constraintTop_toTopOf="parent"
-        app:titleTextColor="@android:color/black"/>
-
     <com.google.android.material.card.MaterialCardView
-        android:id="@+id/header_bubble_start"
+        android:id="@+id/header_bubble_start_outline"
         android:layout_width="550dp"
         android:layout_height="550dp"
         android:translationX="-200dp"
@@ -66,7 +59,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.card.MaterialCardView
-        android:id="@+id/header_bubble_start_outline"
+        android:id="@+id/header_bubble_start"
         android:layout_width="550dp"
         android:layout_height="550dp"
         android:translationX="-200dp"
@@ -94,6 +87,43 @@
         app:cardPreventCornerOverlap="false"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/header_month"
+        android:layout_width="200dp"
+        android:layout_height="100dp"
+        android:text="January"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="50dp"
+        android:textColor="@color/colorFont"
+        android:elevation="10dp"
+        app:autoSizeTextType="uniform"
+        android:textSize="35sp"/>
+
+    <TextView
+        android:id="@+id/header_income"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Income:   $200,000"
+        app:layout_constraintStart_toStartOf="@id/header_month"
+        app:layout_constraintTop_toBottomOf="@id/header_month"
+        android:layout_marginTop="50dp"
+        android:textColor="@color/colorFont"
+        android:elevation="10dp"
+        android:textSize="22sp" />
+
+    <TextView
+        android:id="@+id/header_expense"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Expense: $1,250"
+        app:layout_constraintStart_toStartOf="@id/header_income"
+        app:layout_constraintTop_toBottomOf="@id/header_income"
+        android:layout_marginTop="5dp"
+        android:textColor="@color/colorFont"
+        android:elevation="10dp"
+        android:textSize="22sp" />
     
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/header_guideline"
@@ -101,6 +131,14 @@
         android:layout_height="wrap_content"
         app:layout_constraintGuide_begin="250dp"
         android:orientation="horizontal"/>
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        app:layout_constraintTop_toTopOf="parent"
+        android:elevation="10dp"
+        app:titleTextColor="@android:color/black"/>
 
 <!--    <com.github.mikephil.charting.charts.PieChart
         android:id="@+id/header_chart"
