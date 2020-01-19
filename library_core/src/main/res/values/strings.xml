@@ -7,4 +7,11 @@
     <string name="title_notifications">Notifications</string>
     <string name="title_features_about">About</string>
     <string name="title_feature_budget">Budget</string>
+
+
+    <string name="income">Income</string>
+    <string name="expense">Expense</string>
+    <string name="transfer">Transfer</string>
+
+
 </resources>

@@ -22,6 +22,22 @@
                 app:argType="long"
                 android:defaultValue="0L" />
         </action>
+        <action
+            android:id="@+id/action_budgetFragment_to_transactionFragment"
+            app:destination="@id/transactionFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim">
+            <argument
+                android:name="groupId"
+                app:argType="long"
+                android:defaultValue="0L" />
+            <argument
+                android:name="transactionId"
+                app:argType="long"
+                android:defaultValue="0L" />
+        </action>
     </fragment>
 
     <fragment
@@ -31,6 +47,21 @@
         tools:layout="@layout/envelope_detail_fragment">
         <argument
             android:name="envelopeId"
+            app:argType="long"
+            android:defaultValue="0L" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/transactionFragment"
+        android:name="com.brandonhogan.budgetscout.budget.ui.transaction.TransactionFragment"
+        android:label="TransactionFragment"
+        tools:layout="@layout/transaction_fragment">
+        <argument
+            android:name="groupId"
+            app:argType="long"
+            android:defaultValue="0L" />
+        <argument
+            android:name="transactionId"
             app:argType="long"
             android:defaultValue="0L" />
     </fragment>

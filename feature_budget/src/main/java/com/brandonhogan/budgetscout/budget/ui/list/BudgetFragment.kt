@@ -13,6 +13,7 @@ import androidx.navigation.fragment.NavHostFragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.brandonhogan.budgetscout.budget.R
+import com.brandonhogan.budgetscout.budget.extensions.MotionLayoutWithState
 import com.brandonhogan.budgetscout.core.services.Log
 import com.brandonhogan.budgetscout.repository.entity.Envelope
 import com.brandonhogan.budgetscout.repository.entity.Group
@@ -28,6 +29,7 @@ import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
 import com.github.mikephil.charting.formatter.PercentFormatter
 import com.github.mikephil.charting.utils.ColorTemplate
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
@@ -39,11 +41,12 @@ class BudgetFragment : Fragment() {
     }
 
     private val model: BudgetViewModel by viewModel()
+    private lateinit var motionLayout: MotionLayoutWithState
     private lateinit var toolbar: Toolbar
     private lateinit var recyclerView: RecyclerView
     private lateinit var pieChart: PieChart
     private lateinit var linearLayoutManager: LinearLayoutManager
-//    private lateinit var adapter: BudgetAdapter
+    private lateinit var actionButton: FloatingActionButton
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -54,12 +57,11 @@ class BudgetFragment : Fragment() {
         val view = inflater.inflate(R.layout.budget_fragment, container, false)
 
         // finds the views from the fragment
+        motionLayout = view.findViewById(R.id.motion_layout)
         toolbar = view.findViewById(R.id.toolbar)
         toolbar.title = " "
         recyclerView = view.findViewById(R.id.recyclerView)
-
-       // pieChart = view.findViewById(R.id.header_chart)
-
+        actionButton = view.findViewById(R.id.floating_action_button)
         // sets the toolbar
         (activity as AppCompatActivity).setSupportActionBar(toolbar)
 
@@ -67,11 +69,23 @@ class BudgetFragment : Fragment() {
         linearLayoutManager = LinearLayoutManager(context)
         recyclerView.layoutManager = linearLayoutManager
 
+        actionButton.setOnClickListener { onAddTransaction() }
+
         return view
+    }
+
+    override fun onViewStateRestored(savedInstanceState: Bundle?) {
+        super.onViewStateRestored(savedInstanceState)
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+
+
 
         val budgetObserver = Observer<BudgetWithGroupsAndEnvelopes> { budget ->
 
@@ -101,7 +115,6 @@ class BudgetFragment : Fragment() {
                 }
 
                 recyclerView.adapter = adapter
-               // initChart()
             }
         }
 
@@ -141,6 +154,13 @@ class BudgetFragment : Fragment() {
         pieChart.animateY(1400, Easing.EaseInOutQuad)
     }
 
+    /**
+     * Will navigate to the transaction fragment
+     */
+    private fun onAddTransaction() {
+        val action = BudgetFragmentDirections.actionBudgetFragmentToTransactionFragment(groupId = -1, transactionId = -1)
+        findNavController(this).navigate(action)
+    }
 
     private fun onGroupLongClick(group: Group) {
         Log.debug("WOOOO, Group long clicked! ${group.name}")
