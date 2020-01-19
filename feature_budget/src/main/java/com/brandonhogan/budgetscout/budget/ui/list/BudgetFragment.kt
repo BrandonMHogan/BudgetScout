@@ -47,6 +47,7 @@ class BudgetFragment : Fragment() {
     private lateinit var pieChart: PieChart
     private lateinit var linearLayoutManager: LinearLayoutManager
     private lateinit var actionButton: FloatingActionButton
+    private var adapter: GroupAdapter<GroupieViewHolder>? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -74,23 +75,14 @@ class BudgetFragment : Fragment() {
         return view
     }
 
-    override fun onViewStateRestored(savedInstanceState: Bundle?) {
-        super.onViewStateRestored(savedInstanceState)
-    }
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-    }
-
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-
-
+        // observes the budget
         val budgetObserver = Observer<BudgetWithGroupsAndEnvelopes> { budget ->
 
-            if (budget != null) {
-                val adapter = GroupAdapter<GroupieViewHolder>()
+            if (budget != null && adapter == null) {
+                adapter = GroupAdapter()
 
                 // for each group, will add a new expandable group.
                 // each expandable group is a GroupItem.
@@ -98,7 +90,7 @@ class BudgetFragment : Fragment() {
                 // EnvelopeItems
                 budget.groups.forEach { group ->
 
-                    adapter.add(ExpandableGroup(GroupItem(
+                    adapter?.add(ExpandableGroup(GroupItem(
                         group.group,
                         onLongClickListener = {onGroupLongClick(group.group)}
                     ), true).apply {
@@ -113,9 +105,8 @@ class BudgetFragment : Fragment() {
                         ))
                     })
                 }
-
-                recyclerView.adapter = adapter
             }
+            recyclerView.adapter = adapter
         }
 
         model.budget.observe(this, budgetObserver)
