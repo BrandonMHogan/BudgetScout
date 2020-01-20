@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Spinner
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
@@ -49,6 +50,7 @@ class BudgetFragment : Fragment() {
     private lateinit var actionButton: FloatingActionButton
     private var adapter: GroupAdapter<GroupieViewHolder>? = null
 
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -63,6 +65,7 @@ class BudgetFragment : Fragment() {
         toolbar.title = " "
         recyclerView = view.findViewById(R.id.recyclerView)
         actionButton = view.findViewById(R.id.floating_action_button)
+
         // sets the toolbar
         (activity as AppCompatActivity).setSupportActionBar(toolbar)
 

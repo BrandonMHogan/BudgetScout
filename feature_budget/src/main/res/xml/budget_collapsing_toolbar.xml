@@ -70,13 +70,10 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             android:layout_marginStart="10dp"
-            android:layout_marginTop="50dp"
+            android:layout_marginTop="30dp"
             app:autoSizeTextType="uniform"
             app:autoSizeMinTextSize="15sp"
             app:autoSizeMaxTextSize="30sp">
-            <CustomAttribute
-                app:attributeName="android:textSize"
-                app:customDimension="22sp"/>
         </Constraint>
 
         <Constraint
@@ -86,9 +83,6 @@
             app:layout_constraintStart_toStartOf="@id/header_month"
             app:layout_constraintTop_toBottomOf="@id/header_month"
             android:layout_marginTop="5dp">
-            <CustomAttribute
-                app:attributeName="android:textSize"
-                app:customDimension="22sp"/>
         </Constraint>
 
         <Constraint
@@ -98,9 +92,6 @@
             app:layout_constraintStart_toStartOf="@id/header_income"
             app:layout_constraintTop_toBottomOf="@id/header_income"
             android:layout_marginTop="5dp">
-            <CustomAttribute
-                app:attributeName="android:textSize"
-                app:customDimension="22sp"/>
         </Constraint>
 
     </ConstraintSet>
@@ -125,7 +116,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent">
             <CustomAttribute
-                app:attributeName="app:cardCornerRadius"
+                app:attributeName="cardCornerRadius"
                 app:customDimension="0dp"/>
         </Constraint>
 
@@ -144,7 +135,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent">
             <CustomAttribute
-                app:attributeName="app:cardCornerRadius"
+                app:attributeName="cardCornerRadius"
                 app:customDimension="0dp"/>
         </Constraint>
 
@@ -168,7 +159,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
             <CustomAttribute
-                app:attributeName="app:cardCornerRadius"
+                app:attributeName="cardCornerRadius"
                 app:customDimension="0dp"/>
         </Constraint>
 
