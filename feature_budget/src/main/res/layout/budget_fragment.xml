@@ -12,100 +12,89 @@
     tools:context=".ui.list.BudgetFragment">
 
     <com.google.android.material.card.MaterialCardView
-        android:id="@+id/header_bubble_start_outline"
-        android:layout_width="550dp"
-        android:layout_height="550dp"
-        android:translationX="-200dp"
-        android:translationY="-300dp"
-        app:cardBackgroundColor="@color/colorPrimaryDark"
-        app:cardCornerRadius="275dp"
-        app:cardElevation="5dp"
-        app:cardUseCompatPadding="false"
-        app:cardPreventCornerOverlap="false"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/header_bubble_start"
-        android:layout_width="550dp"
-        android:layout_height="550dp"
-        android:translationX="-200dp"
-        android:translationY="-300dp"
+        android:id="@+id/header_bubble_large"
+        android:layout_width="@dimen/budget_header_bubble_large_size"
+        android:layout_height="@dimen/budget_header_bubble_large_size"
+        android:translationX="@dimen/budget_header_bubble_large_translation_x"
+        android:translationY="@dimen/budget_header_bubble_large_translation_y"
         app:cardBackgroundColor="@color/colorPrimary"
-        app:cardCornerRadius="275dp"
-        app:cardElevation="5dp"
-        app:cardUseCompatPadding="false"
+        app:cardCornerRadius="@dimen/budget_header_bubble_large_corner_radius"
+        app:cardElevation="@dimen/budget_header_bubble_elevation"
         app:cardPreventCornerOverlap="false"
+        app:cardUseCompatPadding="false"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.card.MaterialCardView
-        android:id="@+id/header_bubble_end"
-        android:layout_width="300dp"
-        android:layout_height="300dp"
-        android:translationX="100dp"
-        android:translationY="-160dp"
-        app:strokeColor="@color/colorPrimary"
-        app:strokeWidth="5dp"
+        android:id="@+id/header_bubble_small"
+        android:layout_width="@dimen/budget_header_bubble_small_size"
+        android:layout_height="@dimen/budget_header_bubble_small_size"
+        android:translationX="@dimen/budget_header_bubble_small_translation_x"
+        android:translationY="@dimen/budget_header_bubble_small_translation_y"
         app:cardBackgroundColor="@color/colorPrimaryDark"
-        app:cardCornerRadius="150dp"
-        app:cardElevation="5dp"
-        app:cardUseCompatPadding="false"
+        app:cardCornerRadius="@dimen/budget_header_bubble_small_corner_radius"
+        app:cardElevation="@dimen/budget_header_bubble_elevation"
         app:cardPreventCornerOverlap="false"
+        app:cardUseCompatPadding="false"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:strokeColor="@color/colorPrimary"
+        app:strokeWidth="@dimen/budget_header_bubble_small_border_size" />
 
     <TextView
         android:id="@+id/header_month"
-        android:layout_width="wrap_content"
-        android:layout_height="100dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/budget_header_month_start_margin"
+        android:layout_marginTop="@dimen/budget_header_month_margin_top"
+        android:elevation="@dimen/budget_header_bubble_content_elevation"
+        android:fontFamily="@font/montserrat_bold"
         android:text="January"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="30dp"
-        android:layout_marginStart="10dp"
         android:textColor="@color/colorFont"
-        android:elevation="10dp"
-        android:textSize="26sp"/>
+        android:textSize="@dimen/budget_header_month_font_size"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/header_income"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/budget_header_income_margin_top"
+        android:elevation="@dimen/budget_header_bubble_content_elevation"
+        android:fontFamily="@font/montserrat"
         android:text="Income:   $200,000"
-        app:layout_constraintStart_toStartOf="@id/header_month"
-        app:layout_constraintTop_toBottomOf="@id/header_month"
-        android:layout_marginTop="5dp"
         android:textColor="@color/colorFont"
-        android:elevation="10dp"
-        android:textSize="16sp" />
+        android:textSize="@dimen/budget_header_income_font_size"
+        app:layout_constraintStart_toStartOf="@id/header_month"
+        app:layout_constraintTop_toBottomOf="@id/header_month" />
 
     <TextView
         android:id="@+id/header_expense"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/budget_header_expense_margin_top"
+        android:elevation="@dimen/budget_header_bubble_content_elevation"
+        android:fontFamily="@font/montserrat"
         android:text="Expense: $1,250"
-        app:layout_constraintStart_toStartOf="@id/header_income"
-        app:layout_constraintTop_toBottomOf="@id/header_income"
-        android:layout_marginTop="5dp"
         android:textColor="@color/colorFont"
-        android:elevation="10dp"
-        android:textSize="16sp" />
-    
+        android:textSize="@dimen/budget_header_expense_font_size"
+        app:layout_constraintStart_toStartOf="@id/header_income"
+        app:layout_constraintTop_toBottomOf="@id/header_income" />
+
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/header_guideline"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintGuide_begin="250dp"
-        android:orientation="horizontal"/>
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="250dp" />
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        app:layout_constraintTop_toTopOf="parent"
         android:elevation="10dp"
-        app:titleTextColor="@android:color/black"/>
+        app:layout_constraintTop_toTopOf="parent"
+        app:titleTextColor="@android:color/black" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
@@ -114,18 +103,18 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/header_guideline"/>
+        app:layout_constraintTop_toBottomOf="@+id/header_guideline" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/floating_action_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
-        android:layout_marginBottom="10dp"
+        android:layout_margin="16dp"
         android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_margin="16dp"
-        app:srcCompat="@drawable/ic_add_white_24dp"/>
+        app:srcCompat="@drawable/ic_add_white_24dp" />
 
 </com.brandonhogan.budgetscout.budget.extensions.MotionLayoutWithState>

@@ -3,4 +3,46 @@
     <dimen name="envelope_title">15sp</dimen>
     <dimen name="envelope_values">12sp</dimen>
     <dimen name="envelope_note_size">9sp</dimen>
+
+
+    <!-- Budget Header Bubble -->
+    <dimen name="budget_header_bubble_elevation">5dp</dimen>
+    <dimen name="budget_header_bubble_content_elevation">10dp</dimen>
+
+    <!-- Budget Header Bubble Large -->
+    <dimen name="budget_header_bubble_large_size">550dp</dimen>
+    <dimen name="budget_header_bubble_large_translation_y">-300dp</dimen>
+    <dimen name="budget_header_bubble_large_translation_y_small">-150dp</dimen>
+    <dimen name="budget_header_bubble_large_translation_x">-200dp</dimen>
+    <dimen name="budget_header_bubble_large_translation_x_small">0dp</dimen>
+    <dimen name="budget_header_bubble_large_corner_radius">275dp</dimen>
+
+    <!-- Budget Header Bubble Small -->
+    <dimen name="budget_header_bubble_small_size">300dp</dimen>
+    <dimen name="budget_header_bubble_small_translation_y">-160dp</dimen>
+    <dimen name="budget_header_bubble_small_translation_y_small">-4dp</dimen>
+    <dimen name="budget_header_bubble_small_translation_x">100dp</dimen>
+    <dimen name="budget_header_bubble_small_translation_x_small">0dp</dimen>
+    <dimen name="budget_header_bubble_small_corner_radius">150dp</dimen>
+    <dimen name="budget_header_bubble_small_border_size">5dp</dimen>
+    <dimen name="budget_header_bubble_small_margin_start_small">-200dp</dimen>
+    <dimen name="budget_header_bubble_small_margin_end_small">-30dp</dimen>
+
+    <!-- Budget Header Month -->
+    <dimen name="budget_header_month_margin_top">20dp</dimen>
+    <dimen name="budget_header_month_start_margin">10dp</dimen>
+    <dimen name="budget_header_month_start_margin_small">20dp</dimen>
+    <dimen name="budget_header_month_translation_y_small">8dp</dimen>
+    <dimen name="budget_header_month_font_size">25sp</dimen>
+    <dimen name="budget_header_month_font_size_small">14sp</dimen>
+
+    <!-- Budget Header Income -->
+    <dimen name="budget_header_income_font_size">21sp</dimen>
+    <dimen name="budget_header_income_margin_top">20dp</dimen>
+    <dimen name="budget_header_income_translation_x_small">-450dp</dimen>
+
+    <!-- Budget Header Expense -->
+    <dimen name="budget_header_expense_font_size">21sp</dimen>
+    <dimen name="budget_header_expense_margin_top">5dp</dimen>
+    <dimen name="budget_header_expense_translation_x_small">-450dp</dimen>
 </resources>

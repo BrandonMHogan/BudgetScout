@@ -13,48 +13,33 @@
 
     <ConstraintSet android:id="@+id/expanded">
         <Constraint
-            android:id="@id/header_bubble_start_outline"
-            android:layout_width="550dp"
-            android:layout_height="550dp"
-            android:translationX="-200dp"
-            android:translationY="-300dp"
-            app:cardBackgroundColor="@color/colorPrimaryDark"
-            app:cardCornerRadius="275dp"
-            app:cardElevation="5dp"
-            app:cardUseCompatPadding="false"
-            app:cardPreventCornerOverlap="false"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
-
-        <Constraint
-            android:id="@id/header_bubble_start"
-            android:layout_width="550dp"
-            android:layout_height="550dp"
-            android:translationX="-200dp"
-            android:translationY="-300dp"
+            android:id="@id/header_bubble_large"
+            android:layout_width="@dimen/budget_header_bubble_large_size"
+            android:layout_height="@dimen/budget_header_bubble_large_size"
+            android:translationX="@dimen/budget_header_bubble_large_translation_x"
+            android:translationY="@dimen/budget_header_bubble_large_translation_y"
             app:cardBackgroundColor="@color/colorPrimary"
-            app:cardCornerRadius="275dp"
-            app:cardElevation="5dp"
-            app:cardUseCompatPadding="false"
+            app:cardCornerRadius="@dimen/budget_header_bubble_large_corner_radius"
+            app:cardElevation="@dimen/budget_header_bubble_elevation"
             app:cardPreventCornerOverlap="false"
+            app:cardUseCompatPadding="false"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
-
         <Constraint
-            android:id="@id/header_bubble_end"
-            android:layout_width="300dp"
-            android:layout_height="300dp"
-            android:translationX="100dp"
-            android:translationY="-160dp"
-            app:strokeColor="@color/colorPrimary"
-            app:strokeWidth="5dp"
+            android:id="@id/header_bubble_small"
+            android:layout_width="@dimen/budget_header_bubble_small_size"
+            android:layout_height="@dimen/budget_header_bubble_small_size"
+            android:translationX="@dimen/budget_header_bubble_small_translation_x"
+            android:translationY="@dimen/budget_header_bubble_small_translation_y"
             app:cardBackgroundColor="@color/colorPrimaryDark"
-            app:cardCornerRadius="150dp"
-            app:cardElevation="5dp"
-            app:cardUseCompatPadding="false"
+            app:cardCornerRadius="@dimen/budget_header_bubble_small_corner_radius"
+            app:cardElevation="@dimen/budget_header_bubble_elevation"
             app:cardPreventCornerOverlap="false"
+            app:cardUseCompatPadding="false"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:strokeColor="@color/colorPrimary"
+            app:strokeWidth="@dimen/budget_header_bubble_small_border_size" />
 
         <Constraint
             android:id="@id/header_guideline"
@@ -65,16 +50,12 @@
 
         <Constraint
             android:id="@id/header_month"
-            android:layout_width="200dp"
-            android:layout_height="100dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/budget_header_month_start_margin"
+            android:layout_marginTop="@dimen/budget_header_month_margin_top"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="30dp"
-            app:autoSizeTextType="uniform"
-            app:autoSizeMinTextSize="15sp"
-            app:autoSizeMaxTextSize="30sp">
-        </Constraint>
+            app:layout_constraintTop_toTopOf="parent" />
 
         <Constraint
             android:id="@id/header_income"
@@ -82,8 +63,7 @@
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="@id/header_month"
             app:layout_constraintTop_toBottomOf="@id/header_month"
-            android:layout_marginTop="5dp">
-        </Constraint>
+            android:layout_marginTop="@dimen/budget_header_income_margin_top"/>
 
         <Constraint
             android:id="@id/header_expense"
@@ -91,96 +71,54 @@
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="@id/header_income"
             app:layout_constraintTop_toBottomOf="@id/header_income"
-            android:layout_marginTop="5dp">
-        </Constraint>
+            android:layout_marginTop="@dimen/budget_header_expense_margin_top"/>
 
     </ConstraintSet>
 
-
-
-
-
     <ConstraintSet android:id="@+id/collapsed">
         <Constraint
-            android:id="@id/header_bubble_start"
+            android:id="@id/header_bubble_large"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:translationX="0dp"
-            android:translationY="-150dp"
-            app:cardBackgroundColor="@color/colorPrimaryDark"
-            app:cardCornerRadius="0dp"
-            app:cardElevation="5dp"
-            app:cardUseCompatPadding="false"
-            app:cardPreventCornerOverlap="false"
+            android:translationX="@dimen/budget_header_bubble_large_translation_y_small"
+            android:translationY="@dimen/budget_header_bubble_large_translation_y_small"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent">
-            <CustomAttribute
-                app:attributeName="cardCornerRadius"
-                app:customDimension="0dp"/>
         </Constraint>
 
         <Constraint
-            android:id="@id/header_bubble_start_outline"
+            android:id="@id/header_bubble_small"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:translationX="0dp"
-            android:translationY="-150dp"
-            app:cardBackgroundColor="@color/colorPrimary"
-            app:cardCornerRadius="0dp"
-            app:cardElevation="5dp"
-            app:cardUseCompatPadding="false"
-            app:cardPreventCornerOverlap="false"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-            <CustomAttribute
-                app:attributeName="cardCornerRadius"
-                app:customDimension="0dp"/>
-        </Constraint>
-
-        <Constraint
-            android:id="@id/header_bubble_end"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:translationX="0dp"
-            android:translationY="-4dp"
-            android:layout_marginStart="-200dp"
-            android:layout_marginEnd="-20dp"
+            android:translationX="@dimen/budget_header_bubble_small_translation_x_small"
+            android:translationY="@dimen/budget_header_bubble_small_translation_y_small"
+            android:layout_marginStart="@dimen/budget_header_bubble_small_margin_start_small"
+            android:layout_marginEnd="@dimen/budget_header_bubble_small_margin_end_small"
             android:scaleY="1.2"
-            app:strokeColor="@color/colorPrimary"
-            app:strokeWidth="5dp"
-            app:cardBackgroundColor="@color/colorPrimaryDark"
-            app:cardCornerRadius="0dp"
-            app:cardElevation="5dp"
-            app:cardUseCompatPadding="false"
-            app:cardPreventCornerOverlap="false"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
-            <CustomAttribute
-                app:attributeName="cardCornerRadius"
-                app:customDimension="0dp"/>
         </Constraint>
 
         <Constraint
             android:id="@id/header_month"
-            android:layout_width="100dp"
+            android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:layout_marginStart="20dp"
-            android:translationY="10dp"
+            android:layout_marginStart="@dimen/budget_header_month_start_margin_small"
+            android:translationY="@dimen/budget_header_month_translation_y_small"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@id/header_bubble_end"
-            app:layout_constraintBottom_toBottomOf="@id/header_bubble_end" />
+            app:layout_constraintTop_toTopOf="@id/header_bubble_small"
+            app:layout_constraintBottom_toBottomOf="@id/header_bubble_small" />
 
         <Constraint
             android:id="@id/header_income"
-            android:translationX="-400dp"
+            android:translationX="@dimen/budget_header_income_translation_x_small"
             android:alpha="0"/>
 
         <Constraint
             android:id="@id/header_expense"
-            android:translationX="-400dp"
+            android:translationX="@dimen/budget_header_income_translation_x_small"
             android:alpha="0"/>
 
         <Constraint

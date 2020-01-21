@@ -6,13 +6,14 @@
 
     <dimen name="budget_list_group_padding">12dp</dimen>
     <dimen name="budget_list_group_margin">6dp</dimen>
-    <dimen name="budget_list_envelope_margin">6dp</dimen>
-    <dimen name="budget_list_envelope_margin_start">22dp</dimen>
+    <dimen name="budget_list_envelope_margin">8dp</dimen>
+    <dimen name="budget_list_envelope_margin_start">15dp</dimen>
 
 
-    <dimen name="budget_list_group_font">25sp</dimen>
-    <dimen name="budget_list_envelope_font">18sp</dimen>
+    <dimen name="budget_list_group_font">23sp</dimen>
+    <dimen name="budget_list_envelope_font">16sp</dimen>
     <dimen name="budget_list_envelope_values_current_font">16sp</dimen>
     <dimen name="budget_list_envelope_value_total_font">17sp</dimen>
+    <dimen name="budget_list_envelope_value_of_font">14sp</dimen>
     <dimen name="budget_list_envelope_note_font">12sp</dimen>
 </resources>

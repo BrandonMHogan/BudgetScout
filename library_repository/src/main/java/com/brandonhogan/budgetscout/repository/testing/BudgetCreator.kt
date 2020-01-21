@@ -27,7 +27,7 @@ class BudgetCreator(private val budgetRepo: BudgetRepo) {
         val budgetId = setBudget(Budget(name = "First Budget")).first()
 
         // creates group 1
-        val groupId = setGroup(Group(name = "Savings!!", colour = 0, budgetId = budgetId)).first()
+        val groupId = setGroup(Group(name = "Savings", colour = 0, budgetId = budgetId)).first()
         setEnvelope(Envelope(name = "RRSP", colour = 1, total = 250.0, current = 100.0, isCarryforward = false, groupId = groupId, note = ""))
         setEnvelope(Envelope(name = "TFSA", colour = 1, total = 250.0, current = 25.0, isCarryforward = false, groupId = groupId, note = ""))
         setEnvelope(Envelope(name = "Emergency Fund", colour = 1, total = 100.0, current = 10.0, isCarryforward = false, groupId = groupId, note = ""))

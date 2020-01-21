@@ -13,47 +13,56 @@
         android:id="@+id/envelope_title"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="5dp"
+        android:fontFamily="@font/montserrat_bold"
         android:textSize="@dimen/budget_list_envelope_font"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toStartOf="@+id/envelope_total"
+        app:layout_constraintEnd_toStartOf="@+id/envelope_current"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/envelope_current"
-        android:layout_width="50dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="10dp"
+        android:fontFamily="@font/open_sans"
         android:text="100"
-        android:gravity="end"
-        android:textAlignment="gravity"
         android:textSize="@dimen/budget_list_envelope_values_current_font"
-        app:layout_constraintBottom_toTopOf="@+id/envelope_total"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/textView3"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/envelope_total"
-        android:layout_width="50dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:fontFamily="@font/open_sans"
         android:text="1000"
-        android:gravity="end"
-        android:textAlignment="gravity"
         android:textSize="@dimen/budget_list_envelope_value_total_font"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/envelope_title" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ProgressBar
         android:id="@+id/envelope_bar"
         style="@android:style/Widget.ProgressBar.Horizontal"
         android:layout_width="0dp"
         android:layout_height="20dp"
-        android:layout_marginEnd="5dp"
         android:progress="25"
         android:progressBackgroundTint="@color/colorEmptyBar"
         android:progressTint="@color/colorAccentAlpha"
-        app:layout_constraintEnd_toStartOf="@+id/envelope_total"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/envelope_title" />
+        app:layout_constraintTop_toBottomOf="@+id/envelope_current" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="10dp"
+        android:fontFamily="@font/open_sans"
+        android:text="of"
+        android:textSize="@dimen/budget_list_envelope_value_of_font"
+        app:layout_constraintBottom_toBottomOf="@+id/envelope_total"
+        app:layout_constraintEnd_toStartOf="@+id/envelope_total"
+        app:layout_constraintTop_toTopOf="@+id/envelope_total" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
