@@ -5,6 +5,8 @@
     <dimen name="envelope_note_size">9sp</dimen>
 
 
+    <!-- Budget Guideline -->
+    <dimen name="budget_guideline">220dp</dimen>
     <!-- Budget Header Bubble -->
     <dimen name="budget_header_bubble_elevation">5dp</dimen>
     <dimen name="budget_header_bubble_content_elevation">10dp</dimen>

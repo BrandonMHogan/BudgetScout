@@ -1,6 +1,7 @@
 package com.brandonhogan.budgetscout.budget.ui.transaction
 
 import android.os.Bundle
+import android.text.InputFilter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,8 +12,9 @@ import androidx.fragment.app.Fragment
 import com.brandonhogan.budgetscout.budget.R
 import com.brandonhogan.budgetscout.core.services.Log
 import com.brandonhogan.budgetscout.core.utils.DateUtils
+import com.brandonhogan.budgetscout.core.utils.DecimalDigitsInputFilter
 import com.google.android.material.button.MaterialButton
-import com.google.android.material.card.MaterialCardView
+import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.*
@@ -34,6 +36,8 @@ class TransactionFragment : Fragment() {
     private lateinit var incomeButton: MaterialButton
     private lateinit var transferButton: MaterialButton
 
+    private lateinit var amountEditText: TextInputEditText
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -48,6 +52,9 @@ class TransactionFragment : Fragment() {
         expenseButton.setOnClickListener { onExpenseClicked() }
         incomeButton.setOnClickListener { onIncomeClicked() }
         transferButton.setOnClickListener { onTransferClicked() }
+
+        amountEditText = view.findViewById(R.id.transaction_amount_edit_text)
+        amountEditText.filters = arrayOf<InputFilter>(DecimalDigitsInputFilter(7, 2))
 
         val day = Calendar.getInstance().get(Calendar.DAY_OF_MONTH)
         val month = Calendar.getInstance().getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.ENGLISH)
