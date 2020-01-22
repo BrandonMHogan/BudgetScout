@@ -32,7 +32,7 @@
     <dimen name="budget_header_month_margin_top">20dp</dimen>
     <dimen name="budget_header_month_start_margin">10dp</dimen>
     <dimen name="budget_header_month_start_margin_small">20dp</dimen>
-    <dimen name="budget_header_month_translation_y_small">8dp</dimen>
+    <dimen name="budget_header_month_translation_y_small">6dp</dimen>
     <dimen name="budget_header_month_font_size">25sp</dimen>
     <dimen name="budget_header_month_font_size_small">14sp</dimen>
 
@@ -45,4 +45,25 @@
     <dimen name="budget_header_expense_font_size">21sp</dimen>
     <dimen name="budget_header_expense_margin_top">5dp</dimen>
     <dimen name="budget_header_expense_translation_x_small">-450dp</dimen>
+
+
+
+    <!-- Transaction Header Bubble -->
+    <dimen name="transfer_header_bubble_size">500dp</dimen>
+    <dimen name="transfer_header_bubble_elevation">5dp</dimen>
+    <dimen name="transfer_header_bubble_content_elevation">10dp</dimen>
+    <dimen name="transfer_header_bubble_translation_y">-300dp</dimen>
+    <dimen name="transfer_header_bubble_corner_radius">250dp</dimen>
+
+    <!-- Transaction Constants -->
+    <dimen name="transaction_margin_sides">10dp</dimen>
+    <dimen name="transaction_toggle_button_text_size">10sp</dimen>
+
+    <!-- Transaction Note -->
+    <dimen name="transaction_note_margin_top">25dp</dimen>
+
+    <!-- Transaction Save Button -->
+    <dimen name="transaction_save_height">75dp</dimen>
+    <dimen name="transaction_save_margin_top">45dp</dimen>
+
 </resources>

@@ -16,6 +16,7 @@
     <application
         android:allowBackup="false">
         <activity
+            android:windowSoftInputMode="adjustPan"
             android:name="com.brandonhogan.budgetscout.budget.BudgetActivity">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />

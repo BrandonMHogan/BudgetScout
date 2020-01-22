@@ -19,8 +19,8 @@
             app:popExitAnim="@anim/nav_default_pop_exit_anim">
             <argument
                 android:name="envelopeId"
-                app:argType="long"
-                android:defaultValue="0L" />
+                android:defaultValue="0L"
+                app:argType="long" />
         </action>
         <action
             android:id="@+id/action_budgetFragment_to_transactionFragment"

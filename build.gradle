@@ -10,7 +10,7 @@ buildscript {
             "buildTools": '29.0.2',
             "minSdk": 23,
             'androidx': "1.1.0",
-            'material': '1.1.0-rc02',
+            'material': '1.2.0-alpha04',
             'constraintLayout': '2.0.0-beta4',
             'navigation': '2.1.0',
             'safeArgs': '2.2.0-alpha01',

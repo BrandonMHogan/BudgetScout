@@ -12,6 +12,12 @@
     <string name="income">Income</string>
     <string name="expense">Expense</string>
     <string name="transfer">Transfer</string>
+    <string name="from_envelope">From Envelope</string>
+    <string name="to_envelope">To Envelope</string>
+    <string name="amount">Amount</string>
+    <string name="transaction_note_hint">(Optional) Add a note to the transaction</string>
+    <string name="transfer_amount">Transfer Amount</string>
+    <string name="save">Save</string>
 
 
 </resources>
