@@ -11,7 +11,7 @@
 
     <!-- Budget Header Bubble Large -->
     <dimen name="budget_header_bubble_large_size">550dp</dimen>
-    <dimen name="budget_header_bubble_large_translation_y">-300dp</dimen>
+    <dimen name="budget_header_bubble_large_translation_y">-330dp</dimen>
     <dimen name="budget_header_bubble_large_translation_y_small">-150dp</dimen>
     <dimen name="budget_header_bubble_large_translation_x">-200dp</dimen>
     <dimen name="budget_header_bubble_large_translation_x_small">0dp</dimen>
@@ -19,7 +19,7 @@
 
     <!-- Budget Header Bubble Small -->
     <dimen name="budget_header_bubble_small_size">300dp</dimen>
-    <dimen name="budget_header_bubble_small_translation_y">-160dp</dimen>
+    <dimen name="budget_header_bubble_small_translation_y">-170dp</dimen>
     <dimen name="budget_header_bubble_small_translation_y_small">-4dp</dimen>
     <dimen name="budget_header_bubble_small_translation_x">100dp</dimen>
     <dimen name="budget_header_bubble_small_translation_x_small">0dp</dimen>
@@ -52,8 +52,8 @@
     <dimen name="transfer_header_bubble_size">500dp</dimen>
     <dimen name="transfer_header_bubble_elevation">5dp</dimen>
     <dimen name="transfer_header_bubble_content_elevation">10dp</dimen>
-    <dimen name="transfer_header_bubble_translation_y">-300dp</dimen>
-    <dimen name="transfer_header_bubble_corner_radius">250dp</dimen>
+    <dimen name="transfer_header_bubble_translation_y">-310dp</dimen>
+    <dimen name="transfer_header_bubble_corner_radius">175dp</dimen>
 
     <!-- Transaction Constants -->
     <dimen name="transaction_margin_sides">10dp</dimen>
