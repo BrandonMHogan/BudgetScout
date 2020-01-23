@@ -5,6 +5,7 @@ import com.brandonhogan.budgetscout.repository.dao.base.BaseDao
 import com.brandonhogan.budgetscout.repository.entity.Budget
 import com.brandonhogan.budgetscout.repository.entity.relations.BudgetWithGroups
 import com.brandonhogan.budgetscout.repository.entity.relations.BudgetWithGroupsAndEnvelopes
+import java.util.*
 
 /**
  * @Creator         Brandon Hogan
@@ -44,4 +45,11 @@ interface BudgetDao: BaseDao<Budget> {
     @Transaction
     @Query("SELECT * FROM ${Budget.NAME} WHERE ${Budget.PROPERTY_ID} IS :id")
     fun getWithGroupsAndEnvelopes(id: Long): BudgetWithGroupsAndEnvelopes
+
+    /**
+     * Will retrieve with the nested list of groups, and its nested list of envelopes
+     */
+    @Transaction
+    @Query("SELECT * FROM ${Budget.NAME} WHERE ${Budget.PROPERTY_MONTH} IS :month AND ${Budget.PROPERTY_YEAR} IS :year")
+    fun getWithGroupsAndEnvelopes(month: Int, year: Int): BudgetWithGroupsAndEnvelopes
 }

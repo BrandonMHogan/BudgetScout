@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.navigation.NavDirections
 import androidx.navigation.fragment.NavHostFragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -148,12 +149,13 @@ class BudgetFragment : Fragment() {
     }
 
     /**
-     * Will navigate to the transaction fragment
+     * Will navigate to the transaction fragment as long as we have a budget id
      */
-    private fun onAddTransaction() {
-
-        val action = BudgetFragmentDirections.actionBudgetFragmentToTransactionFragment(groupId = -1, transactionId = -1)
-        findNavController(this).navigate(action)
+    private fun onAddTransaction(groupId: Long = -1, envelopeId: Long = -1, transactionId: Long = -1) {
+        model.budget.value?.budget?.id?.let {budgetId ->
+            val action = BudgetFragmentDirections.actionBudgetFragmentToTransactionFragment(budgetId = budgetId, groupId = groupId, envelopeId = envelopeId, transactionId = transactionId)
+            findNavController(this).navigate(action)
+        }
     }
 
     private fun onGroupLongClick(group: Group) {

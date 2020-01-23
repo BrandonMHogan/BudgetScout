@@ -24,6 +24,12 @@ interface EnvelopeDao: BaseDao<Envelope> {
     fun get(id: Long): Envelope
 
     /**
+     * Will get all envelopes
+     */
+    @Query("SELECT * FROM ${Envelope.NAME}")
+    fun getAll(): List<Envelope>
+
+    /**
      * Updates just the total value of the envelope
      */
     @Query("UPDATE ${Envelope.NAME} SET ${Envelope.PROPERTY_TOTAL} = :total WHERE ${Envelope.PROPERTY_ID} = :id")

@@ -4,6 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.brandonhogan.budgetscout.repository.TransactionType
+import java.util.*
 
 /**
  * @Creator         Brandon Hogan
@@ -23,8 +24,11 @@ data class Transaction (
     // Transaction Type
     @ColumnInfo(name = PROPERTY_TYPE) var type: TransactionType,
     // Amount either transferred, added or edited by
-    @ColumnInfo(name = PROPERTY_AMOUNT) var amount: Double = 0.0
-)
+    @ColumnInfo(name = PROPERTY_AMOUNT) var amount: Double = 0.0,
+    // created date
+    @ColumnInfo(name = PROPERTY_CREATED) var created: Calendar = Calendar.getInstance(),
+    // last updated date
+    @ColumnInfo(name = PROPERTY_UPDATED) var updated: Calendar = Calendar.getInstance())
 {
     companion object {
         const val NAME = "Transaction"
@@ -33,5 +37,7 @@ data class Transaction (
         const val PROPERTY_TYPE = "type"
         const val PROPERTY_AMOUNT = "amount"
         const val PROPERTY_ID = "id"
+        const val PROPERTY_CREATED = "created"
+        const val PROPERTY_UPDATED = "updated"
     }
 }

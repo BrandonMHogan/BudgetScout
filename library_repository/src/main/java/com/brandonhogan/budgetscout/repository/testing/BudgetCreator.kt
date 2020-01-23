@@ -6,6 +6,7 @@ import com.brandonhogan.budgetscout.repository.entity.Group
 import com.brandonhogan.budgetscout.repository.repo.budget.BudgetRepo
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import java.util.*
 
 /**
  * @Creator         Brandon Hogan
@@ -16,7 +17,7 @@ import kotlinx.coroutines.withContext
 
 class BudgetCreator(private val budgetRepo: BudgetRepo) {
 
-    suspend fun createBasicBudget(deleteAll: Boolean = false): Long {
+    suspend fun createBasicBudget(deleteAll: Boolean = false, calendar: Calendar = Calendar.getInstance()): Long {
 
         // deletes all currently existing budgets if set true
         if (deleteAll) {
@@ -24,7 +25,7 @@ class BudgetCreator(private val budgetRepo: BudgetRepo) {
         }
 
         //creates the budget
-        val budgetId = setBudget(Budget(name = "First Budget")).first()
+        val budgetId = setBudget(Budget(name = "First Budget", month = calendar.get(Calendar.MONTH), year = calendar.get(Calendar.YEAR))).first()
 
         // creates group 1
         val groupId = setGroup(Group(name = "Savings", colour = 0, budgetId = budgetId)).first()

@@ -10,6 +10,7 @@ import com.brandonhogan.budgetscout.repository.entity.relations.BudgetWithGroups
 import com.brandonhogan.budgetscout.repository.repo.budget.BudgetRepo
 import com.brandonhogan.budgetscout.repository.testing.BudgetCreator
 import kotlinx.coroutines.*
+import java.util.*
 
 class BudgetViewModel(private val budgetRepo: BudgetRepo, private val budgetCreator: BudgetCreator) : BaseViewModel() {
 
@@ -25,18 +26,30 @@ class BudgetViewModel(private val budgetRepo: BudgetRepo, private val budgetCrea
      */
     init {
         viewModelScope.launch(exceptionHandler) {
-            // will add a new budget first
-            val budgetId = budgetCreator.createBasicBudget(true)
 
-            // then load the active budget
-            budget.postValue(loadActiveBudget(budgetId))
+            // gets todays date
+            val calendar = Calendar.getInstance()
+
+            // attempts to load that budget
+            val loadedBudget = loadBudget(calendar)
+            if (loadedBudget != null) {
+                budget.postValue(loadedBudget)
+            }
+            //TODO: instead of just making a budget, it should redirect to the
+            // budget creator screen
+            else {
+                budgetCreator.createBasicBudget(true, calendar = calendar)
+                budget.postValue(loadBudget(calendar))
+            }
         }
     }
+
 
     /**
      * Loads the budget from the repository, in the background thread
      */
-    private suspend fun loadActiveBudget(budgetId: Long = 1): BudgetWithGroupsAndEnvelopes = withContext(Dispatchers.IO) {
-        budgetRepo.getWithGroupsAndEnvelopes(budgetId)
+    private suspend fun loadBudget(calendar: Calendar): BudgetWithGroupsAndEnvelopes? = withContext(Dispatchers.IO) {
+        budgetRepo.getWithGroupsAndEnvelopes(calendar)
     }
+
 }

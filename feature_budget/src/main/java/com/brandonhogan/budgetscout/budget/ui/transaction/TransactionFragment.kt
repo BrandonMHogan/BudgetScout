@@ -1,7 +1,10 @@
 package com.brandonhogan.budgetscout.budget.ui.transaction
 
+import android.app.DatePickerDialog
 import android.os.Bundle
+import android.text.Editable
 import android.text.InputFilter
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,15 +12,21 @@ import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.navigation.fragment.navArgs
 import com.brandonhogan.budgetscout.budget.R
 import com.brandonhogan.budgetscout.core.services.Log
 import com.brandonhogan.budgetscout.core.utils.DateUtils
 import com.brandonhogan.budgetscout.core.utils.DecimalDigitsInputFilter
+import com.brandonhogan.budgetscout.repository.TransactionType
+import com.brandonhogan.budgetscout.repository.entity.Envelope
 import com.google.android.material.button.MaterialButton
+import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.*
+import javax.xml.datatype.DatatypeConstants.MONTHS
 
 
 class TransactionFragment : Fragment() {
@@ -27,6 +36,9 @@ class TransactionFragment : Fragment() {
     }
 
     private val model: TransactionViewModel by viewModel()
+    val arguments: TransactionFragmentArgs by navArgs()
+
+
     private lateinit var dateLabel: TextView
     private lateinit var fromGroupTextView: AutoCompleteTextView
     private lateinit var toGroupTextView: AutoCompleteTextView
@@ -38,66 +50,161 @@ class TransactionFragment : Fragment() {
 
     private lateinit var amountEditText: TextInputEditText
 
+    private lateinit var saveButton: MaterialButton
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.transaction_fragment, container, false)
 
+        // sets the arguments
+        model.budgetId.postValue(arguments.budgetId)
+        model.groupId.postValue(arguments.groupId)
+        model.envelopeId.postValue(arguments.envelopeId)
+        model.transactionId.postValue(arguments.transactionId)
+
+        // date label
         dateLabel = view.findViewById(R.id.date_label)
+        dateLabel.setOnClickListener { model.onDateClick() }
+
+        // toggle buttons
         expenseButton = view.findViewById(R.id.expense_button)
         incomeButton = view.findViewById(R.id.income_button)
         transferButton = view.findViewById(R.id.transfer_button)
 
-        expenseButton.setOnClickListener { onExpenseClicked() }
-        incomeButton.setOnClickListener { onIncomeClicked() }
-        transferButton.setOnClickListener { onTransferClicked() }
-
-        amountEditText = view.findViewById(R.id.transaction_amount_edit_text)
-        amountEditText.filters = arrayOf<InputFilter>(DecimalDigitsInputFilter(7, 2))
-
-        val day = Calendar.getInstance().get(Calendar.DAY_OF_MONTH)
-        val month = Calendar.getInstance().getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.ENGLISH)
-        val date = "$month $day${DateUtils.suffixes[day]}"
-        dateLabel.text = date
-
-
-        val items = arrayOf("RRSP", "TFSA", "Insurance", "Netflix")
-        val fromGroupAdapter = ArrayAdapter<Any?>(requireContext(), R.layout.dropdown_menu_group_item,
-            items
-        )
-
+        // from and to group text views
         fromGroupTextView = view.findViewById(R.id.from_envelope_text_view)
-        fromGroupTextView.setAdapter(fromGroupAdapter)
-
         toGroupTextLayout = view.findViewById(R.id.to_envelope_input_layout)
         toGroupTextView = view.findViewById(R.id.to_envelope_text_view)
-        toGroupTextView.setAdapter(fromGroupAdapter)
+
+        // amount edit text
+        amountEditText = view.findViewById(R.id.transaction_amount_edit_text)
+
+        saveButton = view.findViewById(R.id.transaction_save_button)
+
+        // will setup the model
+        model.setup()
 
         return view
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        setObservers()
+        setListeners()
         expenseButton.performClick()
     }
 
-    private fun onExpenseClicked() {
-        Log.debug("Expense Clicked")
-        toEnvelopeVisibility(false)
+    /**
+     * Sets the different listeners from the UI, passing back to the view model
+     */
+    private fun setListeners() {
+        // toggle button click listeners
+        expenseButton.setOnClickListener { model.transactionType.postValue(TransactionType.Expense) }
+        incomeButton.setOnClickListener { model.transactionType.postValue(TransactionType.Income) }
+        transferButton.setOnClickListener { model.transactionType.postValue(TransactionType.Transfer) }
+        // save button
+        saveButton.setOnClickListener { model.onSave() }
+
+        // sets a filter for the amount edit text
+        amountEditText.filters = arrayOf<InputFilter>(DecimalDigitsInputFilter(7, 2))
     }
 
-    private fun onIncomeClicked() {
-        Log.debug("Income Clicked")
-        toEnvelopeVisibility(false)
+    /**
+     * Sets the observables from the model here
+     */
+    private fun setObservers() {
+        model.date.observe(this, Observer { calendar ->
+            onDateChange(calendar)
+        })
+
+        model.envelopes.observe(this, Observer { envelopes ->
+            onEnvelopeListChange(envelopes)
+        })
+
+        model.transactionType.observe(this, Observer { transactionType ->
+            onTransactionTypeChange(transactionType)
+        })
     }
 
-    private fun onTransferClicked() {
-        Log.debug("Transfer Clicked")
-        toEnvelopeVisibility(true)
+    /**
+     * Updates the UI to match the new date
+     */
+    private fun onDateChange(calendar: Calendar) {
+        val day = calendar.get(Calendar.DAY_OF_MONTH)
+        val month = calendar.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.ENGLISH)
+        val date = "$month $day${DateUtils.suffixes[day]}"
+        dateLabel.text = date
     }
 
-    private fun toEnvelopeVisibility(isVisible: Boolean) {
-        toGroupTextLayout.visibility = if (isVisible) { View.VISIBLE } else { View.GONE }
+    /**
+     * Opens a date picker, using the current date as the start point
+     */
+    private fun onDateClicked() {
+
+        model.date.value?.let { date ->
+            val currentYear = date.get(Calendar.YEAR)
+            val currentMonth = date.get(Calendar.MONTH)
+            val currentDay = date.get(Calendar.DAY_OF_MONTH)
+
+            val minDate = Calendar.getInstance()
+            minDate.set(Calendar.YEAR, currentYear)
+            minDate.set(Calendar.MONTH, currentMonth)
+            minDate.set(Calendar.DAY_OF_MONTH, 1)
+
+            val maxDate = Calendar.getInstance()
+            maxDate.set(Calendar.YEAR, currentYear)
+            maxDate.set(Calendar.MONTH, currentMonth)
+            maxDate.set(Calendar.DAY_OF_MONTH, 1)
+            maxDate.add(Calendar.MONTH, 1)
+            maxDate.add(Calendar.DAY_OF_MONTH, -1)
+
+            val datePicker = DatePickerDialog(requireContext(), DatePickerDialog.OnDateSetListener { _, year, monthOfYear, dayOfMonth ->
+
+                date.set(Calendar.YEAR, year)
+                date.set(Calendar.MONTH, monthOfYear)
+                date.set(Calendar.DAY_OF_MONTH, dayOfMonth)
+                model.date.postValue(date)
+
+            }, currentYear, currentMonth, currentDay).apply {
+                datePicker.minDate = minDate.timeInMillis
+                datePicker.maxDate = maxDate.timeInMillis
+            }
+
+            datePicker.show()
+        }
+    }
+
+    /**
+     * Called whenever the list of available envelopes changes
+     */
+    private fun onEnvelopeListChange(envelopes: List<Envelope>) {
+        val envelopeAdapter = ArrayAdapter<Any?>(requireContext(), R.layout.dropdown_menu_group_item,
+            envelopes.map { envelope -> envelope.name }
+        )
+        fromGroupTextView.setAdapter(envelopeAdapter)
+        toGroupTextView.setAdapter(envelopeAdapter)
+    }
+
+    /**
+     * On Transaction Type change, it will hide or show the group text layout,
+     * and update the UI
+     */
+    private fun onTransactionTypeChange(transactionType: TransactionType) {
+
+        when (transactionType) {
+            TransactionType.Income -> {
+                toGroupTextLayout.visibility = View.GONE
+            }
+            TransactionType.Expense -> {
+                toGroupTextLayout.visibility = View.GONE
+            }
+            TransactionType.Transfer -> {
+                toGroupTextLayout.visibility = View.VISIBLE
+            }
+        }
+
+
     }
 }

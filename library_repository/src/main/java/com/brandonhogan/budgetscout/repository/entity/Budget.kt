@@ -3,6 +3,7 @@ package com.brandonhogan.budgetscout.repository.entity
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import java.time.Month
 import java.util.*
 
 /**
@@ -20,8 +21,10 @@ data class Budget (
     @PrimaryKey(autoGenerate = true) @ColumnInfo(name = PROPERTY_ID) var id: Long = 0,
     // name of the budget
     @ColumnInfo(name = PROPERTY_NAME) var name: String,
-    // calendar month and year associated for this budget
-    @ColumnInfo(name = PROPERTY_CALENDAR) var calendar: Calendar = Calendar.getInstance(),
+    // calendar month associated for this budget
+    @ColumnInfo(name = PROPERTY_MONTH) var month: Int = Calendar.getInstance().get(Calendar.MONTH),
+    // calendar year associated for this budget
+    @ColumnInfo(name = PROPERTY_YEAR) var year: Int = Calendar.getInstance().get(Calendar.YEAR),
     // created date
     @ColumnInfo(name = PROPERTY_CREATED) var created: Calendar = Calendar.getInstance(),
     // last updated date
@@ -32,7 +35,8 @@ data class Budget (
         const val NAME = "Budget"
         const val PROPERTY_NAME = "name"
         const val PROPERTY_ID = "id"
-        const val PROPERTY_CALENDAR = "calendar"
+        const val PROPERTY_MONTH = "month"
+        const val PROPERTY_YEAR = "year"
         const val PROPERTY_CREATED = "created"
         const val PROPERTY_UPDATED = "updated"
     }

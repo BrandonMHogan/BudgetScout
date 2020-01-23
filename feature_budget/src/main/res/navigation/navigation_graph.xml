@@ -30,7 +30,15 @@
             app:popEnterAnim="@anim/nav_default_pop_enter_anim"
             app:popExitAnim="@anim/nav_default_pop_exit_anim">
             <argument
+                android:name="budgetId"
+                app:argType="long"
+                android:defaultValue="0L" />
+            <argument
                 android:name="groupId"
+                app:argType="long"
+                android:defaultValue="0L" />
+            <argument
+                android:name="envelopeId"
                 app:argType="long"
                 android:defaultValue="0L" />
             <argument
@@ -57,7 +65,15 @@
         android:label="TransactionFragment"
         tools:layout="@layout/transaction_fragment">
         <argument
+            android:name="budgetId"
+            app:argType="long"
+            android:defaultValue="0L" />
+        <argument
             android:name="groupId"
+            app:argType="long"
+            android:defaultValue="0L" />
+        <argument
+            android:name="envelopeId"
             app:argType="long"
             android:defaultValue="0L" />
         <argument

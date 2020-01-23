@@ -17,6 +17,8 @@
         android:gravity="center"
         android:textColor="@color/colorFont"
         android:fontFamily="@font/montserrat_bold"
+        android:clickable="true"
+        android:focusable="true"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
