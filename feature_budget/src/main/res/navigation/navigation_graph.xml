@@ -32,19 +32,14 @@
             <argument
                 android:name="budgetId"
                 app:argType="long"
-                android:defaultValue="0L" />
+                android:defaultValue="-1L" />
             <argument
                 android:name="groupId"
                 app:argType="long"
-                android:defaultValue="0L" />
+                android:defaultValue="-1L" />
             <argument
-                android:name="envelopeId"
-                app:argType="long"
-                android:defaultValue="0L" />
-            <argument
-                android:name="transactionId"
-                app:argType="long"
-                android:defaultValue="0L" />
+                android:name="transaction"
+                app:argType="com.brandonhogan.budgetscout.repository.entity.Transaction" />
         </action>
     </fragment>
 
@@ -67,18 +62,13 @@
         <argument
             android:name="budgetId"
             app:argType="long"
-            android:defaultValue="0L" />
+            android:defaultValue="-1L" />
         <argument
             android:name="groupId"
             app:argType="long"
-            android:defaultValue="0L" />
+            android:defaultValue="-1L" />
         <argument
-            android:name="envelopeId"
-            app:argType="long"
-            android:defaultValue="0L" />
-        <argument
-            android:name="transactionId"
-            app:argType="long"
-            android:defaultValue="0L" />
+            android:name="transaction"
+            app:argType="com.brandonhogan.budgetscout.repository.entity.Transaction" />
     </fragment>
 </navigation>

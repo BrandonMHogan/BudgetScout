@@ -1,9 +1,11 @@
 package com.brandonhogan.budgetscout.repository.entity
 
+import android.os.Parcelable
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.brandonhogan.budgetscout.repository.TransactionType
+import kotlinx.android.parcel.Parcelize
 import java.util.*
 
 /**
@@ -14,6 +16,7 @@ import java.util.*
  * transfer between two envelopes happens. This is mostly used for self auditing
  */
 
+@Parcelize
 @Entity(tableName = Transaction.NAME)
 data class Transaction (
     @PrimaryKey(autoGenerate = true) @ColumnInfo(name = PROPERTY_ID) var id: Long = 0,
@@ -28,7 +31,7 @@ data class Transaction (
     // created date
     @ColumnInfo(name = PROPERTY_CREATED) var created: Calendar = Calendar.getInstance(),
     // last updated date
-    @ColumnInfo(name = PROPERTY_UPDATED) var updated: Calendar = Calendar.getInstance())
+    @ColumnInfo(name = PROPERTY_UPDATED) var updated: Calendar = Calendar.getInstance()): Parcelable
 {
     companion object {
         const val NAME = "Transaction"

@@ -20,4 +20,9 @@
     <string name="save">Save</string>
 
 
+    <string name="transaction_validation_title">Invalid Transaction</string>
+    <string name="transaction_validation_message">Please make sure you have set a valid envelope and amount before trying to save</string>
+    <string name="transaction_validation_button">Close</string>
+
+
 </resources>
