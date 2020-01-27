@@ -92,6 +92,7 @@
         android:layout_marginEnd="@dimen/transaction_margin_sides"
         android:elevation="@dimen/transfer_header_bubble_content_elevation"
         android:hint="@string/from_envelope"
+        android:visibility="gone"
         app:layout_constraintEnd_toStartOf="@+id/to_envelope_input_layout"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/header_guideline">
@@ -138,7 +139,7 @@
 
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/from_envelope_input_layout">
+        app:layout_constraintTop_toBottomOf="@id/to_envelope_input_layout">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/transaction_amount_edit_text"
@@ -148,22 +149,26 @@
 
     </com.google.android.material.textfield.TextInputLayout>
 
-
-    <EditText
-        android:id="@+id/transaction_note"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:ems="500"
-        android:gravity="start|top"
-        android:inputType="textMultiLine"
-        android:hint="@string/transaction_note_hint"
-        android:layout_marginTop="@dimen/transaction_note_margin_top"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/transaction_note_input_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
         android:layout_marginStart="@dimen/transaction_margin_sides"
         android:layout_marginEnd="@dimen/transaction_margin_sides"
-        app:layout_constraintBottom_toTopOf="@+id/transaction_save_button"
+        android:elevation="@dimen/transfer_header_bubble_content_elevation"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textInputLayout" />
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayout"
+        android:hint="@string/transaction_note_hint">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/transaction_note_edit_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textAutoComplete"/>
+
+    </com.google.android.material.textfield.TextInputLayout>
 
     <Button
         android:id="@+id/transaction_save_button"

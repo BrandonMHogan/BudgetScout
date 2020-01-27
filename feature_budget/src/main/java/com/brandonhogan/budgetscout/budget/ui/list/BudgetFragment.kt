@@ -9,17 +9,15 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.navigation.NavDirections
 import androidx.navigation.fragment.NavHostFragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.brandonhogan.budgetscout.budget.R
 import com.brandonhogan.budgetscout.budget.extensions.MotionLayoutWithState
+import com.brandonhogan.budgetscout.budget.ui.transaction.TransactionData
 import com.brandonhogan.budgetscout.core.services.Log
-import com.brandonhogan.budgetscout.repository.TransactionType
 import com.brandonhogan.budgetscout.repository.entity.Envelope
 import com.brandonhogan.budgetscout.repository.entity.Group
-import com.brandonhogan.budgetscout.repository.entity.Transaction
 import com.brandonhogan.budgetscout.repository.entity.relations.BudgetWithGroupsAndEnvelopes
 import com.xwray.groupie.ExpandableGroup
 import com.xwray.groupie.GroupAdapter
@@ -155,9 +153,9 @@ class BudgetFragment : Fragment() {
      */
     private fun onAddTransaction(groupId: Long = -1, envelopeId: Long = -1, transactionId: Long = -1) {
         model.budget.value?.budget?.id?.let {budgetId ->
-
-            val transaction = Transaction( envelopeId = -1, type = TransactionType.Expense)
-            val action = BudgetFragmentDirections.actionBudgetFragmentToTransactionFragment(budgetId = budgetId, groupId = groupId, transaction = transaction)
+            // creates an empty transaction data object and passes it in
+            val transactionData = TransactionData(budgetId = budgetId)
+            val action = BudgetFragmentDirections.actionBudgetFragmentToTransactionFragment(transactionData = transactionData)
             findNavController(this).navigate(action)
         }
     }

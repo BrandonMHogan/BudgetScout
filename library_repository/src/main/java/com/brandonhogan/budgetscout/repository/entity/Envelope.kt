@@ -1,8 +1,10 @@
 package com.brandonhogan.budgetscout.repository.entity
 
+import android.os.Parcelable
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import kotlinx.android.parcel.Parcelize
 
 /**
  * @Creator         Brandon Hogan
@@ -12,6 +14,7 @@ import androidx.room.PrimaryKey
  * specify the amount each envelope has, which can be adjusted as you go
  */
 
+@Parcelize
 @Entity(tableName = Envelope.NAME)
 data class Envelope (
     @PrimaryKey(autoGenerate = true) @ColumnInfo(name = PROPERTY_ID) var id: Long = 0,
@@ -29,7 +32,7 @@ data class Envelope (
     @ColumnInfo(name = PROPERTY_GROUP_ID) var groupId: Long,
     // Note for the given envelope
     @ColumnInfo(name = PROPERTY_NOTE) var note: String
-)
+): Parcelable
 {
     companion object {
         const val NAME = "Envelope"

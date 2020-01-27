@@ -2,15 +2,16 @@ package com.brandonhogan.budgetscout.budget.ui.transaction
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.brandonhogan.budgetscout.core.R
 import com.brandonhogan.budgetscout.core.bases.BaseViewModel
 import com.brandonhogan.budgetscout.repository.TransactionType
 import com.brandonhogan.budgetscout.repository.entity.Envelope
-import com.brandonhogan.budgetscout.repository.entity.Transaction
 import com.brandonhogan.budgetscout.repository.repo.budget.BudgetRepo
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.*
+import kotlin.collections.ArrayList
 
 class TransactionViewModel(private val budgetRepo: BudgetRepo) : BaseViewModel() {
 
@@ -18,13 +19,14 @@ class TransactionViewModel(private val budgetRepo: BudgetRepo) : BaseViewModel()
         TransactionUIModel()
     }
 
-    private val model: TransactionModel by lazy {
-        TransactionModel()
-    }
+    private var data: TransactionData = TransactionData()
 
     val ui: MutableLiveData<TransactionUIModel> by lazy {
         MutableLiveData<TransactionUIModel>()
     }
+
+    // used to display messages to the view
+    var displayMessage: MutableLiveData<List<Int>> = MutableLiveData(listOf())
 
     val date: MutableLiveData<Calendar> by lazy {
         MutableLiveData<Calendar>()
@@ -42,11 +44,8 @@ class TransactionViewModel(private val budgetRepo: BudgetRepo) : BaseViewModel()
      * Sets the model values passed to the fragment, then rns the init
      * setup required by the view model
      */
-    fun setModel(transaction: Transaction, budgetId: Long, groupId: Long) {
-
-        model.transaction = transaction
-        model.budgetId = budgetId
-        model.groupId = groupId
+    fun setData(transactionData: TransactionData) {
+        data = transactionData
 
         // posts the ui model to the ui
         ui.postValue(uiModel)
@@ -69,13 +68,13 @@ class TransactionViewModel(private val budgetRepo: BudgetRepo) : BaseViewModel()
      */
     suspend fun loadEnvelopes() = withContext(Dispatchers.IO) {
 
-        model.budgetId?.let { budgetId ->
+        data.budgetId?.let { budgetId ->
 
             // loads all envelopes for the given budget id
-            model.envelopes = budgetRepo.getEnvelopes(budgetId)
+            data.envelopes = budgetRepo.getEnvelopes(budgetId)
 
             // sets all the envelopes
-            envelopes.postValue(model.envelopes)
+            envelopes.postValue(data.envelopes)
         }
     }
 
@@ -90,7 +89,7 @@ class TransactionViewModel(private val budgetRepo: BudgetRepo) : BaseViewModel()
         transactionType.postValue(type)
 
         if(type != TransactionType.Transfer) {
-            model.transaction.fromEnvelopeId = null
+            data.transaction.fromEnvelopeId = null
         }
     }
 
@@ -98,40 +97,48 @@ class TransactionViewModel(private val budgetRepo: BudgetRepo) : BaseViewModel()
      * Sets the amount entered, making sure its a double
      */
     fun onAmountChanged(amount: String) {
-        // TODO: put a check to make sure amount comes in as a double
-        model.transaction.amount = amount.toDouble()
+        try {
+            data.transaction.amount = if (amount.isBlank()) {
+                0.00
+            } else {
+                amount.toDouble()
+            }
+        }
+        catch (ex: Exception) {
+            data.transaction.amount = 0.00
+        }
     }
 
     /**
      * Sets the from envelope selected
      */
     fun fromEnvelopeItemClicked(position: Int) {
-        envelopes.value?.let { model.transaction.fromEnvelopeId = it[position].id }
+        envelopes.value?.let { data.transaction.fromEnvelopeId = it[position].id }
     }
 
     /**
      * Sets the to envelope selected
      */
     fun toEnvelopeItemClicked(position: Int) {
-        envelopes.value?.let { model.transaction.envelopeId = it[position].id }
+        envelopes.value?.let { data.transaction.envelopeId = it[position].id }
     }
 
     fun toEnvelopeTextChanged(text: String) {
-        val count = model.envelopes?.count { envelope -> envelope.name.contains(text) }
+        val count = data.envelopes?.count { envelope -> envelope.name.contains(text) }
 
         if(count == 1) {
-            model.envelopes?.find { envelope -> envelope.name.contains(text) }?.let {
-                model.transaction.envelopeId = it.id
+            data.envelopes?.find { envelope -> envelope.name.contains(text) }?.let {
+                data.transaction.envelopeId = it.id
             }
         }
     }
 
     fun fromEnvelopeTextChanged(text: String) {
-        val count = model.envelopes?.count { envelope -> envelope.name.toLowerCase().contains(text.toLowerCase()) }
+        val count = data.envelopes?.count { envelope -> envelope.name.toLowerCase().contains(text.toLowerCase()) }
 
         if(count == 1) {
-            model.envelopes?.find { envelope -> envelope.name.toLowerCase().contains(text.toLowerCase()) }?.let {
-                model.transaction.fromEnvelopeId = it.id
+            data.envelopes?.find { envelope -> envelope.name.toLowerCase().contains(text.toLowerCase()) }?.let {
+                data.transaction.fromEnvelopeId = it.id
             }
         }
     }
@@ -142,21 +149,32 @@ class TransactionViewModel(private val budgetRepo: BudgetRepo) : BaseViewModel()
      */
     fun onSave() {
 
-        // if amount or fromEnvelope is null, or if type is Transfer and toEnvelope is null, display error
-        if(model.transaction.amount <= 0 || model.transaction.fromEnvelopeId == null ||
-            (model.transaction.type == TransactionType.Transfer && model.transaction.envelopeId == null)) {
-            uiModel.displayError = true
+        // keeps a running list of errors
+        val errorIds: ArrayList<Int> = arrayListOf()
+
+        // if the amount is 0 or less
+        if (data.transaction.amount <= 0) {
+            errorIds.add(R.string.transaction_validation_error_amount_empty)
         }
 
-        // if an error needs to be displayed, display it reset it, and return
-        if(uiModel.displayError) {
-            ui.postValue(uiModel)
-            uiModel.displayError = false
+        // if no valid to envelope was selected
+        if(data.transaction.envelopeId == -1L) {
+            errorIds.add(R.string.transaction_validation_error_to_envelope)
+        }
+
+        // if its a transfer type, and no valid from envelope selected
+        if(data.transaction.type == TransactionType.Transfer && (data.transaction.fromEnvelopeId == null || data.transaction.fromEnvelopeId == -1L)) {
+            errorIds.add(R.string.transaction_validation_error_from_envelope)
+        }
+
+        // if there are any errors, we want to return to the ui
+        if (errorIds.isNotEmpty()) {
+            displayMessage.postValue(errorIds)
             return
         }
 
 
 
-
+        displayMessage.postValue(listOf(R.string.transaction_save_success))
     }
 }

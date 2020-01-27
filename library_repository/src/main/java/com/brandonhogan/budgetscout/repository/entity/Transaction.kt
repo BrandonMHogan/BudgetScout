@@ -42,5 +42,9 @@ data class Transaction (
         const val PROPERTY_ID = "id"
         const val PROPERTY_CREATED = "created"
         const val PROPERTY_UPDATED = "updated"
+
+        fun newInstance(): Transaction {
+            return Transaction(envelopeId = -1, type = TransactionType.Expense)
+        }
     }
 }

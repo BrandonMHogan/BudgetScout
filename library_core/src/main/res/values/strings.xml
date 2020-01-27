@@ -15,7 +15,7 @@
     <string name="from_envelope">From Envelope</string>
     <string name="to_envelope">To Envelope</string>
     <string name="amount">Amount</string>
-    <string name="transaction_note_hint">(Optional) Add a note to the transaction</string>
+    <string name="transaction_note_hint">Note (Optional)</string>
     <string name="transfer_amount">Transfer Amount</string>
     <string name="save">Save</string>
 
@@ -23,6 +23,15 @@
     <string name="transaction_validation_title">Invalid Transaction</string>
     <string name="transaction_validation_message">Please make sure you have set a valid envelope and amount before trying to save</string>
     <string name="transaction_validation_button">Close</string>
+
+
+
+    <string name="transaction_validation_error_amount_empty">Amount must be greater then $0.00</string>
+    <string name="transaction_validation_error_to_envelope">To envelope must be an existing envelope</string>
+    <string name="transaction_validation_error_from_envelope">From envelope must be an existing envelope</string>
+    <string name="transaction_save_success">Transaction Saved</string>
+    <string name="transaction_save_fail">Transaction Failed</string>
+    <string name="transaction_save_fail_message">Transaction Failed to save. Please double check your values and try again</string>
 
 
 </resources>

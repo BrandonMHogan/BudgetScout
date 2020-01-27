@@ -1,8 +1,10 @@
 package com.brandonhogan.budgetscout.budget.ui.transaction
 
+import android.os.Parcelable
 import com.brandonhogan.budgetscout.repository.TransactionType
 import com.brandonhogan.budgetscout.repository.entity.Envelope
 import com.brandonhogan.budgetscout.repository.entity.Transaction
+import kotlinx.android.parcel.Parcelize
 
 /**
  * @Creator         Brandon Hogan
@@ -11,15 +13,14 @@ import com.brandonhogan.budgetscout.repository.entity.Transaction
  * @Description     {{ foo }}
  */
 
-class TransactionModel {
-
+@Parcelize
+data class TransactionData constructor(
     // the transaction object
-    var transaction: Transaction = Transaction(type = TransactionType.Expense, envelopeId = -1L)
+    var transaction: Transaction = Transaction.newInstance(),
     // the budget that the transaction is apart of
-    var budgetId: Long? = null
+    var budgetId: Long? = null,
     // the group that the transaction is apart of
-    var groupId: Long? = null
+    var groupId: Long? = null,
 
     // list of all envelopes that could be used
-    var envelopes: List<Envelope>? = null
-}
+    var envelopes: List<Envelope>? = null): Parcelable

@@ -9,5 +9,5 @@ package com.brandonhogan.budgetscout.budget.ui.transaction
 
 class TransactionUIModel {
 
-    var displayError: Boolean = false
+
 }

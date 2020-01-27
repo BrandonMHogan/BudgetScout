@@ -41,6 +41,7 @@ class TransactionFragment : Fragment() {
     private lateinit var fromEnvelopeTextView: AutoCompleteTextView
     private lateinit var toEnvelopeTextView: AutoCompleteTextView
     private lateinit var toEnvelopeTextLayout: TextInputLayout
+    private lateinit var fromEnvelopeTextLayout: TextInputLayout
 
     private lateinit var expenseButton: MaterialButton
     private lateinit var incomeButton: MaterialButton
@@ -58,6 +59,8 @@ class TransactionFragment : Fragment() {
 
         // date label
         dateLabel = view.findViewById(R.id.date_label)
+        // date picker
+        dateLabel.setOnClickListener { model.onDateClick() }
 
         // toggle buttons
         expenseButton = view.findViewById(R.id.expense_button)
@@ -65,6 +68,7 @@ class TransactionFragment : Fragment() {
         transferButton = view.findViewById(R.id.transfer_button)
 
         // from and to group text views
+        fromEnvelopeTextLayout = view.findViewById(R.id.from_envelope_input_layout)
         fromEnvelopeTextView = view.findViewById(R.id.from_envelope_text_view)
         toEnvelopeTextLayout = view.findViewById(R.id.to_envelope_input_layout)
         toEnvelopeTextView = view.findViewById(R.id.to_envelope_text_view)
@@ -75,7 +79,7 @@ class TransactionFragment : Fragment() {
         saveButton = view.findViewById(R.id.transaction_save_button)
 
         // sets the model from the arguments
-        model.setModel(arguments.transaction, arguments.budgetId, arguments.groupId)
+        model.setData(arguments.transactionData)
 
         return view
     }
@@ -91,9 +95,6 @@ class TransactionFragment : Fragment() {
      * Sets the different listeners from the UI, passing back to the view model
      */
     private fun setListeners() {
-        // date picker
-        dateLabel.setOnClickListener { model.onDateClick() }
-
         // toggle button click listeners
         expenseButton.setOnClickListener { model.setTransactionType(TransactionType.Expense) }
         incomeButton.setOnClickListener { model.setTransactionType(TransactionType.Income) }
@@ -137,11 +138,6 @@ class TransactionFragment : Fragment() {
             }
         })
 
-//        fromEnvelopeTextView.onFocusChangeListener(object: View.OnFocusChangeListener{
-//            override fun onFocusChange(v: View?, hasFocus: Boolean) {
-//            }
-//        })
-
         amountEditText.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
 
@@ -160,13 +156,20 @@ class TransactionFragment : Fragment() {
      * Sets the observables from the model here
      */
     private fun setObservers() {
-        model.ui.observe(this, Observer { uiModel ->
-            if(uiModel.displayError) {
+
+        model.displayMessage.observe(this, Observer { displayMessage ->
+
+            if(displayMessage.isNotEmpty()) {
+                val message = displayMessage.joinToString(separator = "\n") { message -> getString(message) }
+
                 MaterialAlertDialogBuilder(context)
                     .setTitle(R.string.transaction_validation_title)
-                    .setMessage(R.string.transaction_validation_message)
+                    .setMessage(message)
                     .setPositiveButton(R.string.transaction_validation_button, null)
                     .show()
+
+                // clears the display message after displaying it
+                model.displayMessage.value = listOf()
             }
         })
         model.date.observe(this, Observer { calendar ->
@@ -249,13 +252,13 @@ class TransactionFragment : Fragment() {
 
         when (transactionType) {
             TransactionType.Income -> {
-                toEnvelopeTextLayout.visibility = View.GONE
+                fromEnvelopeTextLayout.visibility = View.GONE
             }
             TransactionType.Expense -> {
-                toEnvelopeTextLayout.visibility = View.GONE
+                fromEnvelopeTextLayout.visibility = View.GONE
             }
             TransactionType.Transfer -> {
-                toEnvelopeTextLayout.visibility = View.VISIBLE
+                fromEnvelopeTextLayout.visibility = View.VISIBLE
             }
         }
 
