@@ -8,21 +8,23 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
-import android.widget.AutoCompleteTextView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.fragment.NavHostFragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.brandonhogan.budgetscout.budget.R
+import com.brandonhogan.budgetscout.budget.ui.SharedBudgetViewModel
+import com.brandonhogan.budgetscout.budget.ui.envelope.picker.EnvelopePickerModel
+import com.brandonhogan.budgetscout.core.services.Log
 import com.brandonhogan.budgetscout.core.utils.DateUtils
 import com.brandonhogan.budgetscout.core.utils.DecimalDigitsInputFilter
 import com.brandonhogan.budgetscout.repository.TransactionType
-import com.brandonhogan.budgetscout.repository.entity.Envelope
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputEditText
-import com.google.android.material.textfield.TextInputLayout
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.*
 
@@ -34,14 +36,14 @@ class TransactionFragment : Fragment() {
     }
 
     private val model: TransactionViewModel by viewModel()
+    private val sharedBudgetModel: SharedBudgetViewModel by sharedViewModel()
     val arguments: TransactionFragmentArgs by navArgs()
 
 
     private lateinit var dateLabel: TextView
-    private lateinit var fromEnvelopeTextView: AutoCompleteTextView
-    private lateinit var toEnvelopeTextView: AutoCompleteTextView
-    private lateinit var toEnvelopeTextLayout: TextInputLayout
-    private lateinit var fromEnvelopeTextLayout: TextInputLayout
+    private lateinit var toEnvelopeButton: MaterialButton
+    private lateinit var fromEnvelopeButton: MaterialButton
+
 
     private lateinit var expenseButton: MaterialButton
     private lateinit var incomeButton: MaterialButton
@@ -68,10 +70,8 @@ class TransactionFragment : Fragment() {
         transferButton = view.findViewById(R.id.transfer_button)
 
         // from and to group text views
-        fromEnvelopeTextLayout = view.findViewById(R.id.from_envelope_input_layout)
-        fromEnvelopeTextView = view.findViewById(R.id.from_envelope_text_view)
-        toEnvelopeTextLayout = view.findViewById(R.id.to_envelope_input_layout)
-        toEnvelopeTextView = view.findViewById(R.id.to_envelope_text_view)
+        toEnvelopeButton = view.findViewById(R.id.to_envelope_button)
+        fromEnvelopeButton = view.findViewById(R.id.from_envelope_button)
 
         // amount edit text
         amountEditText = view.findViewById(R.id.transaction_amount_edit_text)
@@ -89,6 +89,9 @@ class TransactionFragment : Fragment() {
         setObservers()
         setListeners()
         expenseButton.performClick()
+
+        val name = sharedBudgetModel.budget.value!!.budget.name
+        Log.debug(name)
     }
 
     /**
@@ -102,41 +105,11 @@ class TransactionFragment : Fragment() {
         // save button
         saveButton.setOnClickListener { model.onSave() }
 
+        toEnvelopeButton.setOnClickListener { displayEnvelopePicker() }
+        fromEnvelopeButton.setOnClickListener { displayEnvelopePicker() }
+
         // sets a filter for the amount edit text
         amountEditText.filters = arrayOf<InputFilter>(DecimalDigitsInputFilter(7, 2))
-
-        fromEnvelopeTextView.setOnItemClickListener{ adapter, view, position, id ->
-            model.fromEnvelopeItemClicked(position)
-        }
-
-        toEnvelopeTextView.setOnItemClickListener{ _, _, position, _ ->
-            model.toEnvelopeItemClicked(position)
-        }
-
-        toEnvelopeTextView.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(s: Editable?) {
-
-            }
-
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-            }
-
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                model.toEnvelopeTextChanged(toEnvelopeTextView.text.toString())
-            }
-        })
-
-        fromEnvelopeTextView.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(s: Editable?) {
-            }
-
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-            }
-
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                model.fromEnvelopeTextChanged(p0.toString())
-            }
-        })
 
         amountEditText.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
@@ -150,6 +123,12 @@ class TransactionFragment : Fragment() {
                 model.onAmountChanged(amountEditText.text.toString())
             }
         })
+    }
+
+    private fun displayEnvelopePicker() {
+        val model = EnvelopePickerModel(model.getBudget(), model.getGroupsWithEnvelopes())
+        val action = TransactionFragmentDirections.actionTransactionFragmentToEnvelopePickerFragment(model)
+        findNavController(this).navigate(action)
     }
 
     /**
@@ -177,7 +156,7 @@ class TransactionFragment : Fragment() {
         })
 
         model.envelopes.observe(this, Observer { envelopes ->
-            onEnvelopeListChange(envelopes)
+           // setEnvelopeButtons(envelopes)
         })
 
         model.transactionType.observe(this, Observer { transactionType ->
@@ -234,17 +213,6 @@ class TransactionFragment : Fragment() {
     }
 
     /**
-     * Called whenever the list of available envelopes changes
-     */
-    private fun onEnvelopeListChange(envelopes: List<Envelope>) {
-        val envelopeAdapter = ArrayAdapter<Any?>(requireContext(), R.layout.dropdown_menu_group_item,
-            envelopes.map { envelope -> envelope.name }
-        )
-        fromEnvelopeTextView.setAdapter(envelopeAdapter)
-        toEnvelopeTextView.setAdapter(envelopeAdapter)
-    }
-
-    /**
      * On Transaction Type change, it will hide or show the group text layout,
      * and update the UI
      */
@@ -252,13 +220,13 @@ class TransactionFragment : Fragment() {
 
         when (transactionType) {
             TransactionType.Income -> {
-                fromEnvelopeTextLayout.visibility = View.GONE
+                fromEnvelopeButton.visibility = View.GONE
             }
             TransactionType.Expense -> {
-                fromEnvelopeTextLayout.visibility = View.GONE
+                fromEnvelopeButton.visibility = View.GONE
             }
             TransactionType.Transfer -> {
-                fromEnvelopeTextLayout.visibility = View.VISIBLE
+                fromEnvelopeButton.visibility = View.VISIBLE
             }
         }
 

@@ -1,9 +1,11 @@
 package com.brandonhogan.budgetscout.repository.entity
 
+import android.os.Parcelable
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
+import kotlinx.android.parcel.Parcelize
 
 /**
  * @Creator         Brandon Hogan
@@ -13,6 +15,7 @@ import androidx.room.PrimaryKey
  * Example: House, Transportation, Food, etc.
  */
 
+@Parcelize
 @Entity(tableName = Group.NAME)
 data class Group (
     @PrimaryKey(autoGenerate = true) @ColumnInfo(name = PROPERTY_ID) var id: Long = 0,
@@ -22,7 +25,7 @@ data class Group (
     @ColumnInfo(name = PROPERTY_COLOUR) var colour: Int = 0,
     // Foreign key reference to its budget
     @ColumnInfo(name = PROPERTY_BUDGET_ID) var budgetId: Long
-)
+): Parcelable
 {
     companion object {
         const val NAME = "Group"

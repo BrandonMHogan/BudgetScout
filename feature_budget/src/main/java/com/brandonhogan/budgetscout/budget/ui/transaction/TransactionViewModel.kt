@@ -6,6 +6,7 @@ import com.brandonhogan.budgetscout.core.R
 import com.brandonhogan.budgetscout.core.bases.BaseViewModel
 import com.brandonhogan.budgetscout.repository.TransactionType
 import com.brandonhogan.budgetscout.repository.entity.Envelope
+import com.brandonhogan.budgetscout.repository.entity.relations.GroupWithEnvelopes
 import com.brandonhogan.budgetscout.repository.repo.budget.BudgetRepo
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -41,6 +42,20 @@ class TransactionViewModel(private val budgetRepo: BudgetRepo) : BaseViewModel()
     }
 
     /**
+     * returns the budget id
+     */
+    fun getBudget(): Long {
+        return data.budgetId ?: 0
+    }
+
+    /**
+     * Returns a list of the groups and their envelopes
+     */
+    fun getGroupsWithEnvelopes(): List<GroupWithEnvelopes> {
+        return data.groupsWithEnvelopes ?: listOf()
+    }
+
+    /**
      * Sets the model values passed to the fragment, then rns the init
      * setup required by the view model
      */
@@ -69,12 +84,8 @@ class TransactionViewModel(private val budgetRepo: BudgetRepo) : BaseViewModel()
     suspend fun loadEnvelopes() = withContext(Dispatchers.IO) {
 
         data.budgetId?.let { budgetId ->
-
-            // loads all envelopes for the given budget id
-            data.envelopes = budgetRepo.getEnvelopes(budgetId)
-
-            // sets all the envelopes
-            envelopes.postValue(data.envelopes)
+            val budget = budgetRepo.getWithGroupsAndEnvelopes(budgetId)
+            data.groupsWithEnvelopes = budget.groups
         }
     }
 
@@ -106,40 +117,6 @@ class TransactionViewModel(private val budgetRepo: BudgetRepo) : BaseViewModel()
         }
         catch (ex: Exception) {
             data.transaction.amount = 0.00
-        }
-    }
-
-    /**
-     * Sets the from envelope selected
-     */
-    fun fromEnvelopeItemClicked(position: Int) {
-        envelopes.value?.let { data.transaction.fromEnvelopeId = it[position].id }
-    }
-
-    /**
-     * Sets the to envelope selected
-     */
-    fun toEnvelopeItemClicked(position: Int) {
-        envelopes.value?.let { data.transaction.envelopeId = it[position].id }
-    }
-
-    fun toEnvelopeTextChanged(text: String) {
-        val count = data.envelopes?.count { envelope -> envelope.name.contains(text) }
-
-        if(count == 1) {
-            data.envelopes?.find { envelope -> envelope.name.contains(text) }?.let {
-                data.transaction.envelopeId = it.id
-            }
-        }
-    }
-
-    fun fromEnvelopeTextChanged(text: String) {
-        val count = data.envelopes?.count { envelope -> envelope.name.toLowerCase().contains(text.toLowerCase()) }
-
-        if(count == 1) {
-            data.envelopes?.find { envelope -> envelope.name.toLowerCase().contains(text.toLowerCase()) }?.let {
-                data.transaction.fromEnvelopeId = it.id
-            }
         }
     }
 

@@ -54,5 +54,23 @@
         <argument
             android:name="transactionData"
             app:argType="com.brandonhogan.budgetscout.budget.ui.transaction.TransactionData" />
+        <action
+            android:id="@+id/action_transactionFragment_to_envelopePickerFragment"
+            app:destination="@id/envelopePickerFragment" >
+            <argument
+                android:name="envelopePickerModel"
+                app:argType="com.brandonhogan.budgetscout.budget.ui.envelope.picker.EnvelopePickerModel" />
+        </action>
     </fragment>
+
+    <dialog
+        android:id="@+id/envelopePickerFragment"
+        android:name="com.brandonhogan.budgetscout.budget.ui.envelope.picker.EnvelopePickerFragment"
+        android:label="EnvelopePickerDialogFragment"
+        tools:layout="@layout/envelope_picker_fragment">
+        <argument
+            android:name="envelopePickerModel"
+            app:argType="com.brandonhogan.budgetscout.budget.ui.envelope.picker.EnvelopePickerModel" />
+    </dialog>
+
 </navigation>

@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.brandonhogan.budgetscout.budget.R
 import com.brandonhogan.budgetscout.budget.extensions.MotionLayoutWithState
+import com.brandonhogan.budgetscout.budget.ui.SharedBudgetViewModel
 import com.brandonhogan.budgetscout.budget.ui.transaction.TransactionData
 import com.brandonhogan.budgetscout.core.services.Log
 import com.brandonhogan.budgetscout.repository.entity.Envelope
@@ -31,6 +32,7 @@ import com.github.mikephil.charting.data.PieEntry
 import com.github.mikephil.charting.formatter.PercentFormatter
 import com.github.mikephil.charting.utils.ColorTemplate
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
@@ -42,6 +44,8 @@ class BudgetFragment : Fragment() {
     }
 
     private val model: BudgetViewModel by viewModel()
+    private val sharedBudgetModel: SharedBudgetViewModel by sharedViewModel()
+
     private lateinit var motionLayout: MotionLayoutWithState
     private lateinit var toolbar: Toolbar
     private lateinit var recyclerView: RecyclerView
@@ -112,47 +116,14 @@ class BudgetFragment : Fragment() {
             recyclerView.adapter = adapter
         }
 
-        model.budget.observe(this, budgetObserver)
-    }
-
-    private fun initChart() {
-        pieChart.setBackgroundColor(Color.TRANSPARENT)
-        pieChart.isDrawHoleEnabled = true
-
-        pieChart.setCenterTextSize(12f)
-        pieChart.centerText = "January Budget"
-
-        pieChart.setUsePercentValues(true)
-        pieChart.description.isEnabled = false
-
-
-        pieChart.setHoleColor(Color.TRANSPARENT)
-        pieChart.holeRadius = 43f
-
-        pieChart.setTransparentCircleColor(Color.TRANSPARENT)
-        // pieChart.setTransparentCircleAlpha(110)
-        pieChart.transparentCircleRadius = 0f
-
-        pieChart.isRotationEnabled = false
-        pieChart.isHighlightPerTapEnabled = true
-
-        pieChart.legend.isEnabled = false
-
-        setData(4, 100F)
-
-        pieChart.maxAngle = 180f // HALF CHART
-        pieChart.rotationAngle = 180f
-        pieChart.setCenterTextOffset(0F, -20F)
-        pieChart.setExtraOffsets(0f,0f,0f,-200f)
-
-        pieChart.animateY(1400, Easing.EaseInOutQuad)
+        sharedBudgetModel.budget.observe(this, budgetObserver)
     }
 
     /**
      * Will navigate to the transaction fragment as long as we have a budget id
      */
     private fun onAddTransaction(groupId: Long = -1, envelopeId: Long = -1, transactionId: Long = -1) {
-        model.budget.value?.budget?.id?.let {budgetId ->
+        sharedBudgetModel.budget.value?.budget?.id?.let {budgetId ->
             // creates an empty transaction data object and passes it in
             val transactionData = TransactionData(budgetId = budgetId)
             val action = BudgetFragmentDirections.actionBudgetFragmentToTransactionFragment(transactionData = transactionData)
@@ -173,23 +144,5 @@ class BudgetFragment : Fragment() {
 
     private fun onEnvelopeLongClick(group: Group, envelope: Envelope) {
         Log.debug("WOOOO, Envelope long clicked! ${group.name} : ${envelope.name}")
-    }
-
-    private fun setData(count: Int, range: Float) {
-        val values: ArrayList<PieEntry> = ArrayList()
-        for (i in 0 until count) {
-            values.add(PieEntry((Math.random() * range + range / 5).toFloat(), "test.${i}"))
-        }
-        val dataSet = PieDataSet(values, "Election Results")
-        dataSet.sliceSpace = 1f
-        dataSet.selectionShift = 5f
-        dataSet.setColors(*ColorTemplate.MATERIAL_COLORS)
-        //dataSet.setSelectionShift(0f);
-        val data = PieData(dataSet)
-        data.setValueFormatter(PercentFormatter())
-        data.setValueTextSize(10f)
-        data.setValueTextColor(Color.WHITE)
-        pieChart.data = data
-        pieChart.invalidate()
     }
 }

@@ -83,31 +83,21 @@
         app:layout_constraintGuide_begin="165dp"
         android:orientation="horizontal"/>
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/from_envelope_input_layout"
-        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/from_envelope_button"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/transaction_margin_sides"
         android:layout_marginEnd="@dimen/transaction_margin_sides"
         android:elevation="@dimen/transfer_header_bubble_content_elevation"
-        android:hint="@string/from_envelope"
+        android:text="@string/from_envelope"
         android:visibility="gone"
-        app:layout_constraintEnd_toStartOf="@+id/to_envelope_input_layout"
+        app:layout_constraintEnd_toStartOf="@+id/to_envelope_button"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/header_guideline">
+        app:layout_constraintTop_toBottomOf="@id/header_guideline"/>
 
-        <AutoCompleteTextView
-            android:id="@+id/from_envelope_text_view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-    </com.google.android.material.textfield.TextInputLayout>
-
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/to_envelope_input_layout"
-        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/to_envelope_button"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/transaction_margin_sides"
@@ -115,17 +105,8 @@
         android:elevation="@dimen/transfer_header_bubble_content_elevation"
         android:hint="@string/to_envelope"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/from_envelope_input_layout"
-        app:layout_constraintTop_toBottomOf="@id/header_guideline">
-
-        <AutoCompleteTextView
-            android:id="@+id/to_envelope_text_view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-    </com.google.android.material.textfield.TextInputLayout>
-
-
+        app:layout_constraintStart_toEndOf="@id/from_envelope_button"
+        app:layout_constraintTop_toBottomOf="@id/header_guideline"/>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textInputLayout"
@@ -139,7 +120,7 @@
 
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/to_envelope_input_layout">
+        app:layout_constraintTop_toBottomOf="@id/to_envelope_button">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/transaction_amount_edit_text"

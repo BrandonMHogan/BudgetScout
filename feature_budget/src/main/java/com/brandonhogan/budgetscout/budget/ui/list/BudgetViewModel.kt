@@ -30,17 +30,17 @@ class BudgetViewModel(private val budgetRepo: BudgetRepo, private val budgetCrea
             // gets todays date
             val calendar = Calendar.getInstance()
 
-            // attempts to load that budget
-            val loadedBudget = loadBudget(calendar)
-            if (loadedBudget != null) {
-                budget.postValue(loadedBudget)
-            }
-            //TODO: instead of just making a budget, it should redirect to the
-            // budget creator screen
-            else {
-                budgetCreator.createBasicBudget(true, calendar = calendar)
-                budget.postValue(loadBudget(calendar))
-            }
+//            // attempts to load that budget
+//            val loadedBudget = loadBudget(calendar)
+//            if (loadedBudget != null) {
+//                budget.postValue(loadedBudget)
+//            }
+//            //TODO: instead of just making a budget, it should redirect to the
+//            // budget creator screen
+//            else {
+//                budgetCreator.createBasicBudget(true, calendar = calendar)
+//                budget.postValue(loadBudget(calendar))
+//            }
         }
     }
 

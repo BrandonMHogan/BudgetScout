@@ -19,7 +19,7 @@ import kotlinx.android.synthetic.main.budget_group_item.*
 class GroupItem(private val group: Group, private val onLongClickListener: () -> Unit) : Item(), ExpandableItem {
 
     var clickListener: ((GroupItem) -> Unit)? = null
-    private lateinit var expandableGroup: ExpandableGroup
+    private var expandableGroup: ExpandableGroup? = null
 
     override fun setExpandableGroup(onToggleListener: ExpandableGroup) {
         this.expandableGroup = onToggleListener
@@ -32,7 +32,7 @@ class GroupItem(private val group: Group, private val onLongClickListener: () ->
 
         viewHolder.itemView.setOnClickListener {
             clickListener?.invoke(this)
-            expandableGroup.onToggleExpanded()
+            expandableGroup?.onToggleExpanded()
         }
 
         viewHolder.itemView.setOnLongClickListener {
