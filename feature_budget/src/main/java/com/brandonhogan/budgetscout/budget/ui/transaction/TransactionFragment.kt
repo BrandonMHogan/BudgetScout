@@ -11,12 +11,10 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.NavHostFragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.brandonhogan.budgetscout.budget.R
 import com.brandonhogan.budgetscout.budget.ui.SharedBudgetViewModel
-import com.brandonhogan.budgetscout.budget.ui.envelope.picker.EnvelopePickerModel
 import com.brandonhogan.budgetscout.core.services.Log
 import com.brandonhogan.budgetscout.core.utils.DateUtils
 import com.brandonhogan.budgetscout.core.utils.DecimalDigitsInputFilter
@@ -126,8 +124,7 @@ class TransactionFragment : Fragment() {
     }
 
     private fun displayEnvelopePicker() {
-        val model = EnvelopePickerModel(model.getBudget(), model.getGroupsWithEnvelopes())
-        val action = TransactionFragmentDirections.actionTransactionFragmentToEnvelopePickerFragment(model)
+        val action = TransactionFragmentDirections.actionTransactionFragmentToEnvelopePickerFragment()
         findNavController(this).navigate(action)
     }
 

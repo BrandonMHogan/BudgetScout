@@ -18,10 +18,5 @@ import kotlinx.android.parcel.Parcelize
 data class TransactionData constructor(
     // the transaction object
     var transaction: Transaction = Transaction.newInstance(),
-    // the budget that the transaction is apart of
-    var budgetId: Long? = null,
     // the group that the transaction is apart of
-    var groupId: Long? = null,
-
-    // contains all the groups and their envelopes for the current budget
-    var groupsWithEnvelopes: List<GroupWithEnvelopes>? = null): Parcelable
+    var groupId: Long? = null): Parcelable

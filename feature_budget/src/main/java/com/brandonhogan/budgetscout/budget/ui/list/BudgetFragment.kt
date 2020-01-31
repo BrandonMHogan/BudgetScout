@@ -1,6 +1,5 @@
 package com.brandonhogan.budgetscout.budget.ui.list
 
-import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -19,22 +18,16 @@ import com.brandonhogan.budgetscout.budget.ui.transaction.TransactionData
 import com.brandonhogan.budgetscout.core.services.Log
 import com.brandonhogan.budgetscout.repository.entity.Envelope
 import com.brandonhogan.budgetscout.repository.entity.Group
+import com.brandonhogan.budgetscout.repository.entity.Transaction
 import com.brandonhogan.budgetscout.repository.entity.relations.BudgetWithGroupsAndEnvelopes
+import com.github.mikephil.charting.charts.PieChart
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.xwray.groupie.ExpandableGroup
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.Section
 import com.xwray.groupie.kotlinandroidextensions.GroupieViewHolder
-import com.github.mikephil.charting.animation.Easing
-import com.github.mikephil.charting.charts.PieChart
-import com.github.mikephil.charting.data.PieData
-import com.github.mikephil.charting.data.PieDataSet
-import com.github.mikephil.charting.data.PieEntry
-import com.github.mikephil.charting.formatter.PercentFormatter
-import com.github.mikephil.charting.utils.ColorTemplate
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
-
 
 class BudgetFragment : Fragment() {
 
@@ -84,12 +77,21 @@ class BudgetFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        setObservers()
+    }
 
-        // observes the budget
+    /**
+     * Sets the observers for the view
+     */
+    private fun setObservers() {
+
+        // budget observer that will set the adapter if first load, or
+        // updates the data otherwise
         val budgetObserver = Observer<BudgetWithGroupsAndEnvelopes> { budget ->
 
             if (budget != null && adapter == null) {
                 adapter = GroupAdapter()
+
 
                 // for each group, will add a new expandable group.
                 // each expandable group is a GroupItem.
@@ -116,19 +118,17 @@ class BudgetFragment : Fragment() {
             recyclerView.adapter = adapter
         }
 
+        // observes the shared budget object
         sharedBudgetModel.budget.observe(this, budgetObserver)
     }
 
     /**
      * Will navigate to the transaction fragment as long as we have a budget id
      */
-    private fun onAddTransaction(groupId: Long = -1, envelopeId: Long = -1, transactionId: Long = -1) {
-        sharedBudgetModel.budget.value?.budget?.id?.let {budgetId ->
-            // creates an empty transaction data object and passes it in
-            val transactionData = TransactionData(budgetId = budgetId)
-            val action = BudgetFragmentDirections.actionBudgetFragmentToTransactionFragment(transactionData = transactionData)
-            findNavController(this).navigate(action)
-        }
+    private fun onAddTransaction(groupId: Long? = null, transaction: Transaction = Transaction.newInstance()) {
+        val transactionData = TransactionData(groupId = groupId, transaction = transaction)
+        val action = BudgetFragmentDirections.actionBudgetFragmentToTransactionFragment(transactionData = transactionData)
+        findNavController(this).navigate(action)
     }
 
     private fun onGroupLongClick(group: Group) {

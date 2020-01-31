@@ -15,7 +15,6 @@ import kotlinx.android.parcel.Parcelize
  * Example: House, Transportation, Food, etc.
  */
 
-@Parcelize
 @Entity(tableName = Group.NAME)
 data class Group (
     @PrimaryKey(autoGenerate = true) @ColumnInfo(name = PROPERTY_ID) var id: Long = 0,
@@ -25,7 +24,7 @@ data class Group (
     @ColumnInfo(name = PROPERTY_COLOUR) var colour: Int = 0,
     // Foreign key reference to its budget
     @ColumnInfo(name = PROPERTY_BUDGET_ID) var budgetId: Long
-): Parcelable
+)
 {
     companion object {
         const val NAME = "Group"

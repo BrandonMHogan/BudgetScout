@@ -11,6 +11,7 @@ import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.brandonhogan.budgetscout.budget.R
+import com.brandonhogan.budgetscout.budget.ui.SharedBudgetViewModel
 import com.brandonhogan.budgetscout.budget.ui.list.EnvelopeItem
 import com.brandonhogan.budgetscout.budget.ui.list.GroupItem
 import com.brandonhogan.budgetscout.repository.entity.Envelope
@@ -20,6 +21,7 @@ import com.xwray.groupie.ExpandableGroup
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.Section
 import com.xwray.groupie.kotlinandroidextensions.GroupieViewHolder
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
@@ -30,7 +32,7 @@ class EnvelopePickerFragment : DialogFragment() {
     }
 
     private val model: EnvelopePickerViewModel by viewModel()
-    val arguments: EnvelopePickerFragmentArgs by navArgs()
+    private val sharedBudgetModel: SharedBudgetViewModel by sharedViewModel()
 
     private lateinit var headerText: TextView
     private lateinit var selectButton: MaterialButton
@@ -70,16 +72,14 @@ class EnvelopePickerFragment : DialogFragment() {
     }
 
     private fun setList() {
-        val pickerModel = arguments.envelopePickerModel
-
-        if (pickerModel.budgetId != null && adapter == null) {
+        if (adapter == null) {
             adapter = GroupAdapter()
 
             // for each group, will add a new expandable group.
             // each expandable group is a GroupItem.
             // It then adds a section to the Group item, and populates it with
             // EnvelopeItems
-            pickerModel.groupWithEnvelopes.forEach { group ->
+            sharedBudgetModel.budget.value?.groups?.forEach { group ->
 
                 adapter?.add(Section(GroupItem(
                     group.group,

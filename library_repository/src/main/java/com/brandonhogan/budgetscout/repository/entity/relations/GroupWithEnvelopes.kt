@@ -13,7 +13,6 @@ import kotlinx.android.parcel.Parcelize
  * @File            GroupWithEnvelopes
  * @Description     Relational data class used to get a group and its envelopes
  */
-@Parcelize
 data class GroupWithEnvelopes(
     @Embedded val group: Group,
     @Relation(
@@ -22,4 +21,4 @@ data class GroupWithEnvelopes(
         entity = Envelope::class
     )
     val envelopes: List<Envelope>
-): Parcelable
+)

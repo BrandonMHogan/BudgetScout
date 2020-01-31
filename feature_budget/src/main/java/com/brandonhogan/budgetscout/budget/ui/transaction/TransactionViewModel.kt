@@ -42,20 +42,6 @@ class TransactionViewModel(private val budgetRepo: BudgetRepo) : BaseViewModel()
     }
 
     /**
-     * returns the budget id
-     */
-    fun getBudget(): Long {
-        return data.budgetId ?: 0
-    }
-
-    /**
-     * Returns a list of the groups and their envelopes
-     */
-    fun getGroupsWithEnvelopes(): List<GroupWithEnvelopes> {
-        return data.groupsWithEnvelopes ?: listOf()
-    }
-
-    /**
      * Sets the model values passed to the fragment, then rns the init
      * setup required by the view model
      */
@@ -74,18 +60,6 @@ class TransactionViewModel(private val budgetRepo: BudgetRepo) : BaseViewModel()
         viewModelScope.launch(exceptionHandler) {
             // sets initial date as today
             date.postValue(Calendar.getInstance())
-            loadEnvelopes()
-        }
-    }
-
-    /**
-     * Loads envelopes from the database, used to populate the from and to lists
-     */
-    suspend fun loadEnvelopes() = withContext(Dispatchers.IO) {
-
-        data.budgetId?.let { budgetId ->
-            val budget = budgetRepo.getWithGroupsAndEnvelopes(budgetId)
-            data.groupsWithEnvelopes = budget.groups
         }
     }
 
