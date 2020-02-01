@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.brandonhogan.budgetscout.budget.R
 import com.brandonhogan.budgetscout.budget.extensions.MotionLayoutWithState
-import com.brandonhogan.budgetscout.budget.ui.SharedBudgetViewModel
+import com.brandonhogan.budgetscout.budget.services.BudgetService
 import com.brandonhogan.budgetscout.budget.ui.transaction.TransactionData
 import com.brandonhogan.budgetscout.core.services.Log
 import com.brandonhogan.budgetscout.repository.entity.Envelope
@@ -37,7 +37,6 @@ class BudgetFragment : Fragment() {
     }
 
     private val model: BudgetViewModel by viewModel()
-    private val sharedBudgetModel: SharedBudgetViewModel by sharedViewModel()
 
     private lateinit var motionLayout: MotionLayoutWithState
     private lateinit var toolbar: Toolbar
@@ -119,7 +118,7 @@ class BudgetFragment : Fragment() {
         }
 
         // observes the shared budget object
-        sharedBudgetModel.budget.observe(this, budgetObserver)
+        model.budget.observe(this, budgetObserver)
     }
 
     /**

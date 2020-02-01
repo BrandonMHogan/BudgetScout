@@ -28,6 +28,8 @@ data class Transaction (
     @ColumnInfo(name = PROPERTY_TYPE) var type: TransactionType,
     // Amount either transferred, added or edited by
     @ColumnInfo(name = PROPERTY_AMOUNT) var amount: Double = 0.0,
+    // date of the transaction
+    @ColumnInfo(name = PROPERTY_DATE) var date: Calendar = Calendar.getInstance(),
     // created date
     @ColumnInfo(name = PROPERTY_CREATED) var created: Calendar = Calendar.getInstance(),
     // last updated date
@@ -40,6 +42,7 @@ data class Transaction (
         const val PROPERTY_TYPE = "type"
         const val PROPERTY_AMOUNT = "amount"
         const val PROPERTY_ID = "id"
+        const val PROPERTY_DATE = "date"
         const val PROPERTY_CREATED = "created"
         const val PROPERTY_UPDATED = "updated"
 

@@ -2,13 +2,18 @@ package com.brandonhogan.budgetscout.budget.ui.envelope.picker
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.brandonhogan.budgetscout.budget.services.BudgetService
+import com.brandonhogan.budgetscout.repository.entity.Budget
 import com.brandonhogan.budgetscout.repository.entity.Envelope
+import com.brandonhogan.budgetscout.repository.entity.relations.BudgetWithGroupsAndEnvelopes
 
-class EnvelopePickerViewModel : ViewModel() {
+class EnvelopePickerViewModel(private val budgetService: BudgetService) : ViewModel() {
 
     val selectedEnvelope: MutableLiveData<Envelope> by lazy {
         MutableLiveData<Envelope>()
     }
+
+    val budget: MutableLiveData<BudgetWithGroupsAndEnvelopes> = budgetService.budget
 
     /**
      * Keeps track of which envelope is selected when setting the envelope

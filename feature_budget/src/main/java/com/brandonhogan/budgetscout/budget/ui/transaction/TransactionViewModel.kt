@@ -1,30 +1,24 @@
 package com.brandonhogan.budgetscout.budget.ui.transaction
 
-import android.app.DatePickerDialog
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.brandonhogan.budgetscout.budget.services.BudgetService
 import com.brandonhogan.budgetscout.core.R
 import com.brandonhogan.budgetscout.core.bases.BaseViewModel
 import com.brandonhogan.budgetscout.repository.TransactionType
 import com.brandonhogan.budgetscout.repository.entity.Envelope
-import com.brandonhogan.budgetscout.repository.entity.relations.GroupWithEnvelopes
-import com.brandonhogan.budgetscout.repository.repo.budget.BudgetRepo
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import java.util.*
 import kotlin.collections.ArrayList
 
-class TransactionViewModel(private val budgetRepo: BudgetRepo) : BaseViewModel() {
-
-    private val uiModel: TransactionUIModel by lazy {
-        TransactionUIModel()
-    }
-
-    private var data: TransactionData = TransactionData()
+class TransactionViewModel(private val data: TransactionData, private val budgetService: BudgetService) : BaseViewModel() {
 
     val ui: MutableLiveData<TransactionUIModel> by lazy {
         MutableLiveData<TransactionUIModel>()
+    }
+
+    private val uiModel: TransactionUIModel by lazy {
+        TransactionUIModel()
     }
 
     // used to display messages to the view
@@ -39,23 +33,17 @@ class TransactionViewModel(private val budgetRepo: BudgetRepo) : BaseViewModel()
     }
 
     /**
-     * Sets the model values passed to the fragment, then rns the init
-     * setup required by the view model
+     * Takes the data object, and updates the ui model
      */
-    fun setData(transactionData: TransactionData) {
-        data = transactionData
-
-        // posts the ui model to the ui
-        ui.postValue(uiModel)
-        setup()
-    }
-
-    /**
-     * Loads all envelopes from the database that can be used
-     */
-    private fun setup() {
+    init {
         viewModelScope.launch(exceptionHandler) {
-
+            // sets initial date based on the date of the transaction
+            uiModel.date = data.transaction.date
+            // sets the from and to envelope names
+            uiModel.fromEnvelopName = budgetService.getEnvelopeName(data.transaction.fromEnvelopeId)
+            uiModel.toEnvelopeName = budgetService.getEnvelopeName(data.transaction.envelopeId)
+            // posts the ui model to the ui
+            ui.postValue(uiModel)
         }
     }
 
@@ -140,5 +128,6 @@ class TransactionViewModel(private val budgetRepo: BudgetRepo) : BaseViewModel()
 
 
         displayMessage.postValue(listOf(R.string.transaction_save_success))
+
     }
 }

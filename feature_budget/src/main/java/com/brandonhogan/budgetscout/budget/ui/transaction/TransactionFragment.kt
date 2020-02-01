@@ -14,17 +14,17 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.NavHostFragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.brandonhogan.budgetscout.budget.R
-import com.brandonhogan.budgetscout.budget.ui.SharedBudgetViewModel
 import com.brandonhogan.budgetscout.budget.ui.envelope.picker.EnvelopePickerViewModel
-import com.brandonhogan.budgetscout.core.services.Log
 import com.brandonhogan.budgetscout.core.utils.DateUtils
 import com.brandonhogan.budgetscout.core.utils.DecimalDigitsInputFilter
 import com.brandonhogan.budgetscout.repository.TransactionType
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputEditText
+import org.koin.androidx.viewmodel.ext.android.getViewModel
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.parameter.parametersOf
 import java.util.*
 
 
@@ -34,16 +34,14 @@ class TransactionFragment : Fragment() {
         fun newInstance() = TransactionFragment()
     }
 
-    private val model: TransactionViewModel by viewModel()
-    private val sharedBudgetModel: SharedBudgetViewModel by sharedViewModel()
-    private val envelopePickerModel: EnvelopePickerViewModel by sharedViewModel()
     val arguments: TransactionFragmentArgs by navArgs()
+    private val envelopePickerModel: EnvelopePickerViewModel by sharedViewModel()
+    private val model: TransactionViewModel by viewModel { parametersOf(arguments.transactionData) }
 
 
     private lateinit var dateLabel: TextView
     private lateinit var toEnvelopeButton: MaterialButton
     private lateinit var fromEnvelopeButton: MaterialButton
-
 
     private lateinit var expenseButton: MaterialButton
     private lateinit var incomeButton: MaterialButton
@@ -76,9 +74,7 @@ class TransactionFragment : Fragment() {
 
         saveButton = view.findViewById(R.id.transaction_save_button)
 
-        // sets the model from the arguments
-        model.setData(arguments.transactionData)
-
+        model
         return view
     }
 
@@ -87,9 +83,6 @@ class TransactionFragment : Fragment() {
         setObservers()
         setListeners()
         expenseButton.performClick()
-
-        val name = sharedBudgetModel.budget.value!!.budget.name
-        Log.debug(name)
     }
 
     /**
@@ -139,8 +132,11 @@ class TransactionFragment : Fragment() {
     private fun setObservers() {
 
         model.ui.observe(this, Observer { model ->
-            fromEnvelopeButton.text = model.fromEnvelopName
-            toEnvelopeButton.text = model.toEnvelopeName
+
+
+
+            fromEnvelopeButton.text = if(model.fromEnvelopName.isEmpty()) { getString(R.string.from_envelope) } else { model.fromEnvelopName }
+            toEnvelopeButton.text = if(model.toEnvelopeName.isEmpty()) { getString(R.string.to_envelope) } else { model.toEnvelopeName }
 
             onDateChange(model.date)
         })

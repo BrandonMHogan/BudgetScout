@@ -34,7 +34,7 @@
     <string name="transaction_save_fail_message">Transaction Failed to save. Please double check your values and try again</string>
 
     <string name="envelope_picker_header">Select an Envelope</string>
-    <string name="envelope_picker_button">Select</string>
+    <string name="envelope_picker_button">Close</string>
 
 
 </resources>

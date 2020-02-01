@@ -7,22 +7,19 @@ import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.TextView
 import androidx.fragment.app.DialogFragment
-import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.brandonhogan.budgetscout.budget.R
-import com.brandonhogan.budgetscout.budget.ui.SharedBudgetViewModel
+import com.brandonhogan.budgetscout.budget.services.BudgetService
 import com.brandonhogan.budgetscout.budget.ui.list.EnvelopeItem
 import com.brandonhogan.budgetscout.budget.ui.list.GroupItem
 import com.brandonhogan.budgetscout.repository.entity.Envelope
 import com.brandonhogan.budgetscout.repository.entity.Group
 import com.google.android.material.button.MaterialButton
-import com.xwray.groupie.ExpandableGroup
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.Section
 import com.xwray.groupie.kotlinandroidextensions.GroupieViewHolder
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
-import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class EnvelopePickerFragment : DialogFragment() {
@@ -32,7 +29,6 @@ class EnvelopePickerFragment : DialogFragment() {
     }
 
     private val model: EnvelopePickerViewModel by sharedViewModel()
-    private val sharedBudgetModel: SharedBudgetViewModel by sharedViewModel()
 
     private lateinit var headerText: TextView
     private lateinit var selectButton: MaterialButton
@@ -85,7 +81,7 @@ class EnvelopePickerFragment : DialogFragment() {
             // each expandable group is a GroupItem.
             // It then adds a section to the Group item, and populates it with
             // EnvelopeItems
-            sharedBudgetModel.budget.value?.groups?.forEach { group ->
+            model.budget.value?.groups?.forEach { group ->
 
                 adapter?.add(Section(GroupItem(
                     group.group,
@@ -108,6 +104,7 @@ class EnvelopePickerFragment : DialogFragment() {
 
     private fun onEnvelopeClick(group: Group, envelope: Envelope) {
         model.selectedEnvelope.postValue(envelope)
+        this.dismiss()
     }
 
 }
