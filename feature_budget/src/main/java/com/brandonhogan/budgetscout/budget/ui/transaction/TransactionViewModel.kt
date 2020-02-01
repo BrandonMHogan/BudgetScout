@@ -1,5 +1,6 @@
 package com.brandonhogan.budgetscout.budget.ui.transaction
 
+import android.app.DatePickerDialog
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.brandonhogan.budgetscout.core.R
@@ -29,10 +30,6 @@ class TransactionViewModel(private val budgetRepo: BudgetRepo) : BaseViewModel()
     // used to display messages to the view
     var displayMessage: MutableLiveData<List<Int>> = MutableLiveData(listOf())
 
-    val date: MutableLiveData<Calendar> by lazy {
-        MutableLiveData<Calendar>()
-    }
-
     val envelopes: MutableLiveData<List<Envelope>> by lazy {
         MutableLiveData<List<Envelope>>()
     }
@@ -58,13 +55,16 @@ class TransactionViewModel(private val budgetRepo: BudgetRepo) : BaseViewModel()
      */
     private fun setup() {
         viewModelScope.launch(exceptionHandler) {
-            // sets initial date as today
-            date.postValue(Calendar.getInstance())
+
         }
     }
 
-    fun onDateClick() {
-
+    /**
+     * When the date is changed, update the ui model and push it to the ui
+     */
+    fun onDateChanged(date: Calendar) {
+        uiModel.date = date
+        ui.postValue(uiModel)
     }
 
     /**
@@ -92,6 +92,19 @@ class TransactionViewModel(private val budgetRepo: BudgetRepo) : BaseViewModel()
         catch (ex: Exception) {
             data.transaction.amount = 0.00
         }
+    }
+
+    fun envelopeSelected(isFromEnvelope: Boolean = false, envelope: Envelope) {
+        if (isFromEnvelope) {
+            data.transaction.fromEnvelopeId = envelope.id
+            uiModel.fromEnvelopName = envelope.name
+        }
+        else {
+            data.transaction.envelopeId = envelope.id
+            uiModel.toEnvelopeName = envelope.name
+        }
+
+        ui.postValue(uiModel)
     }
 
     /**

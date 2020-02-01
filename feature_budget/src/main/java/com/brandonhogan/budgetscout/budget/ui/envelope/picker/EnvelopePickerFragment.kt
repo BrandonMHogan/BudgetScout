@@ -31,7 +31,7 @@ class EnvelopePickerFragment : DialogFragment() {
         fun newInstance() = EnvelopePickerFragment()
     }
 
-    private val model: EnvelopePickerViewModel by viewModel()
+    private val model: EnvelopePickerViewModel by sharedViewModel()
     private val sharedBudgetModel: SharedBudgetViewModel by sharedViewModel()
 
     private lateinit var headerText: TextView
@@ -55,12 +55,14 @@ class EnvelopePickerFragment : DialogFragment() {
         recyclerView.layoutManager = linearLayoutManager
 
         setList()
+        val apple = model.isFromEnvelope
 
         return view
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        setListeners()
     }
 
     override fun onResume() {
@@ -69,6 +71,10 @@ class EnvelopePickerFragment : DialogFragment() {
         params.width = ViewGroup.LayoutParams.MATCH_PARENT
         params.height = ViewGroup.LayoutParams.MATCH_PARENT
         dialog!!.window!!.attributes = params as WindowManager.LayoutParams
+    }
+
+    private fun setListeners() {
+        selectButton.setOnClickListener { this.dismiss() }
     }
 
     private fun setList() {
@@ -101,7 +107,7 @@ class EnvelopePickerFragment : DialogFragment() {
     }
 
     private fun onEnvelopeClick(group: Group, envelope: Envelope) {
-
+        model.selectedEnvelope.postValue(envelope)
     }
 
 }

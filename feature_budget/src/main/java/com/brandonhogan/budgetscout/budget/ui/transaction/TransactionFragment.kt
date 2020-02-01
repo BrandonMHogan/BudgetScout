@@ -15,6 +15,7 @@ import androidx.navigation.fragment.NavHostFragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.brandonhogan.budgetscout.budget.R
 import com.brandonhogan.budgetscout.budget.ui.SharedBudgetViewModel
+import com.brandonhogan.budgetscout.budget.ui.envelope.picker.EnvelopePickerViewModel
 import com.brandonhogan.budgetscout.core.services.Log
 import com.brandonhogan.budgetscout.core.utils.DateUtils
 import com.brandonhogan.budgetscout.core.utils.DecimalDigitsInputFilter
@@ -35,6 +36,7 @@ class TransactionFragment : Fragment() {
 
     private val model: TransactionViewModel by viewModel()
     private val sharedBudgetModel: SharedBudgetViewModel by sharedViewModel()
+    private val envelopePickerModel: EnvelopePickerViewModel by sharedViewModel()
     val arguments: TransactionFragmentArgs by navArgs()
 
 
@@ -59,8 +61,6 @@ class TransactionFragment : Fragment() {
 
         // date label
         dateLabel = view.findViewById(R.id.date_label)
-        // date picker
-        dateLabel.setOnClickListener { model.onDateClick() }
 
         // toggle buttons
         expenseButton = view.findViewById(R.id.expense_button)
@@ -96,6 +96,10 @@ class TransactionFragment : Fragment() {
      * Sets the different listeners from the UI, passing back to the view model
      */
     private fun setListeners() {
+
+        // date picker
+        dateLabel.setOnClickListener { onDateClicked() }
+
         // toggle button click listeners
         expenseButton.setOnClickListener { model.setTransactionType(TransactionType.Expense) }
         incomeButton.setOnClickListener { model.setTransactionType(TransactionType.Income) }
@@ -103,8 +107,8 @@ class TransactionFragment : Fragment() {
         // save button
         saveButton.setOnClickListener { model.onSave() }
 
-        toEnvelopeButton.setOnClickListener { displayEnvelopePicker() }
-        fromEnvelopeButton.setOnClickListener { displayEnvelopePicker() }
+        toEnvelopeButton.setOnClickListener { displayEnvelopePicker(false) }
+        fromEnvelopeButton.setOnClickListener { displayEnvelopePicker(true) }
 
         // sets a filter for the amount edit text
         amountEditText.filters = arrayOf<InputFilter>(DecimalDigitsInputFilter(7, 2))
@@ -123,7 +127,8 @@ class TransactionFragment : Fragment() {
         })
     }
 
-    private fun displayEnvelopePicker() {
+    private fun displayEnvelopePicker(isFromEnvelope: Boolean = false) {
+        envelopePickerModel.isFromEnvelope = isFromEnvelope
         val action = TransactionFragmentDirections.actionTransactionFragmentToEnvelopePickerFragment()
         findNavController(this).navigate(action)
     }
@@ -132,6 +137,13 @@ class TransactionFragment : Fragment() {
      * Sets the observables from the model here
      */
     private fun setObservers() {
+
+        model.ui.observe(this, Observer { model ->
+            fromEnvelopeButton.text = model.fromEnvelopName
+            toEnvelopeButton.text = model.toEnvelopeName
+
+            onDateChange(model.date)
+        })
 
         model.displayMessage.observe(this, Observer { displayMessage ->
 
@@ -148,9 +160,6 @@ class TransactionFragment : Fragment() {
                 model.displayMessage.value = listOf()
             }
         })
-        model.date.observe(this, Observer { calendar ->
-            onDateChange(calendar)
-        })
 
         model.envelopes.observe(this, Observer { envelopes ->
            // setEnvelopeButtons(envelopes)
@@ -158,6 +167,10 @@ class TransactionFragment : Fragment() {
 
         model.transactionType.observe(this, Observer { transactionType ->
             onTransactionTypeChange(transactionType)
+        })
+
+        envelopePickerModel.selectedEnvelope.observe(this, Observer {envelope ->
+            model.envelopeSelected(envelopePickerModel.isFromEnvelope, envelope)
         })
     }
 
@@ -176,10 +189,10 @@ class TransactionFragment : Fragment() {
      */
     private fun onDateClicked() {
 
-        model.date.value?.let { date ->
-            val currentYear = date.get(Calendar.YEAR)
-            val currentMonth = date.get(Calendar.MONTH)
-            val currentDay = date.get(Calendar.DAY_OF_MONTH)
+        model.ui.value?.let { model ->
+            val currentYear = model.date.get(Calendar.YEAR)
+            val currentMonth = model.date.get(Calendar.MONTH)
+            val currentDay = model.date.get(Calendar.DAY_OF_MONTH)
 
             val minDate = Calendar.getInstance()
             minDate.set(Calendar.YEAR, currentYear)
@@ -195,10 +208,11 @@ class TransactionFragment : Fragment() {
 
             val datePicker = DatePickerDialog(requireContext(), DatePickerDialog.OnDateSetListener { _, year, monthOfYear, dayOfMonth ->
 
-                date.set(Calendar.YEAR, year)
-                date.set(Calendar.MONTH, monthOfYear)
-                date.set(Calendar.DAY_OF_MONTH, dayOfMonth)
-                model.date.postValue(date)
+                val newDate = Calendar.getInstance()
+                newDate.set(Calendar.YEAR, year)
+                newDate.set(Calendar.MONTH, monthOfYear)
+                newDate.set(Calendar.DAY_OF_MONTH, dayOfMonth)
+                this.model.onDateChanged(newDate)
 
             }, currentYear, currentMonth, currentDay).apply {
                 datePicker.minDate = minDate.timeInMillis
