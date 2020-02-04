@@ -3,16 +3,18 @@ package com.brandonhogan.budgetscout.repository.repo.budget
 import com.brandonhogan.budgetscout.repository.dao.BudgetDao
 import com.brandonhogan.budgetscout.repository.dao.EnvelopeDao
 import com.brandonhogan.budgetscout.repository.dao.GroupDao
+import com.brandonhogan.budgetscout.repository.dao.TransactionDao
 import com.brandonhogan.budgetscout.repository.entity.Budget
 import com.brandonhogan.budgetscout.repository.entity.Envelope
 import com.brandonhogan.budgetscout.repository.entity.Group
+import com.brandonhogan.budgetscout.repository.entity.Transaction
 import com.brandonhogan.budgetscout.repository.entity.relations.BudgetWithGroupsAndEnvelopes
 import com.brandonhogan.budgetscout.repository.repo.budget.BudgetRepo
 import org.koin.core.KoinComponent
 import java.util.*
 
 
-class BudgetRepoImpl(private val budgetDao: BudgetDao, private val groupDao: GroupDao, private val envelopeDao: EnvelopeDao): BudgetRepo, KoinComponent {
+class BudgetRepoImpl(private val budgetDao: BudgetDao, private val groupDao: GroupDao, private val envelopeDao: EnvelopeDao, private val transactionDao: TransactionDao): BudgetRepo, KoinComponent {
 
     override suspend fun deleteAll() {
         return budgetDao.deleteAll()
@@ -84,5 +86,33 @@ class BudgetRepoImpl(private val budgetDao: BudgetDao, private val groupDao: Gro
         return budget.groups.map { groupWithEnvelopes ->
             groupWithEnvelopes.envelopes
         }.flatten()
+    }
+
+    /**
+     * Transactions
+     ***********************************************************************/
+
+    /**
+     * Insert transaction and update the envelopes involved
+     */
+    override suspend fun insertTransaction(transaction: Transaction): List<Long> {
+        val transactionIds = transactionDao.insert(transaction)
+
+        //TODO: This needs to be redone. As adjusting the current would only work if you couldn't adjust
+        // existing transactions.
+
+        // Either need to subtract the previous values of the transaction from the envelopes first,
+        // or need to get all transactions for the envelope, add them up and recalculate the total
+
+
+        // update the current for the envelope with the amount
+        envelopeDao.updateCurrent(transaction.envelopeId, transaction.amount)
+
+        // if the from envelope is not null, subtract the total from its amount
+        transaction.fromEnvelopeId?.let {fromEnvelopeId ->
+            envelopeDao.updateCurrent(fromEnvelopeId, -transaction.amount)
+        }
+
+        return transactionIds
     }
 }

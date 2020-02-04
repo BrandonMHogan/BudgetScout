@@ -11,8 +11,8 @@ import com.brandonhogan.budgetscout.repository.entity.relations.GroupWithEnvelop
 /**
  * @Creator         Brandon Hogan
  * @Date            2019-30-19
- * @File            UserDao
- * @Description     Data Access Object for the user table
+ * @File            GroupDao
+ * @Description     Data Access Object for the group table
  */
 
 @Dao

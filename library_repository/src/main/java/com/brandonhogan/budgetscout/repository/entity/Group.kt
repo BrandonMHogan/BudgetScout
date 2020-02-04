@@ -1,11 +1,8 @@
 package com.brandonhogan.budgetscout.repository.entity
 
-import android.os.Parcelable
 import androidx.room.ColumnInfo
 import androidx.room.Entity
-import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
-import kotlinx.android.parcel.Parcelize
 
 /**
  * @Creator         Brandon Hogan

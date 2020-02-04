@@ -10,8 +10,8 @@ import java.lang.Exception
 /**
  * @Creator         Brandon Hogan
  * @Date            2019-30-19
- * @File            UserDao
- * @Description     Data Access Object for the user table
+ * @File            EnvelopeDao
+ * @Description     Data Access Object for the envelope table
  */
 
 @Dao
@@ -38,7 +38,7 @@ interface EnvelopeDao: BaseDao<Envelope> {
     /**
      * Updates just the current value of the envelope
      */
-    @Query("UPDATE ${Envelope.NAME} SET ${Envelope.PROPERTY_CURRENT} = :current WHERE ${Envelope.PROPERTY_ID} = :id")
+    @Query("UPDATE ${Envelope.NAME} SET ${Envelope.PROPERTY_CURRENT} = ${Envelope.PROPERTY_CURRENT} + :current WHERE ${Envelope.PROPERTY_ID} = :id")
     fun updateCurrent(id: Long, current: Double)
 
     /**

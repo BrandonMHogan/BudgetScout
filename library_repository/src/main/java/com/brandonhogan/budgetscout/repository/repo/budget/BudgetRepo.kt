@@ -4,6 +4,7 @@ import androidx.annotation.WorkerThread
 import com.brandonhogan.budgetscout.repository.entity.Budget
 import com.brandonhogan.budgetscout.repository.entity.Envelope
 import com.brandonhogan.budgetscout.repository.entity.Group
+import com.brandonhogan.budgetscout.repository.entity.Transaction
 import com.brandonhogan.budgetscout.repository.entity.relations.BudgetWithGroupsAndEnvelopes
 import java.util.*
 
@@ -24,4 +25,6 @@ interface BudgetRepo {
 
     suspend fun getEnvelope(id: Long): Envelope
     suspend fun getEnvelopes(byBudgetId: Long): List<Envelope>
+
+    suspend fun insertTransaction(transaction: Transaction): List<Long>
 }

@@ -3,6 +3,7 @@ package com.brandonhogan.budgetscout.budget.services
 import androidx.lifecycle.MutableLiveData
 import com.brandonhogan.budgetscout.core.bases.BaseService
 import com.brandonhogan.budgetscout.repository.entity.Envelope
+import com.brandonhogan.budgetscout.repository.entity.Transaction
 import com.brandonhogan.budgetscout.repository.entity.relations.BudgetWithGroupsAndEnvelopes
 import com.brandonhogan.budgetscout.repository.repo.budget.BudgetRepo
 import com.brandonhogan.budgetscout.repository.testing.BudgetCreator
@@ -49,6 +50,13 @@ class BudgetService(private val budgetRepo: BudgetRepo, private val budgetCreato
             budgetCreator.createBasicBudget(true, calendar = calendar)
             budget.postValue(budgetRepo.getWithGroupsAndEnvelopes(calendar))
         }
+    }
+
+    /**
+     * Updates the transaction object in realm, and adjusts
+     */
+    suspend fun setTransaction(transaction: Transaction) = withContext(Dispatchers.IO) {
+        budgetRepo.insertTransaction(transaction)
     }
 
     /**

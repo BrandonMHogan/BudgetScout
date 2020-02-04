@@ -7,10 +7,7 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.brandonhogan.budgetscout.repository.BuildConfig
 import com.brandonhogan.budgetscout.repository.converter.Converters
-import com.brandonhogan.budgetscout.repository.dao.BudgetDao
-import com.brandonhogan.budgetscout.repository.dao.EnvelopeDao
-import com.brandonhogan.budgetscout.repository.dao.GroupDao
-import com.brandonhogan.budgetscout.repository.dao.UserDao
+import com.brandonhogan.budgetscout.repository.dao.*
 import com.brandonhogan.budgetscout.repository.entity.*
 import com.brandonhogan.budgetscout.repository.entity.relations.BudgetWithGroups
 import com.brandonhogan.budgetscout.repository.entity.relations.BudgetWithGroupsAndEnvelopes
@@ -37,6 +34,7 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun budgetDao(): BudgetDao
     abstract fun groupDao(): GroupDao
     abstract fun envelopeDao(): EnvelopeDao
+    abstract fun transactionDao(): TransactionDao
     abstract fun userDao(): UserDao
 
     companion object {
@@ -100,6 +98,17 @@ abstract class AppDatabase : RoomDatabase() {
             setInstance(context)
             // return dao
             return instance!!.envelopeDao()
+        }
+
+        fun transactionDao(context: Context): TransactionDao {
+            // if instance set, grab the dao
+            if (instance != null) {
+                return instance!!.transactionDao()
+            }
+            // set instance
+            setInstance(context)
+            // return dao
+            return instance!!.transactionDao()
         }
 
         fun userDao(context: Context): UserDao {
