@@ -8,23 +8,23 @@ import com.brandonhogan.budgetscout.repository.entity.Transaction
 import com.brandonhogan.budgetscout.repository.entity.relations.BudgetWithGroupsAndEnvelopes
 import java.util.*
 
+/**
+ * @Creator         Brandon Hogan
+ * @Date            2020-01-25
+ * @File            EnvelopeRepo
+ * @Description     Handles all interaction with the budget repository
+ */
+
 @WorkerThread
 interface BudgetRepo {
 
     // should only be used for debugging
     suspend fun deleteAll()
 
-    suspend fun getAll(): List<Budget>
+    suspend fun insert(budget: Budget): Long
+
     suspend fun get(id: Long): Budget
-    suspend fun insert(budget: Budget): List<Long>
+    suspend fun getAll(): List<Budget>
     suspend fun getWithGroupsAndEnvelopes(id: Long): BudgetWithGroupsAndEnvelopes
     suspend fun getWithGroupsAndEnvelopes(calendar: Calendar): BudgetWithGroupsAndEnvelopes
-
-    suspend fun insertGroup(groups: Group) : List<Long>
-    suspend fun insertEnvelope(envelopes: Envelope) : List<Long>
-
-    suspend fun getEnvelope(id: Long): Envelope
-    suspend fun getEnvelopes(byBudgetId: Long): List<Envelope>
-
-    suspend fun insertTransaction(transaction: Transaction): List<Long>
 }

@@ -19,7 +19,7 @@ import java.util.*
 @Parcelize
 @Entity(tableName = Transaction.NAME)
 data class Transaction (
-    @PrimaryKey(autoGenerate = true) @ColumnInfo(name = PROPERTY_ID) var id: Long = 0,
+    @PrimaryKey(autoGenerate = true) @ColumnInfo(name = PROPERTY_ID) var id: Long = -1,
     // Main envelope id affected
     @ColumnInfo(name = PROPERTY_ENVELOPE_ID) var envelopeId: Long,
     // If this transaction is a transfer type, the transferred from envelope id is stored
@@ -36,6 +36,8 @@ data class Transaction (
     @ColumnInfo(name = PROPERTY_UPDATED) var updated: Calendar = Calendar.getInstance()): Parcelable
 {
     companion object {
+        // This needed to be something other then 'transaction' as that is a keyword in room. was
+        // causing issues.
         const val NAME = "Transaction"
         const val PROPERTY_ENVELOPE_ID = "envelopeId"
         const val PROPERTY_FROM_ENVELOPE_ID = "fromEnvelopeId"

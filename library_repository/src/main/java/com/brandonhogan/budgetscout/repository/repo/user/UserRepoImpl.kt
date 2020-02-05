@@ -10,7 +10,7 @@ class UserRepoImpl(private val userDao: UserDao): UserRepo, KoinComponent {
         return userDao.get()
     }
 
-    override suspend fun set(user: User): Long {
-        return userDao.insert(user).first()
+    override suspend fun insert(user: User): Long {
+        return userDao.insert(user)
     }
 }

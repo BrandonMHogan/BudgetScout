@@ -6,6 +6,7 @@ import com.brandonhogan.budgetscout.repository.entity.Envelope
 import com.brandonhogan.budgetscout.repository.entity.Transaction
 import com.brandonhogan.budgetscout.repository.entity.relations.BudgetWithGroupsAndEnvelopes
 import com.brandonhogan.budgetscout.repository.repo.budget.BudgetRepo
+import com.brandonhogan.budgetscout.repository.repo.transaction.TransactionRepo
 import com.brandonhogan.budgetscout.repository.testing.BudgetCreator
 import kotlinx.coroutines.*
 import java.util.*
@@ -16,7 +17,7 @@ import java.util.*
  *
  * Maintains the active running budget and any data refresh or changes required
  */
-class BudgetService(private val budgetRepo: BudgetRepo, private val budgetCreator: BudgetCreator): BaseService() {
+class BudgetService(private val budgetRepo: BudgetRepo, private val transactionRepo: TransactionRepo, private val budgetCreator: BudgetCreator): BaseService() {
 
     /**
      * Observable by its view
@@ -56,7 +57,7 @@ class BudgetService(private val budgetRepo: BudgetRepo, private val budgetCreato
      * Updates the transaction object in realm, and adjusts
      */
     suspend fun setTransaction(transaction: Transaction) = withContext(Dispatchers.IO) {
-        budgetRepo.insertTransaction(transaction)
+        transactionRepo.insert(transaction)
     }
 
     /**
@@ -65,6 +66,13 @@ class BudgetService(private val budgetRepo: BudgetRepo, private val budgetCreato
      */
     fun getEnvelopes(): List<Envelope> {
         return budget.value!!.groups.map { group -> group.envelopes }.flatten()
+    }
+
+    /**
+     * Gets an envelope by its id
+     */
+    fun getEnvelope(id: Long): Envelope {
+        return getEnvelopes().first { envelope -> envelope.id == id }
     }
 
     /**

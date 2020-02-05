@@ -7,7 +7,10 @@ import com.brandonhogan.budgetscout.core.R
 import com.brandonhogan.budgetscout.core.bases.BaseViewModel
 import com.brandonhogan.budgetscout.repository.TransactionType
 import com.brandonhogan.budgetscout.repository.entity.Envelope
+import com.brandonhogan.budgetscout.repository.entity.Transaction
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -126,8 +129,26 @@ class TransactionViewModel(private val data: TransactionData, private val budget
         }
 
 
+        /**
+         * If the transaction is valid, we want to try and save it
+         */
+        viewModelScope.launch {
+            val id = saveTransaction()
 
-        displayMessage.postValue(listOf(R.string.transaction_save_success))
+            if(id != -1L) {
+                displayMessage.postValue(listOf(R.string.transaction_save_success))
+            }
+            else {
+                displayMessage.postValue(listOf(R.string.transaction_save_fail_message))
+            }
+        }
+    }
 
+    /**
+     * Will make a set transaction call to try and insert or update the transaction object.
+     * If it returns anything but -1, assume success
+     */
+    suspend fun saveTransaction(): Long = withContext(Dispatchers.IO) {
+        budgetService.setTransaction(data.transaction)
     }
 }

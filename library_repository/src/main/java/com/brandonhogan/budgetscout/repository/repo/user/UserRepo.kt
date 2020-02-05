@@ -6,5 +6,5 @@ import com.brandonhogan.budgetscout.repository.entity.User
 @WorkerThread
 interface UserRepo {
     suspend fun get(): User
-    suspend fun set(user: User): Long
+    suspend fun insert(user: User): Long
 }

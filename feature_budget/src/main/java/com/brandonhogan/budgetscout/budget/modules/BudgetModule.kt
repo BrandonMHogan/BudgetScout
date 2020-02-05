@@ -12,7 +12,7 @@ import org.koin.dsl.module
 
 val budgetModule = module {
 
-    single { BudgetService(get(), get()) }
+    single { BudgetService(get(), get(), get()) }
     viewModel { BudgetViewModel(get()) }
     viewModel { GroupDetailViewModel() }
     viewModel { EnvelopeDetailViewModel(get()) }

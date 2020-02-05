@@ -30,11 +30,13 @@ object Converters {
      * Converts a string to a TransactionType
      */
     @TypeConverter
+    @JvmStatic
     fun fromStringToTransactionType(transactionType: String): TransactionType = TransactionType.valueOf(transactionType)
 
     /**
      * Converts a TransactionType to a string
      */
     @TypeConverter
+    @JvmStatic
     fun fromTransactionTypeToString(transactionType: TransactionType): String = transactionType.value
 }
