@@ -22,9 +22,9 @@ val repositoryModule = module {
     single { AppDatabase.userDao(get()) }
 
     single<BudgetRepo> { BudgetRepoImpl(get(), get(), get(), get()) }
-    single<EnvelopeRepo> { EnvelopeRepoImpl(get(), get()) }
     single<GroupRepo> { GroupRepoImpl(get(), get()) }
-    single<TransactionRepo> { TransactionRepoImpl(get(), get()) }
+    single<EnvelopeRepo> { EnvelopeRepoImpl(get(), get()) }
+    single<TransactionRepo> { TransactionRepoImpl(get()) }
 
     single<UserRepo> { UserRepoImpl(get()) }
 

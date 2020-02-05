@@ -24,7 +24,7 @@ import com.brandonhogan.budgetscout.repository.entity.relations.GroupWithEnvelop
 const val version = 1
 
 // TODO: export schema should not be false when going to production. Need to do proper migrations
-@Database(entities = [Budget::class, Envelope::class, Group::class, Transaction::class, User::class], version = version, exportSchema = false)
+@Database(entities = [Budget::class, Envelope::class, Group::class, Transaction::class, Operation::class, User::class], version = version, exportSchema = false)
 @TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {
 
@@ -35,6 +35,7 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun groupDao(): GroupDao
     abstract fun envelopeDao(): EnvelopeDao
     abstract fun transactionDao(): TransactionDao
+    abstract fun operationDao(): OperationDao
     abstract fun userDao(): UserDao
 
     companion object {
@@ -109,6 +110,17 @@ abstract class AppDatabase : RoomDatabase() {
             setInstance(context)
             // return dao
             return instance!!.transactionDao()
+        }
+
+        fun operationDao(context: Context): OperationDao {
+            // if instance set, grab the dao
+            if (instance != null) {
+                return instance!!.operationDao()
+            }
+            // set instance
+            setInstance(context)
+            // return dao
+            return instance!!.operationDao()
         }
 
         fun userDao(context: Context): UserDao {

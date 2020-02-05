@@ -3,6 +3,7 @@ package com.brandonhogan.budgetscout.repository.entity
 import android.os.Parcelable
 import androidx.room.ColumnInfo
 import androidx.room.Entity
+import androidx.room.Ignore
 import androidx.room.PrimaryKey
 import kotlinx.android.parcel.Parcelize
 
@@ -24,14 +25,16 @@ data class Envelope (
     @ColumnInfo(name = PROPERTY_COLOUR) var colour: Int = 0,
     // Total limit for the item
     @ColumnInfo(name = PROPERTY_TOTAL) var total: Double = 0.0,
-    // Current total amount used
-    @ColumnInfo(name = PROPERTY_CURRENT) var current: Double = 0.0,
     // Carryforward allows the budget remainder to carry to the next month
     @ColumnInfo(name = PROPERTY_IS_CARRYFORWARD) var isCarryforward: Boolean = false,
     // Foreign key reference to its group
     @ColumnInfo(name = PROPERTY_GROUP_ID) var groupId: Long,
     // Note for the given envelope
-    @ColumnInfo(name = PROPERTY_NOTE) var note: String
+    @ColumnInfo(name = PROPERTY_NOTE) var note: String,
+
+    // Ignored property. Current is a calculated value. It needs to be updated each time a
+    // transaction happens for the envelope
+    @Ignore var current: Double = 0.0
 ): Parcelable
 {
     companion object {

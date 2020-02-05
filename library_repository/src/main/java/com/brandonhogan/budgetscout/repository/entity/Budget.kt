@@ -2,6 +2,7 @@ package com.brandonhogan.budgetscout.repository.entity
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
+import androidx.room.Ignore
 import androidx.room.PrimaryKey
 import java.time.Month
 import java.util.*
@@ -28,7 +29,11 @@ data class Budget (
     // created date
     @ColumnInfo(name = PROPERTY_CREATED) var created: Calendar = Calendar.getInstance(),
     // last updated date
-    @ColumnInfo(name = PROPERTY_UPDATED) var updated: Calendar = Calendar.getInstance()
+    @ColumnInfo(name = PROPERTY_UPDATED) var updated: Calendar = Calendar.getInstance(),
+
+    // Ignored property. Current is a calculated value. It needs to be updated each time a
+    // transaction happens
+    @Ignore var current: Double = 0.0
 )
 {
     companion object {

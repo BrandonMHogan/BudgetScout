@@ -36,7 +36,17 @@ class BudgetRepoImpl(private val budgetDao: BudgetDao, private val groupDao: Gro
      * Gets the budget for the given budget id
      */
     override suspend fun getWithGroupsAndEnvelopes(id: Long): BudgetWithGroupsAndEnvelopes {
-        return budgetDao.getWithGroupsAndEnvelopes(id)
+        val budget = budgetDao.getWithGroupsAndEnvelopes(id)
+        budget.groups.forEach { group ->
+
+            group.envelopes.forEach { envelope ->
+                envelope.current = transactionDao.getEnvelopeSum(envelope.id)
+                // totals up the envelope current values to make the groups total
+                group.group.current += envelope.current
+            }
+        }
+
+        return budget
     }
 
     /**

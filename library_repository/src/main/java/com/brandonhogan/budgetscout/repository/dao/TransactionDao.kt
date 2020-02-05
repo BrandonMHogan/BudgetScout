@@ -26,6 +26,13 @@ interface TransactionDao: BaseDao<Transaction> {
     /**
      * Will get all transactions in an envelope
      */
-    @Query("SELECT * FROM `${Transaction.NAME}` WHERE ${Transaction.PROPERTY_ENVELOPE_ID} IS :id OR ${Transaction.PROPERTY_FROM_ENVELOPE_ID} IS :id")
+    @Query("SELECT * FROM `${Transaction.NAME}` WHERE ${Transaction.PROPERTY_ENVELOPE_ID} IS :id")
     fun getAllForEnvelope(id: Long): List<Transaction>
+
+    /**
+     * Will get the sum total of amount for all transactions where envelope id is the passed in id
+     */
+    @Query("SELECT SUM(${Transaction.PROPERTY_AMOUNT}) FROM `${Transaction.NAME}` WHERE ${Transaction.PROPERTY_ENVELOPE_ID} IS :id")
+    fun getEnvelopeSum(id: Long): Double
+
 }

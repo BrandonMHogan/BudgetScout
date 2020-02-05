@@ -36,12 +36,6 @@ interface EnvelopeDao: BaseDao<Envelope> {
     fun updateTotal(id: Long, total: Double)
 
     /**
-     * Updates just the current value of the envelope
-     */
-    @Query("UPDATE ${Envelope.NAME} SET ${Envelope.PROPERTY_CURRENT} = ${Envelope.PROPERTY_CURRENT} + :current WHERE ${Envelope.PROPERTY_ID} = :id")
-    fun updateCurrent(id: Long, current: Double)
-
-    /**
      * Transfers the passed in total from one envelope to another.
      * This is useful so that the user doesn't need to rebalance, its just moving totals
      */
