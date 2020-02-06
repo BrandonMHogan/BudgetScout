@@ -32,6 +32,12 @@ class BudgetCreator(private val budgetRepo: BudgetRepo, private val groupRepo: G
         val budgetId = setBudget(Budget(name = "First Budget", month = calendar.get(Calendar.MONTH), year = calendar.get(Calendar.YEAR)))
 
         // creates group 1
+        val groupIncomeId = setGroup(Group(name = "Income", colour = 0, isIncome = true, budgetId = budgetId))
+        setEnvelope(Envelope(name = "Paycheck One", colour = 1, total = 2010.21, isCarryforward = false, groupId = groupIncomeId, note = ""))
+        setEnvelope(Envelope(name = "Paycheck Two", colour = 1, total = 1995.92, isCarryforward = false, groupId = groupIncomeId, note = ""))
+        setEnvelope(Envelope(name = "Birthday Gift", colour = 1, total = 200.0, isCarryforward = false, groupId = groupIncomeId, note = "Birthday gift"))
+
+        // creates group 1
         val groupId = setGroup(Group(name = "Savings", colour = 0, budgetId = budgetId))
         val envelopeId1 = setEnvelope(Envelope(name = "RRSP", colour = 1, total = 250.0, isCarryforward = false, groupId = groupId, note = ""))
         setEnvelope(Envelope(name = "TFSA", colour = 1, total = 250.0, isCarryforward = false, groupId = groupId, note = ""))
@@ -58,10 +64,10 @@ class BudgetCreator(private val budgetRepo: BudgetRepo, private val groupRepo: G
         setEnvelope(Envelope(name = "Spotify", colour = 1, total = 9.99, isCarryforward = true, groupId = groupId4, note = ""))
         setEnvelope(Envelope(name = "MMO Subscription", colour = 1, total = 19.99, isCarryforward = false, groupId = groupId4, note = ""))
 
-        setTransaction(Transaction(envelopeId = envelopeId1, amount = 25.99))
-        setTransaction(Transaction(envelopeId = envelopeId2, amount = 12.00))
-        setTransaction(Transaction(envelopeId = envelopeId2, amount = 8.00))
-        setTransaction(Transaction(envelopeId = envelopeId3, amount = 100.00))
+        setTransaction(Transaction(envelopeId = envelopeId1, amount = 100.00))
+        setTransaction(Transaction(envelopeId = envelopeId2, amount = 1000.00))
+        setTransaction(Transaction(envelopeId = envelopeId2, amount = 50.99))
+        setTransaction(Transaction(envelopeId = envelopeId3, amount = 69.00))
 
         return budgetId
     }

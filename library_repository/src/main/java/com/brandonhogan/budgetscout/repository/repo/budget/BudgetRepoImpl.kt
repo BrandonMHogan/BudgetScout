@@ -5,11 +5,7 @@ import com.brandonhogan.budgetscout.repository.dao.EnvelopeDao
 import com.brandonhogan.budgetscout.repository.dao.GroupDao
 import com.brandonhogan.budgetscout.repository.dao.TransactionDao
 import com.brandonhogan.budgetscout.repository.entity.Budget
-import com.brandonhogan.budgetscout.repository.entity.Envelope
-import com.brandonhogan.budgetscout.repository.entity.Group
-import com.brandonhogan.budgetscout.repository.entity.Transaction
 import com.brandonhogan.budgetscout.repository.entity.relations.BudgetWithGroupsAndEnvelopes
-import com.brandonhogan.budgetscout.repository.repo.budget.BudgetRepo
 import org.koin.core.KoinComponent
 import java.util.*
 
@@ -58,9 +54,22 @@ class BudgetRepoImpl(private val budgetDao: BudgetDao, private val groupDao: Gro
 
             group.envelopes.forEach { envelope ->
                 envelope.current = transactionDao.getEnvelopeSum(envelope.id)
-                // totals up the envelope current values to make the groups total
+
+                // increments the current values by the envelopes
                 group.group.current += envelope.current
+                budget.budget.current += envelope.current
+
+                // increments the total values by the envelopes
+                group.group.total += envelope.total
+                budget.budget.expenses += envelope.total
             }
+
+            // if the group is an income group, add its total value to the budget's
+            // calculated income
+            if(group.group.isIncome) {
+                budget.budget.income += group.group.total
+            }
+
         }
         return budget
     }

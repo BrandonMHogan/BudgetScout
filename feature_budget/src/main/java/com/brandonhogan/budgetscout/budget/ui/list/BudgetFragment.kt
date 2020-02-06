@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
@@ -13,20 +14,17 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.brandonhogan.budgetscout.budget.R
 import com.brandonhogan.budgetscout.budget.extensions.MotionLayoutWithState
-import com.brandonhogan.budgetscout.budget.services.BudgetService
 import com.brandonhogan.budgetscout.budget.ui.transaction.TransactionData
 import com.brandonhogan.budgetscout.core.services.Log
 import com.brandonhogan.budgetscout.repository.entity.Envelope
 import com.brandonhogan.budgetscout.repository.entity.Group
 import com.brandonhogan.budgetscout.repository.entity.Transaction
 import com.brandonhogan.budgetscout.repository.entity.relations.BudgetWithGroupsAndEnvelopes
-import com.github.mikephil.charting.charts.PieChart
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.xwray.groupie.ExpandableGroup
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.Section
 import com.xwray.groupie.kotlinandroidextensions.GroupieViewHolder
-import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class BudgetFragment : Fragment() {
@@ -41,9 +39,11 @@ class BudgetFragment : Fragment() {
     private lateinit var motionLayout: MotionLayoutWithState
     private lateinit var toolbar: Toolbar
     private lateinit var recyclerView: RecyclerView
-    private lateinit var pieChart: PieChart
     private lateinit var linearLayoutManager: LinearLayoutManager
     private lateinit var actionButton: FloatingActionButton
+    private lateinit var headerMonthLabel: TextView
+    private lateinit var headerIncomeLabel: TextView
+    private lateinit var headerExpenseLabel: TextView
     private var adapter: GroupAdapter<GroupieViewHolder>? = null
 
 
@@ -61,6 +61,10 @@ class BudgetFragment : Fragment() {
         toolbar.title = " "
         recyclerView = view.findViewById(R.id.recyclerView)
         actionButton = view.findViewById(R.id.floating_action_button)
+
+        headerMonthLabel = view.findViewById(R.id.header_month)
+        headerIncomeLabel = view.findViewById(R.id.header_income)
+        headerExpenseLabel = view.findViewById(R.id.header_expense)
 
         // sets the toolbar
         (activity as AppCompatActivity).setSupportActionBar(toolbar)
@@ -90,6 +94,10 @@ class BudgetFragment : Fragment() {
 
             if (budget != null && adapter == null) {
                 adapter = GroupAdapter()
+
+                headerMonthLabel.text = budget.budget.getDisplayMonth()
+                headerIncomeLabel.text = "Income: ${budget.budget.getDisplayIncome()}"
+                headerExpenseLabel.text = "Expense: ${budget.budget.getDisplayExpenses()}"
 
 
                 // for each group, will add a new expandable group.

@@ -4,6 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.Ignore
 import androidx.room.PrimaryKey
+import java.text.DecimalFormat
 import java.time.Month
 import java.util.*
 
@@ -34,8 +35,43 @@ data class Budget (
 {
 
     // Ignored property. Current is a calculated value. It needs to be updated each time a
-    // transaction happens
+    // transaction happens, or whenever the budget is loaded
     @Ignore var current: Double = 0.0
+
+    // Ignored property. Total is a calculated value. It needs to be updated each time a
+    // transaction happens, or whenever the budget is loaded
+    @Ignore var expenses: Double = 0.0
+
+    // Ignored property. Total is a calculated value. It needs to be updated each time a
+    // transaction happens, or whenever the budget is loaded
+    @Ignore var income: Double = 0.0
+
+    /**
+     * Helper function to display the budgets month as a string
+     */
+    fun getDisplayMonth(): String {
+        val calendar = Calendar.getInstance()
+        calendar.set(Calendar.MONTH, month)
+        calendar.set(Calendar.YEAR, year)
+
+        return calendar.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.getDefault()) ?: ""
+    }
+
+    /**
+     * Helper function for returning the expense as an easy to read string
+     */
+    fun getDisplayExpenses(): String {
+        val dec = DecimalFormat("#,###.00")
+        return "$ ${dec.format(expenses)}"
+    }
+
+    /**
+     * Helper function for returning the income as an easy to read string
+     */
+    fun getDisplayIncome(): String {
+        val dec = DecimalFormat("#,###.00")
+        return "$ ${dec.format(income)}"
+    }
 
     companion object {
         const val NAME = "Budget"
