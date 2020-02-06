@@ -18,5 +18,7 @@ import kotlinx.android.parcel.Parcelize
 data class TransactionData constructor(
     // the transaction object
     var transaction: Transaction = Transaction.newInstance(),
+    // if its a transfer, we would have a from envelope id set
+    var fromEnvelopeId: Long? = null,
     // the group that the transaction is apart of
     var groupId: Long? = null): Parcelable

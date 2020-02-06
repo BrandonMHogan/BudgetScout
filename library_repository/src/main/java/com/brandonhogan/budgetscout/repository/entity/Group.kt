@@ -21,13 +21,14 @@ data class Group (
     // Colour associated to the category
     @ColumnInfo(name = PROPERTY_COLOUR) var colour: Int = 0,
     // Foreign key reference to its budget
-    @ColumnInfo(name = PROPERTY_BUDGET_ID) var budgetId: Long,
+    @ColumnInfo(name = PROPERTY_BUDGET_ID) var budgetId: Long
+)
+{
 
     // Ignored property. Current is a calculated value. It needs to be updated each time a
     // transaction happens for the envelope
     @Ignore var current: Double = 0.0
-)
-{
+
     companion object {
         const val NAME = "Group"
         const val PROPERTY_NAME = "name"

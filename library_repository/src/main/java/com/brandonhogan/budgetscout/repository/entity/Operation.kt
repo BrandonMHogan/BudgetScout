@@ -20,9 +20,9 @@ import java.util.*
  */
 
 @Parcelize
-@Entity(tableName = Transaction.NAME)
+@Entity(tableName = Operation.NAME)
 data class Operation (
-    @PrimaryKey(autoGenerate = true) @ColumnInfo(name = PROPERTY_ID) var id: Long = -1,
+    @PrimaryKey(autoGenerate = true) @ColumnInfo(name = PROPERTY_ID) var id: Long = 0,
     // created date
     @ColumnInfo(name = PROPERTY_CREATED) var created: Calendar = Calendar.getInstance(),
     // last updated date

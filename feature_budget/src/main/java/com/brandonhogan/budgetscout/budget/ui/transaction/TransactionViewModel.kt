@@ -42,9 +42,24 @@ class TransactionViewModel(private val data: TransactionData, private val budget
         viewModelScope.launch(exceptionHandler) {
             // sets initial date based on the date of the transaction
             uiModel.date = data.transaction.date
-            // sets the from and to envelope names
-            uiModel.fromEnvelopName = budgetService.getEnvelopeName(data.transaction.fromEnvelopeId)
             uiModel.toEnvelopeName = budgetService.getEnvelopeName(data.transaction.envelopeId)
+
+            // if the operation id is not null, we need to go get the other
+            // transactions associated to this one
+            data.transaction.operationId?.let { operationId ->
+
+                // if any transactions return, find the paired transaction to set as the
+                // from envelope
+                budgetService.getEnvelopesByOperation(operationId)?.let { transactions ->
+                    // the first transaction it finds that is not from data.transaction,
+                    // it will set that as the from envelope
+                    transactions.firstOrNull { transaction ->
+                        transaction.envelopeId != data.transaction.envelopeId }?.let { otherTransaction ->
+                        uiModel.fromEnvelopName = budgetService.getEnvelopeName(otherTransaction.envelopeId)
+                    }
+                }
+            }
+
             // posts the ui model to the ui
             ui.postValue(uiModel)
         }
@@ -65,7 +80,7 @@ class TransactionViewModel(private val data: TransactionData, private val budget
         transactionType.postValue(type)
 
         if(type != TransactionType.Transfer) {
-            data.transaction.fromEnvelopeId = null
+            data.fromEnvelopeId = null
         }
     }
 
@@ -87,7 +102,7 @@ class TransactionViewModel(private val data: TransactionData, private val budget
 
     fun envelopeSelected(isFromEnvelope: Boolean = false, envelope: Envelope) {
         if (isFromEnvelope) {
-            data.transaction.fromEnvelopeId = envelope.id
+            data.fromEnvelopeId = envelope.id
             uiModel.fromEnvelopName = envelope.name
         }
         else {
@@ -118,7 +133,7 @@ class TransactionViewModel(private val data: TransactionData, private val budget
         }
 
         // if its a transfer type, and no valid from envelope selected
-        if(data.transaction.type == TransactionType.Transfer && (data.transaction.fromEnvelopeId == null || data.transaction.fromEnvelopeId == -1L)) {
+        if(transactionType.value == TransactionType.Transfer && (data.fromEnvelopeId == null || data.fromEnvelopeId == -1L)) {
             errorIds.add(R.string.transaction_validation_error_from_envelope)
         }
 

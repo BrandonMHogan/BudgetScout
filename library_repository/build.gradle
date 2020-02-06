@@ -13,8 +13,8 @@ dependencies {
     implementation dependency.koinViewModel
 
     // database debugger
-    debugImplementation 'com.amitshekhar.android:debug-db:1.0.6'
-    debugImplementation 'com.amitshekhar.android:debug-db-encrypt:1.0.6'
+    debugApi 'com.amitshekhar.android:debug-db:1.0.6'
+    debugApi 'com.amitshekhar.android:debug-db-encrypt:1.0.6'
     // run the following when using a device over usb:
     // adb forward tcp:8080 tcp:8080
 

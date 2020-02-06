@@ -61,6 +61,13 @@ class BudgetService(private val budgetRepo: BudgetRepo, private val transactionR
     }
 
     /**
+     * Will get all transactions associated to an operation
+     */
+    suspend fun getEnvelopesByOperation(id: Long): List<Transaction>? {
+        return transactionRepo.getByOperation(id)
+    }
+
+    /**
      * Flattens all the groups, making a single list of all the envelopes.
      * Useful for quickly loading and validating envelopes available to the budget
      */

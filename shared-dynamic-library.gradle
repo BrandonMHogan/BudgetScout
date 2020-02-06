@@ -23,7 +23,7 @@ android {
             proguardFiles 'proguard-rules.pro'
         }
         debug {
-
+            resValue("string", "PORT_NUMBER", "8081")
         }
     }
 

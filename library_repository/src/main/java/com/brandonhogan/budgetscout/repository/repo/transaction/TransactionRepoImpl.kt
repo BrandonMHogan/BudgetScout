@@ -41,4 +41,11 @@ class TransactionRepoImpl(private val transactionDao: TransactionDao, private va
     override suspend fun get(id: Long): Transaction {
         return transactionDao.get(id)
     }
+
+    /**
+     * Returns all transactions for a given operation
+     */
+    override suspend fun getByOperation(id: Long): List<Transaction>? {
+        return transactionDao.getAllForOperation(id)
+    }
 }

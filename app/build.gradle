@@ -29,6 +29,7 @@ android {
         }
         debug {
             resValue("bool", "FIREBASE_ANALYTICS_DEACTIVATED", "true")
+            resValue("string", "PORT_NUMBER", "8081")
         }
     }
 

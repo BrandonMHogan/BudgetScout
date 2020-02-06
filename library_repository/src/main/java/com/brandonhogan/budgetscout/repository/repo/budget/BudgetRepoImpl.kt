@@ -32,11 +32,28 @@ class BudgetRepoImpl(private val budgetDao: BudgetDao, private val groupDao: Gro
         return budgetDao.insert(budget)
     }
 
+
+    //TODO: These functions should all return nullable. As its not guaranteed that it will always
+    // come back as not null.
+
     /**
      * Gets the budget for the given budget id
      */
     override suspend fun getWithGroupsAndEnvelopes(id: Long): BudgetWithGroupsAndEnvelopes {
-        val budget = budgetDao.getWithGroupsAndEnvelopes(id)
+        return setBudgetBalances(budgetDao.getWithGroupsAndEnvelopes(id))
+    }
+
+    /**
+     * Gets the budget for the given calendar date
+     */
+    override suspend fun getWithGroupsAndEnvelopes(calendar: Calendar): BudgetWithGroupsAndEnvelopes {
+        return setBudgetBalances(budgetDao.getWithGroupsAndEnvelopes(calendar.get(Calendar.MONTH), calendar.get(Calendar.YEAR)))
+    }
+
+    private suspend fun setBudgetBalances(budget: BudgetWithGroupsAndEnvelopes): BudgetWithGroupsAndEnvelopes {
+        // if budget is empty, return as is.
+        if(budget == null) { return budget }
+
         budget.groups.forEach { group ->
 
             group.envelopes.forEach { envelope ->
@@ -45,14 +62,6 @@ class BudgetRepoImpl(private val budgetDao: BudgetDao, private val groupDao: Gro
                 group.group.current += envelope.current
             }
         }
-
         return budget
-    }
-
-    /**
-     * Gets the budget for the given calendar date
-     */
-    override suspend fun getWithGroupsAndEnvelopes(calendar: Calendar): BudgetWithGroupsAndEnvelopes {
-        return budgetDao.getWithGroupsAndEnvelopes(calendar.get(Calendar.MONTH), calendar.get(Calendar.YEAR))
     }
 }

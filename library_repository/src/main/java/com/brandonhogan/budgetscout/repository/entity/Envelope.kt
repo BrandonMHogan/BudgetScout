@@ -30,13 +30,13 @@ data class Envelope (
     // Foreign key reference to its group
     @ColumnInfo(name = PROPERTY_GROUP_ID) var groupId: Long,
     // Note for the given envelope
-    @ColumnInfo(name = PROPERTY_NOTE) var note: String,
-
+    @ColumnInfo(name = PROPERTY_NOTE) var note: String
+): Parcelable
+{
     // Ignored property. Current is a calculated value. It needs to be updated each time a
     // transaction happens for the envelope
     @Ignore var current: Double = 0.0
-): Parcelable
-{
+
     companion object {
         const val NAME = "Envelope"
         const val PROPERTY_NAME = "name"

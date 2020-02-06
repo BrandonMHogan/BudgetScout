@@ -18,17 +18,19 @@ val repositoryModule = module {
 
     single { AppDatabase.groupDao(get()) }
     single { AppDatabase.envelopeDao(get()) }
+    single { AppDatabase.transactionDao(get()) }
+    single { AppDatabase.operationDao(get()) }
     single { AppDatabase.budgetDao(get()) }
     single { AppDatabase.userDao(get()) }
 
     single<BudgetRepo> { BudgetRepoImpl(get(), get(), get(), get()) }
     single<GroupRepo> { GroupRepoImpl(get(), get()) }
     single<EnvelopeRepo> { EnvelopeRepoImpl(get(), get()) }
-    single<TransactionRepo> { TransactionRepoImpl(get()) }
+    single<TransactionRepo> { TransactionRepoImpl(get(), get()) }
 
     single<UserRepo> { UserRepoImpl(get()) }
 
 
     // Creates the Budget Creator singleton for quick data setup for debugging
-    single { BudgetCreator(get(), get(), get()) }
+    single { BudgetCreator(get(), get(), get(), get()) }
 }

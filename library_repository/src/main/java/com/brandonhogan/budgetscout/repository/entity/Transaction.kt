@@ -21,7 +21,7 @@ import java.util.*
 @Parcelize
 @Entity(tableName = Transaction.NAME)
 data class Transaction (
-    @PrimaryKey(autoGenerate = true) @ColumnInfo(name = PROPERTY_ID) var id: Long = -1,
+    @PrimaryKey(autoGenerate = true) @ColumnInfo(name = PROPERTY_ID) var id: Long = 0,
     // Main envelope id affected
     @ColumnInfo(name = PROPERTY_OPERATION_ID) var operationId: Long? = null,
     // Main envelope id affected
