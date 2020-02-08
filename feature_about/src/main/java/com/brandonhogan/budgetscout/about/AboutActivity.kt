@@ -9,9 +9,12 @@ import org.koin.core.context.unloadKoinModules
 
 class AboutActivity : AppCompatActivity() {
 
+    private val loadFeature by lazy { loadKoinModules(aboutModule) }
+    private fun injectFeature() = loadFeature
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        loadModules()
+        injectFeature()
 
         setContentView(R.layout.about_activity)
         if (savedInstanceState == null) {
@@ -27,10 +30,5 @@ class AboutActivity : AppCompatActivity() {
     override fun onStop() {
         super.onStop()
         unloadKoinModules(aboutModule)
-    }
-
-    /// Loads the modules for the about feature
-    private fun loadModules() {
-        loadKoinModules(aboutModule)
     }
 }

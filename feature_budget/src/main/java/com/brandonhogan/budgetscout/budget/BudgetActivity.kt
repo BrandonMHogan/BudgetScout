@@ -10,9 +10,12 @@ import org.koin.core.context.unloadKoinModules
 
 class BudgetActivity : AppCompatActivity() {
 
+    private val loadFeature by lazy { loadKoinModules(budgetModule) }
+    private fun injectFeature() = loadFeature
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        loadModules()
+        injectFeature()
         setContentView(R.layout.budget_activity)
     }
 
@@ -41,12 +44,4 @@ class BudgetActivity : AppCompatActivity() {
         super.onStop()
         unloadKoinModules(budgetModule)
     }
-
-    /**
-     * Load budget modules
-     */
-    private fun loadModules() {
-        loadKoinModules(budgetModule)
-    }
-
 }

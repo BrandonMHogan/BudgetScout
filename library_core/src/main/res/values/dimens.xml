@@ -18,4 +18,5 @@
     <dimen name="budget_list_envelope_note_font">12sp</dimen>
 
     <dimen name="envelope_detail_font">16sp</dimen>
+    <dimen name="envelope_icon_width">38dp</dimen>
 </resources>

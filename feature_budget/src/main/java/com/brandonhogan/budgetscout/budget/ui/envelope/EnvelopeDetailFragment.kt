@@ -93,6 +93,7 @@ class EnvelopeDetailFragment : Fragment() {
             transactions.forEach { transaction ->
 
                 adapter?.add(Section(EnvelopeDetailTransactionItem(
+                    context,
                     transaction,
                     onClickListener = { editTransaction(transaction) },
                     onLongClickListener = {}

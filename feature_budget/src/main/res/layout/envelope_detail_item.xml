@@ -9,39 +9,47 @@
     android:layout_marginTop="@dimen/budget_list_envelope_margin"
     android:layout_marginBottom="@dimen/budget_list_envelope_margin">
 
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/transaction_note_button"
+        android:layout_width="@dimen/envelope_icon_width"
+        android:layout_height="wrap_content"
+        style="@style/IconOnlyButton"
+        android:visibility="invisible"
+        app:icon="@drawable/ic_note_white_24dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+    <ImageView
+        android:id="@+id/transaction_type_icon"
+        android:layout_width="@dimen/envelope_icon_width"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_transfer_white_24dp"
+        android:tint="@color/colorPrimary"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@id/transaction_note_button"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <TextView
         android:id="@+id/transaction_date"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:fontFamily="@font/montserrat_bold"
-        android:textSize="@dimen/envelope_detail_font"
         android:text="24th"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"/>
-
-    <TextView
-        android:id="@+id/transaction_note"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="10dp"
-        android:layout_marginStart="10dp"
-        android:fontFamily="@font/open_sans"
-        android:scrollHorizontally="true"
-        android:ellipsize="end"
-        android:maxLines="1"
-        android:text="this is a note about a dude that does stuff and what not. why you do this to me my dude. this is bad. Bad to the bones"
         android:textSize="@dimen/envelope_detail_font"
-        app:layout_constraintStart_toEndOf="@id/transaction_date"
+        app:layout_constraintBottom_toBottomOf="parent"
+
         app:layout_constraintEnd_toStartOf="@+id/transaction_amount"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        app:layout_constraintStart_toEndOf="@id/transaction_type_icon"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/transaction_amount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/open_sans"
+        android:layout_marginEnd="5dp"
+        android:gravity="end"
         android:text="-$24"
         android:textSize="@dimen/envelope_detail_font"
         app:layout_constraintEnd_toEndOf="parent"

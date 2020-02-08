@@ -5,9 +5,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import kotlinx.android.parcel.Parcelize
-import java.text.DateFormat
 import java.text.DecimalFormat
-import java.text.SimpleDateFormat
 import java.util.*
 
 /**
@@ -56,21 +54,5 @@ data class Transaction (
         fun newInstance(): Transaction {
             return Transaction(envelopeId = -1)
         }
-    }
-
-    /**
-     * Helper function for returning the amount as an easy to read string
-     */
-    fun getDisplayAmount(): String {
-        val dec = DecimalFormat("#,###.00")
-        return "$ ${dec.format(amount)}"
-    }
-
-    /**
-     * Helper function to display the budgets month as a string
-     */
-    fun getDisplayDate(): String {
-        val dateFormat: DateFormat = SimpleDateFormat("MM dd", Locale.ENGLISH)
-        return dateFormat.format(date.time)
     }
 }

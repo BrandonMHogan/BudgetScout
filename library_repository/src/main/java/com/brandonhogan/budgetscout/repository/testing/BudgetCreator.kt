@@ -39,7 +39,7 @@ class BudgetCreator(private val budgetRepo: BudgetRepo, private val groupRepo: G
 
         // creates group 1
         val groupId = setGroup(Group(name = "Savings", colour = 0, budgetId = budgetId))
-        val envelopeId1 = setEnvelope(Envelope(name = "RRSP", colour = 1, total = 250.0, isCarryforward = false, groupId = groupId, note = ""))
+        val envelopeId1 = setEnvelope(Envelope(name = "RRSP", colour = 1, total = 30050.0, isCarryforward = false, groupId = groupId, note = ""))
         setEnvelope(Envelope(name = "TFSA", colour = 1, total = 250.0, isCarryforward = false, groupId = groupId, note = ""))
         setEnvelope(Envelope(name = "Emergency Fund", colour = 1, total = 100.0, isCarryforward = false, groupId = groupId, note = ""))
         setEnvelope(Envelope(name = "Fence Fund", colour = 1, total = 50.0, isCarryforward = false, groupId = groupId, note = "for the backyard fence"))
@@ -64,7 +64,14 @@ class BudgetCreator(private val budgetRepo: BudgetRepo, private val groupRepo: G
         setEnvelope(Envelope(name = "Spotify", colour = 1, total = 9.99, isCarryforward = true, groupId = groupId4, note = ""))
         setEnvelope(Envelope(name = "MMO Subscription", colour = 1, total = 19.99, isCarryforward = false, groupId = groupId4, note = ""))
 
-        setTransaction(Transaction(envelopeId = envelopeId1, amount = 100.00))
+        setTransaction(Transaction(envelopeId = envelopeId1, amount = -19999.99, note = "This is a test note to see what it looks like"))
+        setTransaction(Transaction(envelopeId = envelopeId1, amount = -50.00))
+        setTransaction(Transaction(envelopeId = envelopeId1, amount = 25.99))
+        setTransaction(Transaction(envelopeId = envelopeId1, amount = -10.00, note = "This is another test note to see what it looks like"))
+
+        //transfer example
+        setTransfer(Transaction(envelopeId = envelopeId2, amount = -5.00), Transaction(envelopeId = envelopeId1, amount = 5.00))
+
         setTransaction(Transaction(envelopeId = envelopeId2, amount = 1000.00))
         setTransaction(Transaction(envelopeId = envelopeId2, amount = 50.99))
         setTransaction(Transaction(envelopeId = envelopeId3, amount = 69.00))
@@ -103,5 +110,9 @@ class BudgetCreator(private val budgetRepo: BudgetRepo, private val groupRepo: G
      */
     private suspend fun setTransaction(transaction: Transaction): Long = withContext(Dispatchers.IO) {
         transactionRepo.insert(transaction)
+    }
+
+    private suspend fun setTransfer(from: Transaction, to: Transaction): List<Long> = withContext(Dispatchers.IO) {
+        transactionRepo.transfer(from, to)
     }
 }
