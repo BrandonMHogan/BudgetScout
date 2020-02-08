@@ -7,14 +7,21 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.navArgs
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 
 import com.brandonhogan.budgetscout.budget.R
-import com.brandonhogan.budgetscout.budget.ui.list.BudgetAdapter
-import com.brandonhogan.budgetscout.core.services.Log
+import com.brandonhogan.budgetscout.budget.ui.list.BudgetFragmentDirections
+import com.brandonhogan.budgetscout.budget.ui.transaction.TransactionData
 import com.brandonhogan.budgetscout.repository.entity.Envelope
-import com.brandonhogan.budgetscout.repository.entity.relations.BudgetWithGroupsAndEnvelopes
+import com.brandonhogan.budgetscout.repository.entity.Transaction
+import com.xwray.groupie.GroupAdapter
+import com.xwray.groupie.Section
+import com.xwray.groupie.kotlinandroidextensions.GroupieViewHolder
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.parameter.parametersOf
 
 class EnvelopeDetailFragment : Fragment() {
 
@@ -22,34 +29,85 @@ class EnvelopeDetailFragment : Fragment() {
         fun newInstance() = EnvelopeDetailFragment()
     }
 
-    private val model: EnvelopeDetailViewModel by viewModel()
     val args: EnvelopeDetailFragmentArgs by navArgs()
+    private val model: EnvelopeDetailViewModel by viewModel { parametersOf(args.envelopeDetailModel) }
+
+
+    private lateinit var envelopeNameLabel: TextView
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var linearLayoutManager: LinearLayoutManager
+    private var adapter: GroupAdapter<GroupieViewHolder>? = null
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.envelope_detail_fragment, container, false)
+        val view = inflater.inflate(R.layout.envelope_detail_fragment, container, false)
+
+        envelopeNameLabel = view.findViewById(R.id.envelope_name)
+        recyclerView = view.findViewById(R.id.envelope_transactions_recycler_view)
+
+        model.getEnvelope()
+        return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        model.getEnvelope(args.envelopeId)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        setObservers()
+    }
 
+    private fun setObservers() {
         // observes the envelope for changes
         val envelopeObserver = Observer<Envelope> { envelope ->
-
-            val testLabel: TextView? = view?.findViewById(R.id.test_envelope_name)
-            testLabel?.text = envelope.name
-
+            envelopeNameLabel.text = envelope.name
         }
 
         // sets the envelope observer, bound to the fragments lifecycle
         model.envelope.observe(this, envelopeObserver)
+
+
+        // observes the transaction list for changes
+        val transactionsObserver = Observer<List<Transaction>> { transactions ->
+            setList(transactions)
+        }
+
+        // sets the envelope observer, bound to the fragments lifecycle
+        model.transactions.observe(this, transactionsObserver)
     }
 
+
+    private fun setList(transactions: List<Transaction>) {
+
+        if (adapter == null) {
+            // sets the adapter as the group adapter
+            adapter = GroupAdapter()
+            // sets the layout manager
+            linearLayoutManager = LinearLayoutManager(context)
+            recyclerView.layoutManager = linearLayoutManager
+
+            transactions.forEach { transaction ->
+
+                adapter?.add(Section(EnvelopeDetailTransactionItem(
+                    transaction,
+                    onClickListener = { editTransaction(transaction) },
+                    onLongClickListener = {}
+                )))
+            }
+        }
+        recyclerView.adapter = adapter
+    }
+
+    /**
+     * Will navigate to the transaction fragment as long as we have a budget id
+     */
+    private fun editTransaction(transaction: Transaction = Transaction.newInstance()) {
+        val transactionData = TransactionData(groupId = model.getGroupId(), transaction = transaction)
+        val action = BudgetFragmentDirections.actionBudgetFragmentToTransactionFragment(transactionData = transactionData)
+        NavHostFragment.findNavController(this).navigate(action)
+    }
 }

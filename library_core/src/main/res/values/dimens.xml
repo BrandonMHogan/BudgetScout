@@ -16,4 +16,6 @@
     <dimen name="budget_list_envelope_value_total_font">17sp</dimen>
     <dimen name="budget_list_envelope_value_of_font">14sp</dimen>
     <dimen name="budget_list_envelope_note_font">12sp</dimen>
+
+    <dimen name="envelope_detail_font">16sp</dimen>
 </resources>

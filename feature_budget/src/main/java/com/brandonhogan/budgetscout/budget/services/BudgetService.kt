@@ -54,10 +54,24 @@ class BudgetService(private val budgetRepo: BudgetRepo, private val transactionR
     }
 
     /**
+     * Gets all transactions for an envelope
+     */
+    suspend fun getTransactionsForEnvelope(id: Long) = withContext(Dispatchers.IO) {
+        transactionRepo.getByEnvelope(id)
+    }
+
+    /**
      * Updates the transaction object in realm, and adjusts
      */
     suspend fun setTransaction(transaction: Transaction) = withContext(Dispatchers.IO) {
         transactionRepo.insert(transaction)
+    }
+
+    /**
+     * Updates the transaction object in realm, and adjusts
+     */
+    suspend fun setTransfer(from: Transaction, to: Transaction) = withContext(Dispatchers.IO) {
+        transactionRepo.transfer(from, to)
     }
 
     /**

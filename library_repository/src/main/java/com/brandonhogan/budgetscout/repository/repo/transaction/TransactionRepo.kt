@@ -16,5 +16,6 @@ interface TransactionRepo {
     suspend fun insert(transaction: Transaction): Long
     suspend fun transfer(from: Transaction, to: Transaction): List<Long>
     suspend fun get(id: Long): Transaction
+    suspend fun getByEnvelope(id: Long): List<Transaction>
     suspend fun getByOperation(id: Long): List<Transaction>?
 }

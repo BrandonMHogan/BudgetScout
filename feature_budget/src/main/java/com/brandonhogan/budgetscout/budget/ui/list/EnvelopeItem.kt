@@ -1,20 +1,10 @@
 package com.brandonhogan.budgetscout.budget.ui.list
 
-/**
- * @Creator         Brandon Hogan
- * @Date            2020-01-14
- * @File            EnvelopeItem
- * @Description     {{ foo }}
- */
-
-import android.view.View
 import com.brandonhogan.budgetscout.budget.R
 import com.brandonhogan.budgetscout.repository.entity.Envelope
-import com.brandonhogan.budgetscout.repository.entity.Group
 import com.xwray.groupie.kotlinandroidextensions.GroupieViewHolder
 import com.xwray.groupie.kotlinandroidextensions.Item
 import kotlinx.android.synthetic.main.budget_envelope_item.*
-import kotlinx.android.synthetic.main.budget_group_item.*
 
 /**
  * @Creator         Brandon Hogan

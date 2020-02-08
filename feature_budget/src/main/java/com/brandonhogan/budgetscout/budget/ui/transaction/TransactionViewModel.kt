@@ -69,6 +69,7 @@ class TransactionViewModel(private val data: TransactionData, private val budget
      * When the date is changed, update the ui model and push it to the ui
      */
     fun onDateChanged(date: Calendar) {
+        //data.transaction
         uiModel.date = date
         ui.postValue(uiModel)
     }
@@ -143,7 +144,6 @@ class TransactionViewModel(private val data: TransactionData, private val budget
             return
         }
 
-
         /**
          * If the transaction is valid, we want to try and save it
          */
@@ -165,5 +165,18 @@ class TransactionViewModel(private val data: TransactionData, private val budget
      */
     suspend fun saveTransaction(): Long = withContext(Dispatchers.IO) {
         budgetService.setTransaction(data.transaction)
+    }
+
+    /**
+     * Will make a set transaction call to try and insert or update the transaction object.
+     * If it returns anything but -1, assume success
+     */
+    suspend fun saveTransfer(): List<Long> = withContext(Dispatchers.IO) {
+
+        val from = data.transaction.copy()
+        from.envelopeId = data.fromEnvelopeId!!
+        from.amount = data.transaction.amount * -1
+
+        budgetService.setTransfer(from, data.transaction)
     }
 }

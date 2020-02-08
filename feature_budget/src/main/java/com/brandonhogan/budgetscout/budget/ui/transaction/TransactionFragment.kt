@@ -133,8 +133,6 @@ class TransactionFragment : Fragment() {
 
         model.ui.observe(this, Observer { model ->
 
-
-
             fromEnvelopeButton.text = if(model.fromEnvelopName.isEmpty()) { getString(R.string.from_envelope) } else { model.fromEnvelopName }
             toEnvelopeButton.text = if(model.toEnvelopeName.isEmpty()) { getString(R.string.to_envelope) } else { model.toEnvelopeName }
 

@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.brandonhogan.budgetscout.budget.R
 import com.brandonhogan.budgetscout.budget.extensions.MotionLayoutWithState
+import com.brandonhogan.budgetscout.budget.ui.envelope.EnvelopeDetailModel
 import com.brandonhogan.budgetscout.budget.ui.transaction.TransactionData
 import com.brandonhogan.budgetscout.core.services.Log
 import com.brandonhogan.budgetscout.repository.entity.Envelope
@@ -142,10 +143,12 @@ class BudgetFragment : Fragment() {
         Log.debug("WOOOO, Group long clicked! ${group.name}")
     }
 
+    /**
+     * Will navigate to the envelope detail view, passing in the selected envelope
+     */
     private fun onEnvelopeClick(group: Group, envelope: Envelope) {
-        Log.debug("WOOOO, Envelope clicked! ${group.name} : ${envelope.name}")
-
-        val action = BudgetFragmentDirections.actionBudgetFragmentToEnvelopeDetailFragment(envelope.id)
+        val envelopeDetailModel = EnvelopeDetailModel(envelope.id, group.id)
+        val action = BudgetFragmentDirections.actionBudgetFragmentToEnvelopeDetailFragment(envelopeDetailModel)
         findNavController(this).navigate(action)
     }
 

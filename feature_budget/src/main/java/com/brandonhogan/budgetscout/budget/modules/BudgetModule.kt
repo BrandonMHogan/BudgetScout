@@ -1,6 +1,7 @@
 package com.brandonhogan.budgetscout.budget.modules
 
 import com.brandonhogan.budgetscout.budget.services.BudgetService
+import com.brandonhogan.budgetscout.budget.ui.envelope.EnvelopeDetailModel
 import com.brandonhogan.budgetscout.budget.ui.envelope.EnvelopeDetailViewModel
 import com.brandonhogan.budgetscout.budget.ui.envelope.picker.EnvelopePickerViewModel
 import com.brandonhogan.budgetscout.budget.ui.group.GroupDetailViewModel
@@ -15,7 +16,7 @@ val budgetModule = module {
     single { BudgetService(get(), get(), get()) }
     viewModel { BudgetViewModel(get()) }
     viewModel { GroupDetailViewModel() }
-    viewModel { EnvelopeDetailViewModel(get()) }
+    viewModel { (envelopeDetailModel: EnvelopeDetailModel) -> EnvelopeDetailViewModel(envelopeDetailModel, get()) }
     viewModel { (transactionData: TransactionData) -> TransactionViewModel(transactionData, get()) }
     viewModel { EnvelopePickerViewModel(get()) }
 }

@@ -5,6 +5,9 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import kotlinx.android.parcel.Parcelize
+import java.text.DateFormat
+import java.text.DecimalFormat
+import java.text.SimpleDateFormat
 import java.util.*
 
 /**
@@ -28,6 +31,8 @@ data class Transaction (
     @ColumnInfo(name = PROPERTY_ENVELOPE_ID) var envelopeId: Long,
     // Amount either transferred, added or edited by
     @ColumnInfo(name = PROPERTY_AMOUNT) var amount: Double = 0.0,
+    // Note for the given transaction
+    @ColumnInfo(name = PROPERTY_NOTE) var note: String = "",
     // date of the transaction
     @ColumnInfo(name = PROPERTY_DATE) var date: Calendar = Calendar.getInstance(),
     // created date
@@ -42,6 +47,7 @@ data class Transaction (
         const val PROPERTY_ENVELOPE_ID = "envelopeId"
         const val PROPERTY_OPERATION_ID = "operationId"
         const val PROPERTY_AMOUNT = "amount"
+        const val PROPERTY_NOTE = "note"
         const val PROPERTY_ID = "id"
         const val PROPERTY_DATE = "date"
         const val PROPERTY_CREATED = "created"
@@ -50,5 +56,21 @@ data class Transaction (
         fun newInstance(): Transaction {
             return Transaction(envelopeId = -1)
         }
+    }
+
+    /**
+     * Helper function for returning the amount as an easy to read string
+     */
+    fun getDisplayAmount(): String {
+        val dec = DecimalFormat("#,###.00")
+        return "$ ${dec.format(amount)}"
+    }
+
+    /**
+     * Helper function to display the budgets month as a string
+     */
+    fun getDisplayDate(): String {
+        val dateFormat: DateFormat = SimpleDateFormat("MM dd", Locale.ENGLISH)
+        return dateFormat.format(date.time)
     }
 }

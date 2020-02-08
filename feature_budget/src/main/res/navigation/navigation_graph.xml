@@ -18,9 +18,8 @@
             app:popEnterAnim="@anim/nav_default_pop_enter_anim"
             app:popExitAnim="@anim/nav_default_pop_exit_anim">
             <argument
-                android:name="envelopeId"
-                android:defaultValue="0L"
-                app:argType="long" />
+                android:name="envelopeDetailModel"
+                app:argType="com.brandonhogan.budgetscout.budget.ui.envelope.EnvelopeDetailModel" />
         </action>
         <action
             android:id="@+id/action_budgetFragment_to_transactionFragment"
@@ -41,9 +40,8 @@
         android:label="EnvelopeDetailFragment"
         tools:layout="@layout/envelope_detail_fragment">
         <argument
-            android:name="envelopeId"
-            app:argType="long"
-            android:defaultValue="0L" />
+            android:name="envelopeDetailModel"
+            app:argType="com.brandonhogan.budgetscout.budget.ui.envelope.EnvelopeDetailModel" />
     </fragment>
 
     <fragment

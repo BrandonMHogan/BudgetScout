@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="@dimen/budget_list_envelope_margin_start"
+    android:layout_marginEnd="@dimen/budget_list_envelope_margin"
+    android:layout_marginTop="@dimen/budget_list_envelope_margin"
+    android:layout_marginBottom="@dimen/budget_list_envelope_margin">
+
+    <TextView
+        android:id="@+id/transaction_date"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/montserrat_bold"
+        android:textSize="@dimen/envelope_detail_font"
+        android:text="24th"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+    <TextView
+        android:id="@+id/transaction_note"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="10dp"
+        android:layout_marginStart="10dp"
+        android:fontFamily="@font/open_sans"
+        android:scrollHorizontally="true"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:text="this is a note about a dude that does stuff and what not. why you do this to me my dude. this is bad. Bad to the bones"
+        android:textSize="@dimen/envelope_detail_font"
+        app:layout_constraintStart_toEndOf="@id/transaction_date"
+        app:layout_constraintEnd_toStartOf="@+id/transaction_amount"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+    <TextView
+        android:id="@+id/transaction_amount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/open_sans"
+        android:text="-$24"
+        android:textSize="@dimen/envelope_detail_font"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

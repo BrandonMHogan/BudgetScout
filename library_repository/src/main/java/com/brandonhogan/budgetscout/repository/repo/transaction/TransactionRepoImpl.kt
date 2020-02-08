@@ -26,8 +26,10 @@ class TransactionRepoImpl(private val transactionDao: TransactionDao, private va
 
     @androidx.room.Transaction
     override suspend fun transfer(from: Transaction, to: Transaction): List<Long> {
-        // creates the operation header and get its id
-        val operationId = operationDao.insert(Operation())
+
+        // Uses the current operation id, or creates a new one
+        val operationId = to.operationId ?: operationDao.insert(Operation())
+
         // sets the operation id for the from and to transactions
         from.operationId = operationId
         to.operationId = operationId
@@ -40,6 +42,11 @@ class TransactionRepoImpl(private val transactionDao: TransactionDao, private va
      */
     override suspend fun get(id: Long): Transaction {
         return transactionDao.get(id)
+    }
+
+
+    override suspend fun getByEnvelope(id: Long): List<Transaction> {
+        return transactionDao.getAllForEnvelope(id)
     }
 
     /**

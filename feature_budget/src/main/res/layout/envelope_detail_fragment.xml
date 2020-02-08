@@ -8,13 +8,53 @@
     tools:context=".ui.envelope.EnvelopeDetailFragment">
 
     <TextView
-        android:id="@+id/test_envelope_name"
+        android:id="@+id/envelope_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Envelope Details"
+        android:layout_marginTop="7dp"
+        android:textSize="30sp"
+        android:elevation="@dimen/transfer_header_bubble_content_elevation"
+        android:gravity="center"
+        android:textColor="@color/colorFont"
+        android:fontFamily="@font/montserrat_bold"
+        android:clickable="true"
+        android:focusable="true"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/header_guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintGuide_begin="165dp"
+        android:orientation="horizontal"/>
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/envelope_transactions_recycler_view"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/header_guideline" />
+
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="@dimen/transfer_header_bubble_size"
+        android:layout_height="@dimen/transfer_header_bubble_size"
+        android:translationY="@dimen/transfer_header_bubble_translation_y"
+        app:cardBackgroundColor="@color/colorPrimaryDark"
+        app:cardCornerRadius="@dimen/transfer_header_bubble_corner_radius"
+        app:cardElevation="@dimen/transfer_header_bubble_elevation"
+        app:cardUseCompatPadding="false"
+        app:cardPreventCornerOverlap="false"
+        app:strokeColor="@color/colorPrimary"
+        app:strokeWidth="@dimen/budget_header_bubble_small_border_size"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
