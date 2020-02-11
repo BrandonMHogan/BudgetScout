@@ -13,6 +13,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.*
 import kotlin.collections.ArrayList
+import kotlin.math.abs
 
 class TransactionViewModel(private val data: TransactionData, private val budgetService: BudgetService) : BaseViewModel() {
 
@@ -51,8 +52,11 @@ class TransactionViewModel(private val data: TransactionData, private val budget
         // sets initial date based on the date of the transaction
         uiModel.date = data.transaction.date
         uiModel.toEnvelopeName = budgetService.getEnvelopeName(data.transaction.envelopeId)
-        uiModel.amount = data.transaction.amount
+        uiModel.amount = abs(data.transaction.amount) // stores it as an absolute
         uiModel.note = data.transaction.note
+
+        // if the amount is greater then 0, its income, else its expense
+        uiModel.transactionType = if(data.transaction.amount > 0) { TransactionType.Income } else { TransactionType.Expense }
 
         checkOperations()
         ui.postValue(uiModel)
@@ -76,6 +80,12 @@ class TransactionViewModel(private val data: TransactionData, private val budget
                 transactions.firstOrNull { transaction ->
                     transaction.envelopeId != data.transaction.envelopeId }?.let { otherTransaction ->
                     uiModel.fromEnvelopName = budgetService.getEnvelopeName(otherTransaction.envelopeId)
+                    // sets the other transactions id, so we can update it when saving
+                    data.fromTransactionId = otherTransaction.id
+                    // sets the other envelope to the from envelope id in the data object
+                    data.fromEnvelopeId = otherTransaction.envelopeId
+                    // if we have a from envelope, then this is a transfer type
+                    uiModel.transactionType = TransactionType.Transfer
                 }
             }
         }
@@ -87,6 +97,7 @@ class TransactionViewModel(private val data: TransactionData, private val budget
     fun onDateChanged(date: Calendar) {
         //data.transaction
         uiModel.date = date
+        data.transaction.date = date
         ui.postValue(uiModel)
     }
 
@@ -171,14 +182,11 @@ class TransactionViewModel(private val data: TransactionData, private val budget
          * If the transaction is valid, we want to try and save it
          */
         viewModelScope.launch {
-
-            val result =
-
-            if(transactionType.value == TransactionType.Transfer) {
+            val result = if(transactionType.value == TransactionType.Transfer) {
                 saveTransfer()
             }
             else {
-                saveTransaction()
+                saveTransaction(transactionType.value == TransactionType.Expense)
             }
 
             if(result == null ||result == -1L) {
@@ -194,7 +202,17 @@ class TransactionViewModel(private val data: TransactionData, private val budget
      * Will make a set transaction call to try and insert or update the transaction object.
      * If it returns anything but -1, assume success
      */
-    suspend fun saveTransaction(): Long? = withContext(Dispatchers.IO) {
+    private suspend fun saveTransaction(isExpense: Boolean): Any? = withContext(Dispatchers.IO) {
+
+        if (isExpense) {
+            // we want to make sure the amount is a negative value
+            data.transaction.amount = abs(data.transaction.amount) *-1
+        }
+        else {
+            // we want to make sure the amount is a positive value
+            data.transaction.amount = abs(data.transaction.amount)
+        }
+
         budgetService.setTransaction(data.transaction)
     }
 
@@ -202,10 +220,17 @@ class TransactionViewModel(private val data: TransactionData, private val budget
      * Will make a set transaction call to try and insert or update the transaction object.
      * If it returns anything but -1, assume success
      */
-    suspend fun saveTransfer(): List<Long>? = withContext(Dispatchers.IO) {
+    private suspend fun saveTransfer(): Any? = withContext(Dispatchers.IO) {
 
+        // makes sure the amount is absolute for the to transaction
+        data.transaction.amount = abs(data.transaction.amount)
+        // copies the to transaction to the from transaction
         val from = data.transaction.copy()
+        // sets the transaction id for the from envelope
+        from.id = data.fromTransactionId!!
+        // sets the from envelope id
         from.envelopeId = data.fromEnvelopeId!!
+        // makes sure the amount is a negative for the from transaction
         from.amount = data.transaction.amount * -1
 
         budgetService.setTransfer(from, data.transaction)

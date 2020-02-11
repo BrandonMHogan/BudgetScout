@@ -2,6 +2,8 @@ apply from: "$rootProject.projectDir/shared-library.gradle"
 
 dependencies {
 
+    implementation dependency.appcompat
+
     // room
     implementation dependency.room
     kapt dependency.roomCompiler

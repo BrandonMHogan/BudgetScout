@@ -1,5 +1,6 @@
 package com.brandonhogan.budgetscout.budget.ui.transaction
 
+import com.brandonhogan.budgetscout.repository.TransactionType
 import java.util.*
 
 /**
@@ -11,6 +12,7 @@ import java.util.*
 
 class TransactionUIModel {
 
+    var transactionType: TransactionType = TransactionType.Expense
     var date: Calendar = Calendar.getInstance()
     var fromEnvelopName: String = ""
     var toEnvelopeName: String = ""

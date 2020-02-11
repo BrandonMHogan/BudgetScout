@@ -5,6 +5,7 @@ import com.brandonhogan.budgetscout.repository.dao.TransactionDao
 import com.brandonhogan.budgetscout.repository.entity.Operation
 import com.brandonhogan.budgetscout.repository.entity.Transaction
 import org.koin.core.KoinComponent
+import java.util.*
 
 /**
  * @Creator         Brandon Hogan
@@ -20,6 +21,8 @@ class TransactionRepoImpl(private val transactionDao: TransactionDao, private va
      * Insert or Update Transaction
      */
     override suspend fun insert(transaction: Transaction): Long {
+        // will update the updated date first
+        transaction.updated = Calendar.getInstance()
         return  transactionDao.insert(transaction)
     }
 

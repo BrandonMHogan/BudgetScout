@@ -18,6 +18,8 @@ import kotlinx.android.parcel.Parcelize
 data class TransactionData constructor(
     // the transaction object
     var transaction: Transaction = Transaction.newInstance(),
+    // this is the id of the from transaction. Its only set if we are editing a transfer
+    var fromTransactionId: Long? = null,
     // if its a transfer, we would have a from envelope id set
     var fromEnvelopeId: Long? = null,
     // the group that the transaction is apart of

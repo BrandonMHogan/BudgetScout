@@ -9,16 +9,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.NavHostFragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.brandonhogan.budgetscout.budget.R
 import com.brandonhogan.budgetscout.budget.ui.envelope.picker.EnvelopePickerViewModel
+import com.brandonhogan.budgetscout.core.extensions.hideKeyboard
 import com.brandonhogan.budgetscout.core.utils.DateUtils
 import com.brandonhogan.budgetscout.core.utils.DecimalDigitsInputFilter
 import com.brandonhogan.budgetscout.repository.TransactionType
 import com.google.android.material.button.MaterialButton
+import com.google.android.material.button.MaterialButtonToggleGroup
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputEditText
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
@@ -42,6 +45,7 @@ class TransactionFragment : Fragment() {
     private lateinit var toEnvelopeButton: MaterialButton
     private lateinit var fromEnvelopeButton: MaterialButton
 
+    private lateinit var toggleButtons: MaterialButtonToggleGroup
     private lateinit var expenseButton: MaterialButton
     private lateinit var incomeButton: MaterialButton
     private lateinit var transferButton: MaterialButton
@@ -61,6 +65,7 @@ class TransactionFragment : Fragment() {
         dateLabel = view.findViewById(R.id.date_label)
 
         // toggle buttons
+        toggleButtons = view.findViewById(R.id.toggle_buttons)
         expenseButton = view.findViewById(R.id.expense_button)
         incomeButton = view.findViewById(R.id.income_button)
         transferButton = view.findViewById(R.id.transfer_button)
@@ -85,7 +90,6 @@ class TransactionFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
         setObservers()
         setListeners()
-        expenseButton.performClick()
     }
 
     /**
@@ -158,10 +162,18 @@ class TransactionFragment : Fragment() {
                 noteEditText.setText(model.note)
             }
 
+            when(model.transactionType) {
+                TransactionType.Transfer -> { transferButton.performClick() }
+                TransactionType.Expense -> { expenseButton.performClick() }
+                TransactionType.Income -> { incomeButton.performClick() }
+            }
+
             onDateChange(model.date)
         })
 
         model.displayMessage.observe(this, Observer { displayMessage ->
+
+            hideKeyboard()
 
             if(displayMessage.isNotEmpty()) {
                 val message = displayMessage.joinToString(separator = "\n") { message -> getString(message) }
