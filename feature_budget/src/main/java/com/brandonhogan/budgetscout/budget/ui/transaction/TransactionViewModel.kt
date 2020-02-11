@@ -40,28 +40,44 @@ class TransactionViewModel(private val data: TransactionData, private val budget
      */
     init {
         viewModelScope.launch(exceptionHandler) {
-            // sets initial date based on the date of the transaction
-            uiModel.date = data.transaction.date
-            uiModel.toEnvelopeName = budgetService.getEnvelopeName(data.transaction.envelopeId)
+            initializeUI()
+        }
+    }
 
-            // if the operation id is not null, we need to go get the other
-            // transactions associated to this one
-            data.transaction.operationId?.let { operationId ->
+    /**
+     * initializes the ui model, and posts back to the observer
+     */
+    private suspend fun initializeUI() = withContext(Dispatchers.IO) {
+        // sets initial date based on the date of the transaction
+        uiModel.date = data.transaction.date
+        uiModel.toEnvelopeName = budgetService.getEnvelopeName(data.transaction.envelopeId)
+        uiModel.amount = data.transaction.amount
+        uiModel.note = data.transaction.note
 
-                // if any transactions return, find the paired transaction to set as the
-                // from envelope
-                budgetService.getEnvelopesByOperation(operationId)?.let { transactions ->
-                    // the first transaction it finds that is not from data.transaction,
-                    // it will set that as the from envelope
-                    transactions.firstOrNull { transaction ->
-                        transaction.envelopeId != data.transaction.envelopeId }?.let { otherTransaction ->
-                        uiModel.fromEnvelopName = budgetService.getEnvelopeName(otherTransaction.envelopeId)
-                    }
+        checkOperations()
+        ui.postValue(uiModel)
+    }
+
+    /**
+     * Checks if an operation id is set.
+     * If set, it will load the operation and its transactions,
+     * and set the from envelope as the other operation in the transfer
+     */
+    private suspend fun checkOperations() = withContext(Dispatchers.IO) {
+        // if the operation id is not null, we need to go get the other
+        // transactions associated to this one
+        data.transaction.operationId?.let { operationId ->
+
+            // if any transactions return, find the paired transaction to set as the
+            // from envelope
+            budgetService.getEnvelopesByOperation(operationId)?.let { transactions ->
+                // the first transaction it finds that is not from data.transaction,
+                // it will set that as the from envelope
+                transactions.firstOrNull { transaction ->
+                    transaction.envelopeId != data.transaction.envelopeId }?.let { otherTransaction ->
+                    uiModel.fromEnvelopName = budgetService.getEnvelopeName(otherTransaction.envelopeId)
                 }
             }
-
-            // posts the ui model to the ui
-            ui.postValue(uiModel)
         }
     }
 
@@ -115,6 +131,13 @@ class TransactionViewModel(private val data: TransactionData, private val budget
     }
 
     /**
+     * Sets the note entered
+     */
+    fun onNoteChanged(note: String) {
+        data.transaction.note = note
+    }
+
+    /**
      * Will do quick validation to make sure the transaction is valid,
      * then update the database with the new or edited transaction
      */
@@ -148,13 +171,21 @@ class TransactionViewModel(private val data: TransactionData, private val budget
          * If the transaction is valid, we want to try and save it
          */
         viewModelScope.launch {
-            val id = saveTransaction()
 
-            if(id != -1L) {
-                displayMessage.postValue(listOf(R.string.transaction_save_success))
+            val result =
+
+            if(transactionType.value == TransactionType.Transfer) {
+                saveTransfer()
             }
             else {
+                saveTransaction()
+            }
+
+            if(result == null ||result == -1L) {
                 displayMessage.postValue(listOf(R.string.transaction_save_fail_message))
+            }
+            else {
+                displayMessage.postValue(listOf(R.string.transaction_save_success))
             }
         }
     }
@@ -163,7 +194,7 @@ class TransactionViewModel(private val data: TransactionData, private val budget
      * Will make a set transaction call to try and insert or update the transaction object.
      * If it returns anything but -1, assume success
      */
-    suspend fun saveTransaction(): Long = withContext(Dispatchers.IO) {
+    suspend fun saveTransaction(): Long? = withContext(Dispatchers.IO) {
         budgetService.setTransaction(data.transaction)
     }
 
@@ -171,7 +202,7 @@ class TransactionViewModel(private val data: TransactionData, private val budget
      * Will make a set transaction call to try and insert or update the transaction object.
      * If it returns anything but -1, assume success
      */
-    suspend fun saveTransfer(): List<Long> = withContext(Dispatchers.IO) {
+    suspend fun saveTransfer(): List<Long>? = withContext(Dispatchers.IO) {
 
         val from = data.transaction.copy()
         from.envelopeId = data.fromEnvelopeId!!

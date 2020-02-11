@@ -14,6 +14,7 @@ class TransactionUIModel {
     var date: Calendar = Calendar.getInstance()
     var fromEnvelopName: String = ""
     var toEnvelopeName: String = ""
-
+    var amount: Double = 0.00
+    var note: String = ""
 
 }

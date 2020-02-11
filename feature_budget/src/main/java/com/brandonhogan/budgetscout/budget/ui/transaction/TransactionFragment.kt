@@ -21,7 +21,6 @@ import com.brandonhogan.budgetscout.repository.TransactionType
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputEditText
-import org.koin.androidx.viewmodel.ext.android.getViewModel
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
@@ -48,6 +47,7 @@ class TransactionFragment : Fragment() {
     private lateinit var transferButton: MaterialButton
 
     private lateinit var amountEditText: TextInputEditText
+    private lateinit var noteEditText: TextInputEditText
 
     private lateinit var saveButton: MaterialButton
 
@@ -71,6 +71,9 @@ class TransactionFragment : Fragment() {
 
         // amount edit text
         amountEditText = view.findViewById(R.id.transaction_amount_edit_text)
+
+        // note edit text
+        noteEditText = view.findViewById(R.id.transaction_note_edit_text)
 
         saveButton = view.findViewById(R.id.transaction_save_button)
 
@@ -108,7 +111,6 @@ class TransactionFragment : Fragment() {
 
         amountEditText.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
-
             }
 
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
@@ -116,6 +118,18 @@ class TransactionFragment : Fragment() {
 
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
                 model.onAmountChanged(amountEditText.text.toString())
+            }
+        })
+
+        noteEditText.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+            }
+
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                model.onNoteChanged(noteEditText.text.toString())
             }
         })
     }
@@ -136,6 +150,14 @@ class TransactionFragment : Fragment() {
             fromEnvelopeButton.text = if(model.fromEnvelopName.isEmpty()) { getString(R.string.from_envelope) } else { model.fromEnvelopName }
             toEnvelopeButton.text = if(model.toEnvelopeName.isEmpty()) { getString(R.string.to_envelope) } else { model.toEnvelopeName }
 
+            if(amountEditText.text.isNullOrBlank()) {
+                amountEditText.setText(model.amount.toString())
+            }
+
+            if(noteEditText.text.isNullOrBlank()) {
+                noteEditText.setText(model.note)
+            }
+
             onDateChange(model.date)
         })
 
@@ -145,9 +167,12 @@ class TransactionFragment : Fragment() {
                 val message = displayMessage.joinToString(separator = "\n") { message -> getString(message) }
 
                 MaterialAlertDialogBuilder(context)
-                    .setTitle(R.string.transaction_validation_title)
                     .setMessage(message)
-                    .setPositiveButton(R.string.transaction_validation_button, null)
+                    .setPositiveButton(R.string.transaction_validation_button) { _, _ ->
+                        if(displayMessage.contains(R.string.transaction_save_success)) {
+                            this.goBack()
+                        }
+                    }
                     .show()
 
                 // clears the display message after displaying it
@@ -166,6 +191,10 @@ class TransactionFragment : Fragment() {
         envelopePickerModel.selectedEnvelope.observe(this, Observer {envelope ->
             model.envelopeSelected(envelopePickerModel.isFromEnvelope, envelope)
         })
+    }
+
+    private fun goBack() {
+        findNavController(this).popBackStack()
     }
 
     /**

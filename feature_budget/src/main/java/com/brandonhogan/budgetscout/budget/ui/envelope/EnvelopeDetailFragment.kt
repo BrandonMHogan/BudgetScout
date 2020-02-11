@@ -48,12 +48,7 @@ class EnvelopeDetailFragment : Fragment() {
         envelopeNameLabel = view.findViewById(R.id.envelope_name)
         recyclerView = view.findViewById(R.id.envelope_transactions_recycler_view)
 
-        model.getEnvelope()
         return view
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -86,10 +81,6 @@ class EnvelopeDetailFragment : Fragment() {
         if (adapter == null) {
             // sets the adapter as the group adapter
             adapter = GroupAdapter()
-            // sets the layout manager
-            linearLayoutManager = LinearLayoutManager(context)
-            recyclerView.layoutManager = linearLayoutManager
-
             transactions.forEach { transaction ->
 
                 adapter?.add(Section(EnvelopeDetailTransactionItem(
@@ -100,6 +91,10 @@ class EnvelopeDetailFragment : Fragment() {
                 )))
             }
         }
+
+        // sets the layout manager
+        linearLayoutManager = LinearLayoutManager(context)
+        recyclerView.layoutManager = linearLayoutManager
         recyclerView.adapter = adapter
     }
 
@@ -108,7 +103,7 @@ class EnvelopeDetailFragment : Fragment() {
      */
     private fun editTransaction(transaction: Transaction = Transaction.newInstance()) {
         val transactionData = TransactionData(groupId = model.getGroupId(), transaction = transaction)
-        val action = BudgetFragmentDirections.actionBudgetFragmentToTransactionFragment(transactionData = transactionData)
+        val action = EnvelopeDetailFragmentDirections.actionEnvelopeDetailFragmentToTransactionFragment(transactionData = transactionData)
         NavHostFragment.findNavController(this).navigate(action)
     }
 }

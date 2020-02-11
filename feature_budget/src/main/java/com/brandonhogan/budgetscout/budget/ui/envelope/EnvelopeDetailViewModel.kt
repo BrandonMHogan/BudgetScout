@@ -26,17 +26,14 @@ class EnvelopeDetailViewModel(private val model: EnvelopeDetailModel, private va
         MutableLiveData<List<Transaction>>()
     }
 
-    fun getGroupId(): Long = model.groupId
-
-    /**
-     * Loads the envelope object based on the id, then updates the mutable live data
-     */
-    fun getEnvelope() {
+    init {
         viewModelScope.launch(exceptionHandler) {
             envelope.postValue(loadEnvelope(model.envelopeId))
             transactions.postValue(loadTransactions(model.envelopeId))
         }
     }
+
+    fun getGroupId(): Long = model.groupId
 
     /**
      * Loads the envelope from the repository, in a background thread
