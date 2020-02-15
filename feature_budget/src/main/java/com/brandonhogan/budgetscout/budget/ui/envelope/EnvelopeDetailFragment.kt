@@ -102,7 +102,7 @@ class EnvelopeDetailFragment : Fragment() {
      * Will navigate to the transaction fragment as long as we have a budget id
      */
     private fun editTransaction(transaction: Transaction = Transaction.newInstance()) {
-        val transactionData = TransactionData(groupId = model.getGroupId(), transaction = transaction)
+        val transactionData = TransactionData(transactions = listOf(transaction))
         val action = EnvelopeDetailFragmentDirections.actionEnvelopeDetailFragmentToTransactionFragment(transactionData = transactionData)
         NavHostFragment.findNavController(this).navigate(action)
     }

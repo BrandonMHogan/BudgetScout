@@ -133,8 +133,8 @@ class BudgetFragment : Fragment() {
     /**
      * Will navigate to the transaction fragment as long as we have a budget id
      */
-    private fun onAddTransaction(groupId: Long? = null, transaction: Transaction = Transaction.newInstance()) {
-        val transactionData = TransactionData(groupId = groupId, transaction = transaction)
+    private fun onAddTransaction(transaction: Transaction = Transaction.newInstance()) {
+        val transactionData = TransactionData(transactions = listOf(transaction))
         val action = BudgetFragmentDirections.actionBudgetFragmentToTransactionFragment(transactionData = transactionData)
         findNavController(this).navigate(action)
     }

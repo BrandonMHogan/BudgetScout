@@ -1,6 +1,7 @@
 package com.brandonhogan.budgetscout.budget.ui.transaction
 
 import com.brandonhogan.budgetscout.repository.TransactionType
+import com.brandonhogan.budgetscout.repository.entity.Transaction
 import java.util.*
 
 /**
@@ -18,5 +19,4 @@ class TransactionUIModel {
     var toEnvelopeName: String = ""
     var amount: Double = 0.00
     var note: String = ""
-
 }

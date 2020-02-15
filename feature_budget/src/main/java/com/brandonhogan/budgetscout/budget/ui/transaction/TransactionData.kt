@@ -16,11 +16,7 @@ import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 data class TransactionData constructor(
-    // the transaction object
-    var transaction: Transaction = Transaction.newInstance(),
-    // this is the id of the from transaction. Its only set if we are editing a transfer
-    var fromTransactionId: Long? = null,
-    // if its a transfer, we would have a from envelope id set
-    var fromEnvelopeId: Long? = null,
-    // the group that the transaction is apart of
-    var groupId: Long? = null): Parcelable
+    // a flag use to understand if this is an edit or not
+    var isEdit: Boolean = false,
+    // contains the transaction objects. If there is an operation, its more then one
+    var transactions: List<Transaction> = listOf()): Parcelable

@@ -82,6 +82,8 @@ class TransactionFragment : Fragment() {
 
         saveButton = view.findViewById(R.id.transaction_save_button)
 
+        // this will init the model, starting everything. Without this, the model doesn't run,
+        // as its being lazy loaded
         model
         return view
     }
@@ -149,6 +151,21 @@ class TransactionFragment : Fragment() {
      */
     private fun setObservers() {
 
+        // If this is an edit, we need to show a delete button,
+        // and we need to lock the transaction type buttons.
+        model.isTransactionEdit.observe(this, Observer { isTransactionEdit ->
+            if(isTransactionEdit) {
+
+                expenseButton.isEnabled = false
+                incomeButton.isEnabled = false
+                transferButton.isEnabled = false
+                fromEnvelopeButton.isEnabled = false
+                toEnvelopeButton.isEnabled = false
+
+                //TODO: show the delete button
+            }
+        })
+
         model.ui.observe(this, Observer { model ->
 
             fromEnvelopeButton.text = if(model.fromEnvelopName.isEmpty()) { getString(R.string.from_envelope) } else { model.fromEnvelopName }
@@ -200,7 +217,7 @@ class TransactionFragment : Fragment() {
             onTransactionTypeChange(transactionType)
         })
 
-        envelopePickerModel.selectedEnvelope.observe(this, Observer {envelope ->
+        envelopePickerModel.selectedEnvelope.observe(this, Observer { envelope ->
             model.envelopeSelected(envelopePickerModel.isFromEnvelope, envelope)
         })
     }
