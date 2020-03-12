@@ -5,6 +5,7 @@ import androidx.room.Query
 import androidx.room.Transaction
 import com.brandonhogan.budgetscout.repository.dao.base.BaseDao
 import com.brandonhogan.budgetscout.repository.entity.Envelope
+import com.brandonhogan.budgetscout.repository.entity.relations.EnvelopeWithTransactions
 import java.lang.Exception
 
 /**
@@ -28,6 +29,13 @@ interface EnvelopeDao: BaseDao<Envelope> {
      */
     @Query("SELECT * FROM ${Envelope.NAME}")
     fun getAll(): List<Envelope>
+
+    /**
+     * Will get envelope with its transactions
+     */
+    @Transaction
+    @Query("SELECT * FROM `${Envelope.NAME}` WHERE ${Envelope.PROPERTY_ID} IS :id")
+    fun getWithTransactions(id: Long): EnvelopeWithTransactions
 
     /**
      * Updates just the total value of the envelope

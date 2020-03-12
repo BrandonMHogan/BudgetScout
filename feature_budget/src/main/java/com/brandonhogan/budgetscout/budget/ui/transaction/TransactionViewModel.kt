@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.brandonhogan.budgetscout.budget.services.BudgetService
 import com.brandonhogan.budgetscout.core.R
 import com.brandonhogan.budgetscout.core.bases.BaseViewModel
+import com.brandonhogan.budgetscout.core.services.Log
 import com.brandonhogan.budgetscout.repository.TransactionType
 import com.brandonhogan.budgetscout.repository.entity.Envelope
 import com.brandonhogan.budgetscout.repository.entity.Transaction
@@ -45,30 +46,54 @@ class TransactionViewModel(private val data: TransactionData, private val budget
      */
     init {
         viewModelScope.launch(exceptionHandler) {
-
-            // if transactions are empty, set a default transaction
-            if(data.transactions.isNullOrEmpty()) {
-                data.transactions = listOf(Transaction.newInstance())
-            }
-
-            // if this is an edit, we will be locking down most of the ui
-            isTransactionEdit.postValue(data.isEdit)
             // gets the operation transactions if any exist
             initializeOperationTransactions()
+            // if this is an edit, we will be locking down most of the ui
+            isTransactionEdit.postValue(data.isEdit)
             // initializes the ui model
             initializeUI()
         }
     }
 
     /**
-     * If the operation id is set on the initial transaction, it will attempt to
+     * If the operation id is set on the data object, it will attempt to
      * load all transactions associated to this operation id, and store
-     * them into the transaction list
+     * them into the correct transaction objects based on their values
      */
     private suspend fun initializeOperationTransactions() = withContext(Dispatchers.IO) {
-        data.transactions.first().operationId?.let { operationId ->
+
+        data.operationId?.let { operationId ->
             budgetService.getEnvelopesByOperation(operationId)?.let { transactions ->
-                data.transactions = transactions
+
+                // If we have less then 2 transactions, something is wrong
+                if(transactions.size <= 1) {
+                    Log.error("initializeOperationTransactions() returned only 1 transaction for operation id $operationId.")
+
+                    // try and recover. But this shouldnt be happening.
+                    if (transactions.size == 1) {
+                        data.toTransaction = transactions.first()
+                    }
+                }
+                else if(transactions.size == 2) {
+
+                    // basically, it will find which transaction has the negative value,
+                    // and set it as the from, and the other one as the to transaction
+
+                    if (transactions.first().amount < 0) {
+                        data.fromTransaction = transactions.first()
+                        data.toTransaction = transactions.last()
+                    }
+                    else {
+                        data.fromTransaction = transactions.first()
+                        data.toTransaction = transactions.last()
+                    }
+
+                }
+                else {
+                    // This should never happen...
+                    Log.error("initializeOperationTransactions() returned more then 2 transaction for operation id $operationId.")
+                    throw java.lang.Exception()
+                }
             }
         }
     }
@@ -78,61 +103,32 @@ class TransactionViewModel(private val data: TransactionData, private val budget
      */
     private suspend fun initializeUI() = withContext(Dispatchers.IO) {
 
-        // sets the transaction type based on the operation id, or amount value
-        if(data.transactions.first().operationId != null) {
-            transactionType.postValue(TransactionType.Transfer)
-            // sets the from envelope name, as this is a transfer type
-            uiModel.fromEnvelopName = budgetService.getEnvelopeName(getFromTransaction(data.transactions)?.envelopeId)
-        }
-        else if (data.transactions.first().amount > 0) {
-            transactionType.postValue(TransactionType.Income)
-        }
-        else {
-            transactionType.postValue(TransactionType.Expense)
+        // defaults transaction type to expense
+        uiModel.transactionType = TransactionType.Expense
+
+        // if a to transaction object is set, apply its values to the ui model
+        data.toTransaction?.let {toTransaction ->
+            uiModel.toEnvelopeName = budgetService.getEnvelopeName(toTransaction.envelopeId)
+
+            // if the to transaction has an amount greater then 0, its considered income
+            if(toTransaction.amount > 0) {
+                uiModel.transactionType = TransactionType.Income
+            }
+
+            uiModel.date = toTransaction.date
+            uiModel.amount = abs(toTransaction.amount) // stores it as an absolute
+            uiModel.note = toTransaction.note
         }
 
-        // sets initial date based on the date of the transaction
-        uiModel.date = data.transactions.first().date
-        uiModel.amount = abs(data.transactions.first().amount) // stores it as an absolute
-        uiModel.note = data.transactions.first().note
+        // if the from transaction has been set, then apply its values to the ui model
+        data.fromTransaction?.let {fromTransaction ->
+            uiModel.fromEnvelopName = budgetService.getEnvelopeName(fromTransaction.envelopeId)
 
-        // sets the to envelope name
-        uiModel.toEnvelopeName = budgetService.getEnvelopeName(getToTransaction(data.transactions).envelopeId)
+            // if from transaction is set, then this is considered a transfer
+            uiModel.transactionType = TransactionType.Transfer
+        }
 
         ui.postValue(uiModel)
-    }
-
-    /**
-     * Helper function go get a transaction based on its id
-     */
-    private suspend fun getTransaction(id: Long?, transactions: List<Transaction>): Transaction = withContext(Dispatchers.IO) {
-        transactions.first { transaction -> transaction.id == id }
-    }
-
-    /**
-     * Helper function to get the `to` Transaction.
-     *
-     * The `to` Transaction should be the only transaction with a positive amount
-     */
-    private suspend fun getToTransaction(transactions: List<Transaction>): Transaction = withContext(Dispatchers.IO) {
-        transactions.first { transaction -> transaction.amount >= 0 }
-    }
-
-    /**
-     * Helper function to get the `from` Transaction.
-     *
-     * The `from` Transaction will have a negative amount. If none exists, returns null.
-     * Down the road, we may want to have multiple from transactions. So this might need
-     * to be updated later to return an list
-     */
-    private suspend fun getFromTransaction(transactions: List<Transaction>): Transaction? = withContext(Dispatchers.IO) {
-        val transaction = transactions.firstOrNull { transaction -> transaction.amount < 0 }
-        if(transaction != null) {
-            transaction
-        }
-        else {
-            transactions.firstOrNull { transaction -> transaction.id != data.transactionId }
-        }
     }
 
     /**
@@ -178,20 +174,23 @@ class TransactionViewModel(private val data: TransactionData, private val budget
         viewModelScope.launch {
             if (isFromEnvelope) {
 
-                var fromTransaction = getFromTransaction(data.transactions)
-
-
-
-                data.fromEnvelopeId = envelope.id
-                uiModel.fromEnvelopName = envelope.name
-
-                getFromTransaction(data.transactions)?.let { transaction ->
-                    transaction.envelopeId = envelope.id
-                    uiModel.fromEnvelopName = envelope.name
+                // if the from transaction is null, make an empty one
+                if(data.fromTransaction == null) {
+                    data.fromTransaction = Transaction.newInstance()
                 }
+
+                // sets the from envelope id and the ui's from envelope name
+                data.fromTransaction?.envelopeId = envelope.id
+                uiModel.fromEnvelopName = envelope.name
             }
             else {
-                getToTransaction(data.transactions).envelopeId = envelope.id
+                // if the to transaction is null, make an empty one
+                if(data.toTransaction == null) {
+                    data.toTransaction = Transaction.newInstance()
+                }
+
+                // sets the to envelope id and the ui's to envelope name
+                data.toTransaction?.envelopeId = envelope.id
                 uiModel.toEnvelopeName = envelope.name
             }
 
@@ -216,12 +215,14 @@ class TransactionViewModel(private val data: TransactionData, private val budget
             }
 
             // if no valid to envelope was selected
-            if(getToTransaction(data.transactions).envelopeId == -1L) {
+            if(data.toTransaction == null
+                || data.toTransaction?.envelopeId == null
+                || data.toTransaction?.envelopeId == -1L) {
                 errorIds.add(R.string.transaction_validation_error_to_envelope)
             }
 
             // if its a transfer type, and no valid from envelope selected
-            if(transactionType.value == TransactionType.Transfer && ) {
+            if(transactionType.value == TransactionType.Transfer && data.fromTransaction?.envelopeId == -1L) {
                 errorIds.add(R.string.transaction_validation_error_from_envelope)
             }
 
@@ -252,16 +253,17 @@ class TransactionViewModel(private val data: TransactionData, private val budget
      */
     private suspend fun saveTransaction(isExpense: Boolean): Any? = withContext(Dispatchers.IO) {
 
+        val toTransaction = data.toTransaction!!
+        toTransaction.amount = abs(uiModel.amount)
+        toTransaction.note = uiModel.note
+        toTransaction.date = uiModel.date
+
+        // if expense, make sure the value is a negative
         if (isExpense) {
-            // we want to make sure the amount is a negative value
-            data.transaction.amount = abs(data.transaction.amount) *-1
-        }
-        else {
-            // we want to make sure the amount is a positive value
-            data.transaction.amount = abs(data.transaction.amount)
+            toTransaction.amount = toTransaction.amount  *-1
         }
 
-        budgetService.setTransaction(data.transaction)
+        budgetService.setTransaction(toTransaction)
     }
 
     /**
@@ -270,19 +272,20 @@ class TransactionViewModel(private val data: TransactionData, private val budget
      */
     private suspend fun saveTransfer(): Any? = withContext(Dispatchers.IO) {
 
+        val toTransaction = data.toTransaction!!
+        val fromTransaction = data.fromTransaction!!
+
         // makes sure the amount is absolute for the to transaction
-        data.transaction.amount = abs(data.transaction.amount)
-        // copies the to transaction to the from transaction
-        val from = data.transaction.copy()
-        // sets the transaction id for the from envelope
-        from.id = data.fromTransactionId!!
-        // sets the from envelope id
-        from.envelopeId = data.fromEnvelopeId!!
-        // makes sure the amount is a negative for the from transaction
-        from.amount = data.transaction.amount * -1
+        toTransaction.amount = abs(uiModel.amount)
+        toTransaction.note = uiModel.note
+        toTransaction.date = uiModel.date
+
+        // sets the from transaction to match the to, except it inverts the amount
+        fromTransaction.amount = toTransaction.amount * -1
+        fromTransaction.note = toTransaction.note
+        fromTransaction.date = toTransaction.date
 
 
-
-        budgetService.setTransfer(from, data.transaction)
+        budgetService.setTransfer(fromTransaction, toTransaction)
     }
 }

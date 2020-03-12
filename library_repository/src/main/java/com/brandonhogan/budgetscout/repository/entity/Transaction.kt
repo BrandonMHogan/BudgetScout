@@ -26,7 +26,7 @@ data class Transaction (
     // Main envelope id affected
     @ColumnInfo(name = PROPERTY_OPERATION_ID) var operationId: Long? = null,
     // Main envelope id affected
-    @ColumnInfo(name = PROPERTY_ENVELOPE_ID) var envelopeId: Long,
+    @ColumnInfo(name = PROPERTY_ENVELOPE_ID) var envelopeId: Long = -1L,
     // Amount either transferred, added or edited by
     @ColumnInfo(name = PROPERTY_AMOUNT) var amount: Double = 0.0,
     // Note for the given transaction

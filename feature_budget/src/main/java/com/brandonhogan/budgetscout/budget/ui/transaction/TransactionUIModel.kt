@@ -8,7 +8,8 @@ import java.util.*
  * @Creator         Brandon Hogan
  * @Date            2020-01-23
  * @File            TransactionUIModel
- * @Description     {{ foo }}
+ * @Description     Contains data associated directly to the UI, not necessarily
+ * the same as the transaction data. Its what gets displayed to the user.
  */
 
 class TransactionUIModel {

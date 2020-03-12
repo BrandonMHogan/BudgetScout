@@ -1,13 +1,12 @@
 package com.brandonhogan.budgetscout.budget.ui.envelope
 
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.brandonhogan.budgetscout.budget.services.BudgetService
 import com.brandonhogan.budgetscout.core.bases.BaseViewModel
 import com.brandonhogan.budgetscout.repository.entity.Envelope
 import com.brandonhogan.budgetscout.repository.entity.Transaction
-import com.brandonhogan.budgetscout.repository.repo.budget.BudgetRepo
+import com.brandonhogan.budgetscout.repository.entity.relations.EnvelopeWithTransactions
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -15,21 +14,13 @@ import kotlinx.coroutines.withContext
 class EnvelopeDetailViewModel(private val model: EnvelopeDetailModel, private val budgetService: BudgetService) : BaseViewModel() {
 
     /**
-     * Observable by its view
+     * Passes the selected envelope from the budget server to the model
      */
-    val envelope: MutableLiveData<Envelope> by lazy {
-        MutableLiveData<Envelope>()
-    }
-
-
-    val transactions: MutableLiveData<List<Transaction>> by lazy {
-        MutableLiveData<List<Transaction>>()
-    }
+    val selectedEnvelope: MutableLiveData<EnvelopeWithTransactions> = budgetService.selectedEnvelope
 
     init {
         viewModelScope.launch(exceptionHandler) {
-            envelope.postValue(loadEnvelope(model.envelopeId))
-            transactions.postValue(loadTransactions(model.envelopeId))
+            budgetService.selectEnvelope(model.envelopeId)
         }
     }
 

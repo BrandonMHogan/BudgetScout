@@ -18,5 +18,9 @@ import kotlinx.android.parcel.Parcelize
 data class TransactionData constructor(
     // a flag use to understand if this is an edit or not
     var isEdit: Boolean = false,
-    // contains the transaction objects. If there is an operation, its more then one
-    var transactions: List<Transaction> = listOf()): Parcelable
+    // if this transaction is apart of an operation, then this will not be null
+    var operationId: Long? = null,
+    // every transaction requires a to transaction. Its where the expense or income is going to
+    var toTransaction: Transaction? = null,
+    // if operation id is set, then a to transaction will be required. Its where the transfer comes from
+    var fromTransaction: Transaction? = null): Parcelable

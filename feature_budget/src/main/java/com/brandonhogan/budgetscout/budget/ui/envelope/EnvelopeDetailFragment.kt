@@ -17,6 +17,7 @@ import com.brandonhogan.budgetscout.budget.ui.list.BudgetFragmentDirections
 import com.brandonhogan.budgetscout.budget.ui.transaction.TransactionData
 import com.brandonhogan.budgetscout.repository.entity.Envelope
 import com.brandonhogan.budgetscout.repository.entity.Transaction
+import com.brandonhogan.budgetscout.repository.entity.relations.EnvelopeWithTransactions
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.Section
 import com.xwray.groupie.kotlinandroidextensions.GroupieViewHolder
@@ -57,22 +58,15 @@ class EnvelopeDetailFragment : Fragment() {
     }
 
     private fun setObservers() {
+
         // observes the envelope for changes
-        val envelopeObserver = Observer<Envelope> { envelope ->
-            envelopeNameLabel.text = envelope.name
+        val envelopeObserver = Observer<EnvelopeWithTransactions> { envelope ->
+            envelopeNameLabel.text = envelope.envelope.name
+            setList(envelope.transactions)
         }
 
-        // sets the envelope observer, bound to the fragments lifecycle
-        model.envelope.observe(this, envelopeObserver)
-
-
-        // observes the transaction list for changes
-        val transactionsObserver = Observer<List<Transaction>> { transactions ->
-            setList(transactions)
-        }
-
-        // sets the envelope observer, bound to the fragments lifecycle
-        model.transactions.observe(this, transactionsObserver)
+        // observes the selected envelope from the budget service
+        model.selectedEnvelope.observe(this, envelopeObserver)
     }
 
 
@@ -101,8 +95,29 @@ class EnvelopeDetailFragment : Fragment() {
     /**
      * Will navigate to the transaction fragment as long as we have a budget id
      */
-    private fun editTransaction(transaction: Transaction = Transaction.newInstance()) {
-        val transactionData = TransactionData(transactions = listOf(transaction))
+    private fun editTransaction(transaction: Transaction) {
+
+        // if the operation id is not null, then don't bother passing in the transaction.
+        // just pass the operation id
+        val transactionData = if(transaction.operationId != null)  {
+            TransactionData(operationId = transaction.operationId)
+        }
+        else {
+            TransactionData(toTransaction = transaction)
+        }
+
+        // mark this as an edit
+        transactionData.isEdit = true
+
+        val action = EnvelopeDetailFragmentDirections.actionEnvelopeDetailFragmentToTransactionFragment(transactionData = transactionData)
+        NavHostFragment.findNavController(this).navigate(action)
+    }
+
+    /**
+     * Navigates to the transaction fragment with an empty transaction data object
+     */
+    private fun addTransaction() {
+        val transactionData = TransactionData()
         val action = EnvelopeDetailFragmentDirections.actionEnvelopeDetailFragmentToTransactionFragment(transactionData = transactionData)
         NavHostFragment.findNavController(this).navigate(action)
     }

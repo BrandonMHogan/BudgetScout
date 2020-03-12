@@ -3,6 +3,7 @@ package com.brandonhogan.budgetscout.repository.repo.envelope
 import com.brandonhogan.budgetscout.repository.dao.BudgetDao
 import com.brandonhogan.budgetscout.repository.dao.EnvelopeDao
 import com.brandonhogan.budgetscout.repository.entity.Envelope
+import com.brandonhogan.budgetscout.repository.entity.relations.EnvelopeWithTransactions
 import org.koin.core.KoinComponent
 
 /**
@@ -40,5 +41,13 @@ class EnvelopeRepoImpl(private val budgetDao: BudgetDao, private val envelopeDao
         return budget.groups.map { groupWithEnvelopes ->
             groupWithEnvelopes.envelopes
         }.flatten()
+    }
+
+
+    /**
+     * Gets an envelope with all of its transactions
+     */
+    override suspend fun getEnvelopeWithTransactions(envelopeId: Long): EnvelopeWithTransactions {
+        return envelopeDao.getWithTransactions(envelopeId)
     }
 }

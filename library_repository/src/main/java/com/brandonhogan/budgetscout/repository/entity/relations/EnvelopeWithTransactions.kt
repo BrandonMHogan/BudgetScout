@@ -11,12 +11,12 @@ import com.brandonhogan.budgetscout.repository.entity.Transaction
  * @File            GroupWithEnvelopes
  * @Description     Relational data class used to get a group and its envelopes
  */
-data class EnvelopesWithTransactions(
+data class EnvelopeWithTransactions(
     @Embedded val envelope: Envelope,
     @Relation(
         parentColumn = Envelope.PROPERTY_ID,
         entityColumn = Transaction.PROPERTY_ENVELOPE_ID,
         entity = Envelope::class
     )
-    val envelopes: List<Envelope>
+    val transactions: List<Transaction>
 )

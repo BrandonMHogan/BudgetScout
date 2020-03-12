@@ -5,7 +5,9 @@ import com.brandonhogan.budgetscout.core.bases.BaseService
 import com.brandonhogan.budgetscout.repository.entity.Envelope
 import com.brandonhogan.budgetscout.repository.entity.Transaction
 import com.brandonhogan.budgetscout.repository.entity.relations.BudgetWithGroupsAndEnvelopes
+import com.brandonhogan.budgetscout.repository.entity.relations.EnvelopeWithTransactions
 import com.brandonhogan.budgetscout.repository.repo.budget.BudgetRepo
+import com.brandonhogan.budgetscout.repository.repo.envelope.EnvelopeRepo
 import com.brandonhogan.budgetscout.repository.repo.transaction.TransactionRepo
 import com.brandonhogan.budgetscout.repository.testing.BudgetCreator
 import kotlinx.coroutines.*
@@ -17,7 +19,7 @@ import java.util.*
  *
  * Maintains the active running budget and any data refresh or changes required
  */
-class BudgetService(private val budgetRepo: BudgetRepo, private val transactionRepo: TransactionRepo, private val budgetCreator: BudgetCreator): BaseService() {
+class BudgetService(private val budgetRepo: BudgetRepo, private val envelopeRepo: EnvelopeRepo, private val transactionRepo: TransactionRepo, private val budgetCreator: BudgetCreator): BaseService() {
 
     /**
      * Observable by its view
@@ -25,6 +27,18 @@ class BudgetService(private val budgetRepo: BudgetRepo, private val transactionR
     val budget: MutableLiveData<BudgetWithGroupsAndEnvelopes> by lazy {
         MutableLiveData<BudgetWithGroupsAndEnvelopes>()
     }
+
+    /**
+     * When an envelope is selected, store it here, so that its data can be shared
+     * between all sub views.
+     *
+     * Should be cleared once an envelope is unselected
+     */
+    val selectedEnvelope: MutableLiveData<EnvelopeWithTransactions> by lazy {
+        MutableLiveData<EnvelopeWithTransactions>()
+    }
+
+
 
     /**
      * On init, will load the active budget and post it
@@ -51,6 +65,14 @@ class BudgetService(private val budgetRepo: BudgetRepo, private val transactionR
             budgetCreator.createBasicBudget(true, calendar = calendar)
             budget.postValue(budgetRepo.getWithGroupsAndEnvelopes(calendar))
         }
+    }
+
+    /**
+     * Will mark an envelope as selected, storing it locally in the service, so that
+     * any model listening to it can share the data and changes.
+     */
+    suspend fun selectEnvelope(id: Long) = withContext(Dispatchers.IO) {
+        selectedEnvelope.postValue(envelopeRepo.getEnvelopeWithTransactions(id))
     }
 
     /**

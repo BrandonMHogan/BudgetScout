@@ -11,8 +11,8 @@ import java.util.*
  * @Creator         Brandon Hogan
  * @Date            2020-02-05
  * @File            Operation
- * @Description     Operation Header Table. Primarily used to associated transactions to a single
- * operation.
+ * @Description     Operation Header Table. Primarily used to associated multiple transactions
+ * to a single operation.
  * Example:
  *      If user transfers 100 from envelope A to envelope B.
  *      They both would have the same operation id, so we know they are connected transactions.
